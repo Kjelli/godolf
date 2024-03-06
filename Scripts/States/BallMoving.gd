@@ -37,7 +37,11 @@ func check_tile_type_under_ball() -> Variant:
 func check_elevation_under_ball() -> Vector2:
 	var tile_pos = tile_map.local_to_map(ball.transform.origin - tile_map.transform.origin)
 	var tile_atlas_coords = tile_map.get_cell_atlas_coords(TILE_MAP_HILL_LAYER, tile_pos, true)
+	if tile_atlas_coords == Vector2i(-1, -1):
+		return Vector2.ZERO
 	var tile_source_id = tile_map.get_cell_source_id(TILE_MAP_HILL_LAYER, tile_pos, true)
+	if not tile_source_id:
+		return Vector2.ZERO
 	var tile_source : TileSetSource = tile_map.tile_set.get_source(tile_source_id)
 	if not tile_source:
 		return Vector2.ZERO
@@ -75,15 +79,15 @@ func Physics_Update(_delta : float):
 		var direction = (ball.nearby_goal.transform.get_origin() - ball.transform.get_origin()).normalized()
 		var distance = (ball.nearby_goal.transform.get_origin() - ball.transform.get_origin()).length()
 
-		var bowl_range = 15
+		var bowl_range = 14
 		if distance < bowl_range:
 			var distance_percent = 1 - distance / bowl_range
 			ball.scale = Vector2(0.5 + (1 - distance_percent) * 0.5, 0.5 + (1 - distance_percent) * 0.5)
-			ball.acceleration = (direction * distance) * 4
+			ball.acceleration = (direction * distance) * 8
 		else:
 			ball.scale = Vector2(1.0, 1.0)
 
-		if distance < 4 && ball.velocity.length_squared() < 400:
+		if distance < 4 && ball.velocity.length_squared() < 2500:
 			ball.sink(ball.nearby_goal)
 
 	if elevation:
@@ -103,7 +107,6 @@ func on_collision(collision : KinematicCollision2D, delta : float):
 		var collision_layer = PhysicsServer2D.body_get_collision_layer(tile_rid)
 		var tile_type = check_collision_tile(tile_rid)
 		if collision_layer == SPECIAL_LAYER and tile_type == "Water":
-			Events.ball_stopped.emit(ball)
 			Transitioned.emit(self, "BallInWater")
 		else:
 			bounce_particles.emit_particle(ball.transform, ball.velocity, ball.modulate, ball.modulate, 0)

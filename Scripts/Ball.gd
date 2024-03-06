@@ -38,8 +38,6 @@ func _on_left_goal_proximity(goal : Goal):
 
 func sink(goal : Goal):
 	is_in_goal = goal
-	Events.ball_sunk.emit(self)
-	print("Nice! Sunk on shot #" + str(times_hit))
 	pass
 
 func hit(charge : float, direction : Direction):

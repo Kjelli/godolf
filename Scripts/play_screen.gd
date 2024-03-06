@@ -20,17 +20,14 @@ func scan_scenes():
 			# Directories, Skip.
 			pass
 		else:
-			paths.push_back(file_name.replace(".tscn", ""))
-		if dir.current_is_dir():
-			numScenes += 1
+			paths.push_back(file_name.replace(".remap",""))
 		file_name = dir.get_next()
-	print("Got a list of "+str(numScenes)+" files")
 	for scene in paths:
-		items.add_item(scene)
+		items.add_item(scene.replace(".tscn", ""))
 		courses.append(scene)
 
 func _on_play_pressed():
-	get_tree().change_scene_to_file("res://Scenes/Courses/" + selected_course + ".tscn")
+	get_tree().change_scene_to_file("res://Scenes/Courses/" + selected_course)
 	pass # Replace with function body.
 
 func _on_quit_pressed():

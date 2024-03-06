@@ -16,5 +16,6 @@ func OnEnter():
 
 	ballSprite.modulate.a = 1
 	ball.global_position = ball.last_shot_from
+	Events.ball_stopped.emit(ball)
 	Transitioned.emit(self, "BallIdle")
 	pass
