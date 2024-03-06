@@ -35,4 +35,5 @@ func spawn_player(id : String) -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta) -> void:
-	pass
+	if Input.is_action_just_pressed("cancel"):
+		get_tree().change_scene_to_file("res://Scenes/play_screen.tscn")

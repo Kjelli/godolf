@@ -1,5 +1,7 @@
 extends State
 
+const TILE_MAP_GROUND_LAYER : int = 0
+const TILE_MAP_HILL_LAYER : int = 2
 const SPECIAL_LAYER : int = 8
 
 @export var ball : Ball
@@ -20,13 +22,28 @@ func OnExit():
 	current_trail = null
 	pass
 
-func check_tile_under_ball():
+func check_tile_type_under_ball() -> Variant:
 	var tile_pos = tile_map.local_to_map(ball.transform.origin - tile_map.transform.origin)
-	var tile_atlas_coords = tile_map.get_cell_atlas_coords(0, tile_pos, true)
-	var tile_source_id = tile_map.get_cell_source_id(0, tile_pos, true)
+	var tile_atlas_coords = tile_map.get_cell_atlas_coords(TILE_MAP_GROUND_LAYER, tile_pos, true)
+	var tile_source_id = tile_map.get_cell_source_id(TILE_MAP_GROUND_LAYER, tile_pos, true)
 	var tile_source : TileSetSource = tile_map.tile_set.get_source(tile_source_id)
-	var tile_data = tile_source.get_tile_data(tile_atlas_coords, 0)
+	if not tile_source:
+		return null
+
+	var tile_data = tile_source.get_tile_data(tile_atlas_coords, TILE_MAP_GROUND_LAYER)
 	var custom_data = tile_data.get_custom_data("type")
+	return custom_data
+
+func check_elevation_under_ball() -> Vector2:
+	var tile_pos = tile_map.local_to_map(ball.transform.origin - tile_map.transform.origin)
+	var tile_atlas_coords = tile_map.get_cell_atlas_coords(TILE_MAP_HILL_LAYER, tile_pos, true)
+	var tile_source_id = tile_map.get_cell_source_id(TILE_MAP_HILL_LAYER, tile_pos, true)
+	var tile_source : TileSetSource = tile_map.tile_set.get_source(tile_source_id)
+	if not tile_source:
+		return Vector2.ZERO
+
+	var tile_data = tile_source.get_tile_data(tile_atlas_coords, 0)
+	var custom_data = tile_data.get_custom_data("acceleration")
 	return custom_data
 
 func check_collision_tile(tile_rid : RID):
@@ -46,7 +63,10 @@ func Update(_delta : float):
 		return
 
 func Physics_Update(_delta : float):
-	if ball.velocity.length_squared() < 0.25 && ball.acceleration.length_squared() < 0.25:
+	var tile_type = check_tile_type_under_ball()
+	var elevation = check_elevation_under_ball()
+
+	if ball.velocity.length_squared() < 0.25 && ball.acceleration.length_squared() < 0.25 && not elevation:
 		Events.ball_stopped.emit(ball)
 		Transitioned.emit(self, "BallIdle")
 		return
@@ -66,7 +86,9 @@ func Physics_Update(_delta : float):
 		if distance < 4 && ball.velocity.length_squared() < 400:
 			ball.sink(ball.nearby_goal)
 
-	var tile_type = check_tile_under_ball()
+	if elevation:
+		ball.velocity += 5 * elevation * ball.weight
+
 	if tile_type == "Sand":
 		ball.velocity *= 0.95
 

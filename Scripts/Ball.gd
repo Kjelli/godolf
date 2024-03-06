@@ -20,7 +20,7 @@ func _process(delta):
 	pass
 
 func _physics_process(delta):
-	acceleration = acceleration.move_toward(Vector2.ZERO, 0.85)
+	acceleration = acceleration.lerp(Vector2.ZERO, 0.15)
 	velocity = (velocity + acceleration * delta) * 0.985
 
 	if velocity.length_squared() < 0.25 && acceleration.length_squared() < 0.25:
@@ -46,6 +46,6 @@ func hit(charge : float, direction : Direction):
 	last_shot_from = global_position
 	times_hit += 1
 	hit_particles.emitting = true
-	velocity = (charge * 0.5 / (weight * 0.25)) * direction.value()
+	velocity = (charge * 0.8 / (weight * 0.25)) * direction.value()
 	Events.ball_shot.emit(self)
 	print("Shot #" + str(times_hit))

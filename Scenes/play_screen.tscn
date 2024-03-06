@@ -5,19 +5,30 @@
 [node name="PlayScreen" type="Node2D"]
 script = ExtResource("1_r80s8")
 
-[node name="Play" type="Button" parent="."]
-offset_left = 454.0
-offset_top = 133.0
-offset_right = 710.0
-offset_bottom = 216.0
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CourseList" type="ItemList" parent="CanvasLayer"]
+unique_name_in_owner = true
+offset_left = 41.0
+offset_top = 49.0
+offset_right = 403.0
+offset_bottom = 408.0
+allow_search = false
+
+[node name="Play" type="Button" parent="CanvasLayer"]
+offset_left = 450.0
+offset_top = 201.0
+offset_right = 706.0
+offset_bottom = 284.0
 text = "Play"
 
-[node name="Quit" type="Button" parent="."]
+[node name="Quit" type="Button" parent="CanvasLayer"]
 offset_left = 454.0
 offset_top = 321.0
 offset_right = 710.0
 offset_bottom = 404.0
 text = "Quit"
 
-[connection signal="pressed" from="Play" to="." method="_on_play_pressed"]
-[connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]
+[connection signal="item_selected" from="CanvasLayer/CourseList" to="." method="_on_course_list_item_selected"]
+[connection signal="pressed" from="CanvasLayer/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="CanvasLayer/Quit" to="." method="_on_quit_pressed"]

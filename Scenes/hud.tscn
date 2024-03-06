@@ -1,0 +1,34 @@
+[gd_scene load_steps=4 format=3 uid="uid://cw2shrgidjs3s"]
+
+[ext_resource type="Script" path="res://Scripts/ChargeBar.gd" id="1_7t76o"]
+[ext_resource type="Texture2D" uid="uid://vkkihgyvgvlp" path="res://resources/chargebar.png" id="2_752ma"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_5bir5"]
+
+[node name="UI" type="CanvasLayer"]
+
+[node name="ChargeBar" type="CanvasGroup" parent="."]
+position = Vector2(595, 442)
+scale = Vector2(1.5, 1.5)
+script = ExtResource("1_7t76o")
+
+[node name="Bar" type="Sprite2D" parent="ChargeBar"]
+position = Vector2(1, 0)
+scale = Vector2(2, 2)
+texture = ExtResource("2_752ma")
+
+[node name="ChargeRectangle" type="Sprite2D" parent="ChargeBar"]
+modulate = Color(0.443137, 0.737255, 0.137255, 1)
+z_index = -1
+position = Vector2(-72.6667, -6)
+scale = Vector2(145, 12)
+texture = SubResource("CanvasTexture_5bir5")
+centered = false
+
+[node name="ChargeIndicator" type="Sprite2D" parent="ChargeBar"]
+modulate = Color(0, 0, 0, 1)
+z_index = -1
+position = Vector2(-72.6667, -9.33333)
+scale = Vector2(2, 18)
+texture = SubResource("CanvasTexture_5bir5")
+centered = false
