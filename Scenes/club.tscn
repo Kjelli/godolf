@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://bxtrc3nxvsvgk"]
+
+[ext_resource type="Script" path="res://Scripts/club.gd" id="1_avwbi"]
+[ext_resource type="Texture2D" uid="uid://cmuwdke5npuqy" path="res://resources/golf.png" id="2_7v8mk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_towdg"]
+size = Vector2(2, 3.75)
+
+[node name="Club" type="StaticBody2D"]
+show_behind_parent = true
+z_index = 1
+disable_mode = 1
+script = ExtResource("1_avwbi")
+min_charge = 0.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 11.875)
+shape = SubResource("RectangleShape2D_towdg")
+disabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_7v8mk")
+offset = Vector2(0, 8)
+region_enabled = true
+region_rect = Rect2(164, 20, 7, 11)

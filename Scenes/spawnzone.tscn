@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://j3cdaw1m1ad5"]
+
+[ext_resource type="Script" path="res://Scripts/spawnzone.gd" id="1_j15s4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sqdu5"]
+size = Vector2(25.64, 15.12)
+
+[node name="Spawn" type="Area2D"]
+position = Vector2(371.429, 200)
+scale = Vector2(1.78571, 1.78571)
+script = ExtResource("1_j15s4")
+
+[node name="Area" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_sqdu5")

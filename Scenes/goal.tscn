@@ -1,0 +1,68 @@
+[gd_scene load_steps=10 format=3 uid="uid://kdvh5m8lrweg"]
+
+[ext_resource type="Script" path="res://Scripts/goal.gd" id="1_a2i2c"]
+[ext_resource type="Texture2D" uid="uid://cmuwdke5npuqy" path="res://resources/golf.png" id="1_xj78u"]
+[ext_resource type="Script" path="res://Scripts/Components/StateMachine.gd" id="3_q1hf1"]
+[ext_resource type="Script" path="res://Scripts/States/Goal_NoBallNear.gd" id="4_dhs7o"]
+[ext_resource type="Script" path="res://Scripts/States/Goal_BallNear.gd" id="5_ifwhh"]
+[ext_resource type="Script" path="res://Scripts/Components/Pulser.gd" id="6_ir0hk"]
+[ext_resource type="Texture2D" uid="uid://eap2ej0juutt" path="res://resources/goal_bowl.png" id="7_0yslc"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_l0v40"]
+blend_mode = 2
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3yj3c"]
+radius = 76.0592
+
+[node name="Goal" type="Node2D" groups=["camera_targets"]]
+script = ExtResource("1_a2i2c")
+
+[node name="Hole" type="Sprite2D" parent="."]
+z_index = -1
+y_sort_enabled = true
+position = Vector2(-0.5, 0.5)
+scale = Vector2(1.0625, 1.0625)
+texture = ExtResource("1_xj78u")
+region_enabled = true
+region_rect = Rect2(96, 168, 16, 8)
+
+[node name="Flag" type="Sprite2D" parent="."]
+z_index = 1
+y_sort_enabled = true
+position = Vector2(1, -12)
+texture = ExtResource("1_xj78u")
+region_enabled = true
+region_rect = Rect2(144, 144, 16, 32)
+
+[node name="Bowl" type="Sprite2D" parent="."]
+material = SubResource("CanvasItemMaterial_l0v40")
+texture = ExtResource("7_0yslc")
+
+[node name="Pulser" type="Node2D" parent="."]
+script = ExtResource("6_ir0hk")
+min_radius = 0.0
+length_seconds = 0.5
+pause_between = 5
+pulse_direction = 0
+
+[node name="GoalProximity" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GoalProximity"]
+shape = SubResource("CircleShape2D_3yj3c")
+debug_color = Color(0, 0.6, 0.701961, 0.141176)
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_q1hf1")
+initial_state = NodePath("NoBallNear")
+
+[node name="NoBallNear" type="Node" parent="StateMachine" node_paths=PackedStringArray("goal")]
+script = ExtResource("4_dhs7o")
+goal = NodePath("../..")
+
+[node name="BallNear" type="Node" parent="StateMachine" node_paths=PackedStringArray("goal", "flag")]
+script = ExtResource("5_ifwhh")
+goal = NodePath("../..")
+flag = NodePath("../../Flag")
+
+[connection signal="body_entered" from="GoalProximity" to="." method="_on_goal_proximity_body_entered"]
+[connection signal="body_exited" from="GoalProximity" to="." method="_on_goal_proximity_body_exited"]

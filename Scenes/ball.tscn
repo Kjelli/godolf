@@ -1,0 +1,152 @@
+[gd_scene load_steps=22 format=3 uid="uid://v1ku1o5ma46j"]
+
+[ext_resource type="Script" path="res://Scripts/Ball.gd" id="1_8v3iu"]
+[ext_resource type="Texture2D" uid="uid://cmuwdke5npuqy" path="res://resources/golf.png" id="2_cr1wt"]
+[ext_resource type="Script" path="res://Scripts/Components/Pulser.gd" id="3_t7ikm"]
+[ext_resource type="Script" path="res://Scripts/Components/StateMachine.gd" id="4_b60n1"]
+[ext_resource type="Script" path="res://Scripts/States/BallSinking.gd" id="4_ckxuh"]
+[ext_resource type="Script" path="res://Scripts/States/BallIdle.gd" id="5_blyia"]
+[ext_resource type="Script" path="res://Scripts/States/BallMoving.gd" id="7_xo71o"]
+[ext_resource type="Script" path="res://Scripts/States/BallInWater.gd" id="8_kf0vh"]
+[ext_resource type="Texture2D" uid="uid://dj1lrkal6yh80" path="res://resources/water-drop.png" id="9_r0dik"]
+[ext_resource type="Texture2D" uid="uid://dg8vuckm2chsv" path="res://resources/particles.png" id="10_14x4h"]
+[ext_resource type="Texture2D" uid="uid://de376upft1uvw" path="res://resources/bounce.png" id="11_ra2h2"]
+[ext_resource type="Texture2D" uid="uid://b3cs1ex3xhu6r" path="res://resources/aimline.png" id="12_wli68"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jqxxf"]
+radius = 2.0
+
+[sub_resource type="Curve" id="Curve_a4e1w"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ntepb"]
+curve = SubResource("Curve_a4e1w")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8k5py"]
+lifetime_randomness = 0.5
+particle_flag_disable_z = true
+direction = Vector3(0, -10, 0)
+spread = 30.0
+initial_velocity_min = 5.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.25
+scale_max = 0.75
+alpha_curve = SubResource("CurveTexture_ntepb")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_xcivj"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+initial_velocity_min = 5.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_2mxw6"]
+
+[sub_resource type="Curve" id="Curve_fug38"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_xrsin"]
+curve = SubResource("Curve_fug38")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ndypt"]
+lifetime_randomness = 0.4
+particle_flag_align_y = true
+particle_flag_disable_z = true
+angle_min = -90.0
+angle_max = 90.0
+direction = Vector3(0, -2, 0)
+spread = 15.0
+initial_velocity_min = 40.0
+initial_velocity_max = 60.0
+gravity = Vector3(0, 180, 0)
+linear_accel_max = 46.93
+scale_min = 0.15
+scale_max = 0.35
+scale_curve = SubResource("CurveTexture_xrsin")
+
+[node name="Ball" type="CharacterBody2D" node_paths=PackedStringArray("state_machine", "hit_particles") groups=["camera_targets"]]
+y_sort_enabled = true
+collision_mask = 9
+motion_mode = 1
+slide_on_ceiling = false
+wall_min_slide_angle = 0.0872665
+safe_margin = 1.0
+script = ExtResource("1_8v3iu")
+state_machine = NodePath("StateMachine")
+hit_particles = NodePath("HitParticles")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+y_sort_enabled = true
+texture = ExtResource("2_cr1wt")
+region_enabled = true
+region_rect = Rect2(165, 86, 6, 6)
+
+[node name="AimLine" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+scale = Vector2(1e-05, 1e-05)
+texture = ExtResource("12_wli68")
+offset = Vector2(32, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+y_sort_enabled = true
+shape = SubResource("CircleShape2D_jqxxf")
+
+[node name="Pulser" type="Node2D" parent="."]
+z_index = -1
+script = ExtResource("3_t7ikm")
+pause_between = 1
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("4_b60n1")
+initial_state = NodePath("BallIdle")
+
+[node name="BallIdle" type="Node" parent="StateMachine" node_paths=PackedStringArray("ball", "pulser")]
+script = ExtResource("5_blyia")
+ball = NodePath("../..")
+pulser = NodePath("../../Pulser")
+
+[node name="BallSinking" type="Node" parent="StateMachine" node_paths=PackedStringArray("ball")]
+script = ExtResource("4_ckxuh")
+ball = NodePath("../..")
+
+[node name="BallInWater" type="Node" parent="StateMachine" node_paths=PackedStringArray("ball", "ballSprite", "particles")]
+script = ExtResource("8_kf0vh")
+ball = NodePath("../..")
+ballSprite = NodePath("../../Sprite2D")
+particles = NodePath("../../SplashParticles")
+
+[node name="BallMoving" type="Node" parent="StateMachine" node_paths=PackedStringArray("ball", "bounce_particles")]
+script = ExtResource("7_xo71o")
+ball = NodePath("../..")
+bounce_particles = NodePath("../../BounceParticles")
+
+[node name="HitParticles" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 5
+process_material = SubResource("ParticleProcessMaterial_8k5py")
+texture = ExtResource("10_14x4h")
+one_shot = true
+explosiveness = 1.0
+
+[node name="BounceParticles" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 1
+process_material = SubResource("ParticleProcessMaterial_xcivj")
+texture = ExtResource("11_ra2h2")
+lifetime = 0.13
+one_shot = true
+
+[node name="SplashParticles" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_2mxw6")
+emitting = false
+amount = 16
+process_material = SubResource("ParticleProcessMaterial_ndypt")
+texture = ExtResource("9_r0dik")
+one_shot = true
+explosiveness = 1.0
+
+[connection signal="entered_goal_proximity" from="." to="." method="_on_entered_goal_proximity"]
+[connection signal="left_goal_proximity" from="." to="." method="_on_left_goal_proximity"]

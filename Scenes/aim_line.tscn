@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://sjcbnnd4btwq"]
+
+[sub_resource type="Gradient" id="Gradient_mlbn7"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[node name="AimLine" type="Line2D"]
+z_index = -1
+position = Vector2(0, 1)
+points = PackedVector2Array(0, 4, 67, 4)
+width = 1.0
+default_color = Color(1, 1, 0, 1)
+gradient = SubResource("Gradient_mlbn7")
