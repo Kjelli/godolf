@@ -57,3 +57,7 @@ func find_target():
 		print("Spectating goal")
 		current_target = targets[goal_i]
 		return
+
+static func create() -> Lakitu:
+	var scn = preload("res://Scenes/lakitu.tscn")
+	return scn.instantiate()

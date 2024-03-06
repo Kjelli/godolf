@@ -1,16 +1,26 @@
 extends Node2D
 class_name Course
 
-@onready var player_scene = preload("res://Scenes/player.tscn")
-@onready var ball_scene = preload("res://Scenes/ball.tscn")
-@export var spawn_zone : SpawnZone
+@onready var player_scene : PackedScene = preload("res://Scenes/player.tscn")
+@onready var ball_scene : PackedScene = preload("res://Scenes/ball.tscn")
+@onready var spawn_zone : SpawnZone = $SpawnZone
+
+@export var course_par : int
+
+var lakitu : Lakitu
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	spawn_camera()
 	spawn_player("1")
 
-func spawn_player(id : String):
+func spawn_camera() -> void:
+	lakitu = Lakitu.create()
+	add_child(lakitu)
+
+func spawn_player(id : String) -> void:
 	var point = spawn_zone.draw_point()
+	var middle = spawn_zone.draw_middle()
 
 	var player : Player = player_scene.instantiate()
 	add_child(player)
@@ -20,9 +30,9 @@ func spawn_player(id : String):
 
 	var ball : Ball = ball_scene.instantiate()
 	add_child(ball)
-	ball.global_position = point + Vector2(0, 10)
+	ball.global_position = middle
 	ball.owning_player = player
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(delta) -> void:
 	pass
