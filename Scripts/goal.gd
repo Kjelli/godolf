@@ -2,6 +2,7 @@ extends Node2D
 class_name Goal
 
 @onready var nearby_balls = []
+@onready var sparkles : GPUParticles2D = $GoodParticles
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -29,3 +30,6 @@ func _on_goal_proximity_body_exited(body):
 	if body is Ball:
 		nearby_balls.erase(body)
 		body.left_goal_proximity.emit(self)
+
+func emit_particles():
+	sparkles.emitting = true

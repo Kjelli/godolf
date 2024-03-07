@@ -5,12 +5,14 @@ class_name Course
 @onready var ball_scene : PackedScene = preload("res://Scenes/ball.tscn")
 @onready var spawn_zone : SpawnZone = $SpawnZone
 
-@export var course_par : int
+@export var course_par : int = 3
 
 var lakitu : Lakitu
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	add_child(load("res://Scenes/hud.tscn").instantiate())
+	Golf.set_par(course_par)
 	spawn_camera()
 	spawn_player("1")
 

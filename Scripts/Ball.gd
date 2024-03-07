@@ -38,7 +38,8 @@ func _on_left_goal_proximity(goal : Goal):
 
 func sink(goal : Goal):
 	is_in_goal = goal
-	pass
+	if times_hit < Golf.current_course_par:
+		goal.emit_particles()
 
 func hit(charge : float, direction : Direction):
 	last_shot_from = global_position

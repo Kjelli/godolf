@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://kdvh5m8lrweg"]
+[gd_scene load_steps=16 format=3 uid="uid://kdvh5m8lrweg"]
 
 [ext_resource type="Script" path="res://Scripts/goal.gd" id="1_a2i2c"]
 [ext_resource type="Texture2D" uid="uid://cmuwdke5npuqy" path="res://resources/golf.png" id="1_xj78u"]
@@ -7,12 +7,50 @@
 [ext_resource type="Script" path="res://Scripts/States/Goal_BallNear.gd" id="5_ifwhh"]
 [ext_resource type="Script" path="res://Scripts/Components/Pulser.gd" id="6_ir0hk"]
 [ext_resource type="Texture2D" uid="uid://eap2ej0juutt" path="res://resources/goal_bowl.png" id="7_0yslc"]
+[ext_resource type="Texture2D" uid="uid://bvgrt2lmfefiw" path="res://resources/star.png" id="8_0nkfu"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_l0v40"]
 blend_mode = 2
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3yj3c"]
 radius = 76.0592
+
+[sub_resource type="Curve" id="Curve_wehky"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_v5aby"]
+curve = SubResource("Curve_wehky")
+
+[sub_resource type="Curve" id="Curve_paav4"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_43p3v"]
+width = 32
+curve = SubResource("Curve_paav4")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_clv43"]
+lifetime_randomness = 0.5
+particle_flag_rotate_y = true
+particle_flag_disable_z = true
+angle_min = -45.0
+angle_max = 45.0
+direction = Vector3(0, -1, 0)
+spread = 30.0
+initial_velocity_min = 50.0
+initial_velocity_max = 200.0
+angular_velocity_min = -500.0
+angular_velocity_max = 500.0
+gravity = Vector3(0, 48, 0)
+linear_accel_min = -50.0
+radial_accel_min = 5.0
+radial_accel_max = 10.0
+scale_min = 0.75
+scale_max = 1.25
+scale_over_velocity_max = 50.0
+scale_over_velocity_curve = SubResource("CurveTexture_43p3v")
+alpha_curve = SubResource("CurveTexture_v5aby")
 
 [node name="Goal" type="Node2D" groups=["camera_targets"]]
 script = ExtResource("1_a2i2c")
@@ -63,6 +101,13 @@ goal = NodePath("../..")
 script = ExtResource("5_ifwhh")
 goal = NodePath("../..")
 flag = NodePath("../../Flag")
+
+[node name="GoodParticles" type="GPUParticles2D" parent="."]
+emitting = false
+process_material = SubResource("ParticleProcessMaterial_clv43")
+texture = ExtResource("8_0nkfu")
+one_shot = true
+explosiveness = 1.0
 
 [connection signal="body_entered" from="GoalProximity" to="." method="_on_goal_proximity_body_entered"]
 [connection signal="body_exited" from="GoalProximity" to="." method="_on_goal_proximity_body_exited"]

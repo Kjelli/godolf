@@ -1,9 +1,43 @@
-[gd_scene load_steps=4 format=3 uid="uid://cw2shrgidjs3s"]
+[gd_scene load_steps=13 format=3 uid="uid://cw2shrgidjs3s"]
 
 [ext_resource type="Script" path="res://Scripts/ChargeBar.gd" id="1_7t76o"]
 [ext_resource type="Texture2D" uid="uid://vkkihgyvgvlp" path="res://resources/chargebar.png" id="2_752ma"]
+[ext_resource type="Script" path="res://Scripts/CourseInfo.gd" id="3_ev3mm"]
+[ext_resource type="Script" path="res://Scripts/ShotsInfo.gd" id="4_p8jci"]
+[ext_resource type="Script" path="res://Scripts/AnnouncementInfo.gd" id="5_6mt71"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_5bir5"]
+
+[sub_resource type="SystemFont" id="SystemFont_6y2cb"]
+subpixel_positioning = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_bk3hf"]
+font = SubResource("SystemFont_6y2cb")
+font_size = 48
+shadow_size = 4
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(4, 4)
+
+[sub_resource type="SystemFont" id="SystemFont_paixj"]
+subpixel_positioning = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_w48ae"]
+font = SubResource("SystemFont_paixj")
+font_size = 24
+shadow_size = 4
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(4, 4)
+
+[sub_resource type="Gradient" id="Gradient_8jtis"]
+offsets = PackedFloat32Array(0, 0.500928, 1)
+colors = PackedColorArray(0.466667, 0.466667, 0.466667, 0.164706, 0.637843, 0.637843, 0.637843, 0.266667, 0.466667, 0.466667, 0.466667, 0.164706)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ctj65"]
+font = SubResource("SystemFont_6y2cb")
+font_size = 36
+shadow_size = 4
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(4, 4)
 
 [node name="UI" type="CanvasLayer"]
 
@@ -32,3 +66,91 @@ position = Vector2(-72.6667, -9.33333)
 scale = Vector2(2, 18)
 texture = SubResource("CanvasTexture_5bir5")
 centered = false
+
+[node name="CourseInfo" type="CanvasGroup" parent="."]
+position = Vector2(64, 21)
+script = ExtResource("3_ev3mm")
+
+[node name="TitleLabel" type="Label" parent="CourseInfo"]
+offset_right = 145.0
+offset_bottom = 67.0
+text = "Hole 1"
+label_settings = SubResource("LabelSettings_bk3hf")
+metadata/_edit_use_anchors_ = true
+
+[node name="ParLabel" type="Label" parent="CourseInfo"]
+offset_top = 48.0
+offset_right = 120.0
+offset_bottom = 112.0
+text = "Par 3"
+label_settings = SubResource("LabelSettings_w48ae")
+metadata/_edit_use_anchors_ = true
+
+[node name="Line2D" type="Line2D" parent="CourseInfo"]
+z_index = -1
+position = Vector2(286, 57)
+points = PackedVector2Array(-282, -1.22365, -216.679, -1.22365, -135, -1.22365)
+width = 32.0
+gradient = SubResource("Gradient_8jtis")
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="ShotsInfo" type="CanvasGroup" parent="."]
+position = Vector2(940, 21)
+script = ExtResource("4_p8jci")
+
+[node name="ShotsLabel" type="Label" parent="ShotsInfo"]
+offset_right = 120.0
+offset_bottom = 64.0
+text = "Shots"
+label_settings = SubResource("LabelSettings_ctj65")
+metadata/_edit_use_anchors_ = true
+
+[node name="CountLabel" type="Label" parent="ShotsInfo"]
+offset_top = 32.0
+offset_right = 120.0
+offset_bottom = 96.0
+text = "0"
+label_settings = SubResource("LabelSettings_w48ae")
+horizontal_alignment = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Line2D" type="Line2D" parent="ShotsInfo"]
+z_index = -1
+position = Vector2(281, 47)
+points = PackedVector2Array(-274, -1.22365, -216.679, -1.22365, -143, -1.22365)
+width = 32.0
+gradient = SubResource("Gradient_8jtis")
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="AnnouncementInfo" type="CanvasGroup" parent="."]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(539, 120)
+script = ExtResource("5_6mt71")
+
+[node name="AnnouncementLabel" type="Label" parent="AnnouncementInfo"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 120.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Noob"
+label_settings = SubResource("LabelSettings_ctj65")
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Line2D" type="Line2D" parent="AnnouncementInfo"]
+z_index = -1
+points = PackedVector2Array(-2, 52, 49, 52, 104, 52)
+width = 32.0
+gradient = SubResource("Gradient_8jtis")
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2

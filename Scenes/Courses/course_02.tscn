@@ -1,8 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://datl8hc6b5xrt"]
+[gd_scene load_steps=8 format=3 uid="uid://datl8hc6b5xrt"]
 
 [ext_resource type="Script" path="res://Scripts/Course.gd" id="1_ely6q"]
 [ext_resource type="PackedScene" uid="uid://j3cdaw1m1ad5" path="res://Scenes/spawnzone.tscn" id="2_eit3b"]
-[ext_resource type="PackedScene" uid="uid://cw2shrgidjs3s" path="res://Scenes/hud.tscn" id="2_fs0vd"]
 [ext_resource type="PackedScene" uid="uid://kdvh5m8lrweg" path="res://Scenes/goal.tscn" id="3_21lol"]
 [ext_resource type="Shader" path="res://Shaders/cloud.gdshader" id="4_jjulk"]
 [ext_resource type="Texture2D" uid="uid://davagrodrkqll" path="res://resources/cloud.png" id="5_k7kvq"]
@@ -17,8 +16,6 @@ shader_parameter/speed_scale = 0.01
 [node name="Course" type="Node2D"]
 script = ExtResource("1_ely6q")
 course_par = 2
-
-[node name="HUD" parent="." instance=ExtResource("2_fs0vd")]
 
 [node name="SpawnZone" parent="." instance=ExtResource("2_eit3b")]
 unique_name_in_owner = true
