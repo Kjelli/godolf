@@ -20,11 +20,21 @@ config/icon="res://icon.svg"
 Events="*res://Scripts/Global/Events.gd"
 Golf="*res://Scripts/Global/Golf.gd"
 
+[collada]
+
+use_ambient=true
+
 [display]
 
-window/size/mode=2
-window/size/resizable=false
+window/size/viewport_width=640
+window/size/viewport_height=480
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 window/vsync/vsync_mode=2
+
+[gui]
+
+theme/custom="res://golf_theme.tres"
 
 [input]
 
@@ -73,5 +83,5 @@ cancel={
 
 [rendering]
 
-textures/canvas_textures/default_texture_filter=0
+textures/canvas_textures/default_texture_filter=3
 environment/defaults/default_clear_color=Color(0, 0, 0, 1)

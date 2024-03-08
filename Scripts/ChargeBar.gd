@@ -18,9 +18,11 @@ func _process(delta):
 	pass
 
 func _on_update_charge_bar(min_charge : float, current_charge : float, max_charge : float):
-	get_tree().create_tween().tween_property(self, "modulate", Color(1,1,1,0.8), 0.5)
+	var p = (current_charge / max_charge)
+	get_tree().create_tween().tween_property(self, "modulate:a", 1, 0.5)
+	get_tree().create_tween().tween_property($ChargeRectangle, "modulate", Color(p,1 - p,0,1), 0.5)
 	charge_rectangle.scale = (Vector2(original_size.x * ((current_charge) / (max_charge) ), original_size.y))
 	charge_indicator.position.x = original_position.x + original_size.x * ((current_charge) / (max_charge) )
 
 func _on_ball_shot(ball : Ball):
-	get_tree().create_tween().tween_property(self, "modulate", Color(1,1,1,0), 0.5)
+	get_tree().create_tween().tween_property(self, "modulate:a", 0, 0.5)

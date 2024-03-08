@@ -7,28 +7,46 @@ script = ExtResource("1_r80s8")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="CourseList" type="ItemList" parent="CanvasLayer"]
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -120.0
+offset_right = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="CourseList" type="ItemList" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-offset_left = 41.0
-offset_top = 49.0
-offset_right = 403.0
-offset_bottom = 408.0
+layout_mode = 2
+size_flags_vertical = 3
 allow_search = false
 
-[node name="Play" type="Button" parent="CanvasLayer"]
-offset_left = 450.0
-offset_top = 201.0
-offset_right = 706.0
-offset_bottom = 284.0
+[node name="Play" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 32
 text = "Play"
 
-[node name="Quit" type="Button" parent="CanvasLayer"]
-offset_left = 454.0
-offset_top = 321.0
-offset_right = 710.0
-offset_bottom = 404.0
+[node name="Quit" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 32
 text = "Quit"
 
-[connection signal="item_selected" from="CanvasLayer/CourseList" to="." method="_on_course_list_item_selected"]
-[connection signal="pressed" from="CanvasLayer/Play" to="." method="_on_play_pressed"]
-[connection signal="pressed" from="CanvasLayer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="item_selected" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/CourseList" to="." method="_on_course_list_item_selected"]
+[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="CanvasLayer/PanelContainer/MarginContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]

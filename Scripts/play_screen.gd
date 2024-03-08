@@ -5,6 +5,7 @@ extends Node2D
 var selected_course : String
 
 func _ready():
+	DisplayServer.window_set_min_size(Vector2i(640, 480))
 	scan_scenes()
 	pass # Replace with function body.
 
