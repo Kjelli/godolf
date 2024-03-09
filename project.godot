@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 Events="*res://Scripts/Global/Events.gd"
 Golf="*res://Scripts/Global/Golf.gd"
+Effects="*res://Scripts/Global/Effects.gd"
 
 [collada]
 
@@ -31,6 +32,10 @@ window/size/viewport_height=480
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/vsync/vsync_mode=2
+
+[editor]
+
+movie_writer/movie_file="D:/dev/godot/golf/export/movie.avi"
 
 [gui]
 

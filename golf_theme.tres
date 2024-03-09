@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=7 format=3 uid="uid://c6xmle10dxmjm"]
+[gd_resource type="Theme" load_steps=15 format=3 uid="uid://c6xmle10dxmjm"]
 
 [ext_resource type="FontFile" uid="uid://bp7dibf5mckj6" path="res://resources/rainyhearts.ttf" id="1_dolcy"]
 [ext_resource type="Texture2D" uid="uid://n16nhg6lu03f" path="res://resources/gui.png" id="2_ivuxg"]
@@ -27,6 +27,34 @@ texture_margin_right = 16.0
 texture_margin_bottom = 16.0
 region_rect = Rect2(48, 96, 48, 48)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_googq"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+texture = ExtResource("2_ivuxg")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+region_rect = Rect2(0, 48, 48, 48)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fq37o"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+texture = ExtResource("2_ivuxg")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+region_rect = Rect2(0, 48, 48, 48)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vmidb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wmflt"]
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1twth"]
 texture = ExtResource("2_ivuxg")
 texture_margin_left = 16.0
@@ -35,12 +63,51 @@ texture_margin_right = 16.0
 texture_margin_bottom = 16.0
 region_rect = Rect2(0, 0, 48, 48)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h2dar"]
+texture = ExtResource("2_ivuxg")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(96, 0, 16, 16)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_taox4"]
+texture = ExtResource("2_ivuxg")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(96, 16, 16, 16)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yi8i6"]
+texture = ExtResource("2_ivuxg")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(96, 32, 16, 16)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pi4nc"]
+texture = ExtResource("2_ivuxg")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(96, 48, 16, 16)
+
 [resource]
+default_font = ExtResource("1_dolcy")
+default_font_size = 16
+Button/font_sizes/font_size = 16
 Button/fonts/font = ExtResource("1_dolcy")
 Button/styles/hover = SubResource("StyleBoxTexture_fyibi")
 Button/styles/normal = SubResource("StyleBoxTexture_l6fgm")
 Button/styles/pressed = SubResource("StyleBoxTexture_2sgjv")
 ItemList/fonts/font = ExtResource("1_dolcy")
+ItemList/styles/focus = SubResource("StyleBoxTexture_googq")
+ItemList/styles/panel = SubResource("StyleBoxTexture_fq37o")
+ItemList/styles/selected = SubResource("StyleBoxFlat_vmidb")
+ItemList/styles/selected_focus = SubResource("StyleBoxFlat_wmflt")
 Label/fonts/font = ExtResource("1_dolcy")
 LineEdit/fonts/font = ExtResource("1_dolcy")
 OptionButton/fonts/font = ExtResource("1_dolcy")
@@ -48,3 +115,7 @@ PanelContainer/styles/panel = SubResource("StyleBoxTexture_1twth")
 TabBar/fonts/font = ExtResource("1_dolcy")
 TextEdit/fonts/font = ExtResource("1_dolcy")
 Tree/fonts/font = ExtResource("1_dolcy")
+VScrollBar/styles/grabber = SubResource("StyleBoxTexture_h2dar")
+VScrollBar/styles/grabber_highlight = SubResource("StyleBoxTexture_taox4")
+VScrollBar/styles/grabber_pressed = SubResource("StyleBoxTexture_yi8i6")
+VScrollBar/styles/scroll = SubResource("StyleBoxTexture_pi4nc")

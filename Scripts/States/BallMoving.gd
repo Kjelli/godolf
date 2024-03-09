@@ -82,7 +82,7 @@ func Physics_Update(_delta : float):
 		var bowl_range = 14
 		if distance < bowl_range:
 			var distance_percent = 1 - distance / bowl_range
-			ball.scale = Vector2(0.5 + (1 - distance_percent) * 0.5, 0.5 + (1 - distance_percent) * 0.5)
+			ball.scale = Vector2(0.3 + (1 - distance_percent) * 0.7, 0.3 + (1 - distance_percent) * 0.7)
 			ball.acceleration = (direction * distance) * 8
 		else:
 			ball.scale = Vector2(1.0, 1.0)

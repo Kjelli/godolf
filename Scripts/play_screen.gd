@@ -38,3 +38,9 @@ func _on_quit_pressed():
 func _on_course_list_item_selected(index: int) -> void:
 	selected_course = courses[index]
 	pass # Replace with function body.
+
+
+func _on_quick_play_pressed() -> void:
+	selected_course = courses[randi_range(0, courses.size()-1)]
+	_on_play_pressed()
+	pass # Replace with function body.

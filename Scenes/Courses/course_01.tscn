@@ -1,11 +1,18 @@
-[gd_scene load_steps=8 format=3 uid="uid://cpksbm7v1i565"]
+[gd_scene load_steps=10 format=3 uid="uid://cpksbm7v1i565"]
 
 [ext_resource type="Script" path="res://Scripts/Course.gd" id="1_wxm11"]
 [ext_resource type="PackedScene" uid="uid://j3cdaw1m1ad5" path="res://Scenes/spawnzone.tscn" id="2_bmjfn"]
+[ext_resource type="Shader" path="res://Shaders/diamond_pattern.gdshader" id="2_rn5ye"]
 [ext_resource type="PackedScene" uid="uid://kdvh5m8lrweg" path="res://Scenes/goal.tscn" id="3_0ys77"]
 [ext_resource type="Shader" path="res://Shaders/cloud.gdshader" id="4_32x85"]
 [ext_resource type="Texture2D" uid="uid://davagrodrkqll" path="res://resources/cloud.png" id="5_7w7uw"]
 [ext_resource type="TileSet" uid="uid://dq5k8vjyemokk" path="res://Tilesets/main.tres" id="6_cpyqc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hk6pr"]
+shader = ExtResource("2_rn5ye")
+shader_parameter/BackColor = Color(0, 0.4, 0.58, 1)
+shader_parameter/CloudColor = Color(0.18, 0.7, 0.87, 1)
+shader_parameter/speed = 0.5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ospym"]
 shader = ExtResource("4_32x85")
@@ -16,6 +23,21 @@ shader_parameter/speed_scale = 0.01
 [node name="Course" type="Node2D"]
 script = ExtResource("1_wxm11")
 course_par = 2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -100
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_hk6pr")
+custom_minimum_size = Vector2(640, 480)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0, 1, 1, 1)
 
 [node name="SpawnZone" parent="." instance=ExtResource("2_bmjfn")]
 unique_name_in_owner = true
