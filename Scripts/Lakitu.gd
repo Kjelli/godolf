@@ -1,11 +1,11 @@
-extends Node2D
+extends Camera2D
 class_name Lakitu
 
 var current_target : Node2D
 var is_cinematic : bool = false
 
 const REFRESH_TARGET_INTERVAL_SECONDS = 1
-const PLAYER_LERP = 0.05
+const PLAYER_LERP = 0.25
 const BALL_LERP = 1.0
 const CINEMATIC_LERP = 0.001
 var timer = 0
@@ -16,7 +16,6 @@ var tilemap : TileMap
 var cinematic_target : Vector2
 
 const CINEMATIC_REFRESH_TARGET_INTERVAL_SECONDS = 6
-const CINEMATIC_SPEED = 0.5
 
 func _ready():
 	Events.connect(Events.player_spawned.get_name(), _on_player_spawned)
@@ -43,12 +42,12 @@ func _process(delta : float):
 
 func handle_cinematic_movement(delta : float):
 	if cinematic_target == Vector2.ZERO || timer > CINEMATIC_REFRESH_TARGET_INTERVAL_SECONDS:
-		var bounds : Rect2i = tilemap.get_viewport_rect()
-		var size = bounds.size * sqrt(tilemap.rendering_quadrant_size)
-		var center = Vector2(bounds.get_center())
+		var bounds : Rect2i = tilemap.get_used_rect()
+		var size = bounds.size * tilemap.tile_set.tile_size / zoom.x
+		var center = Vector2(size.x / 2, size.y / 2)
 		if position == Vector2.ZERO:
 			position = center
-		cinematic_target = center + Vector2(randi_range(center.x - size.x / 16, center.x + size.x / 16),randi_range(center.y - size.y / 16, center.y + size.y / 16))
+		cinematic_target = Vector2(randi_range(center.x - size.x / 3, center.x + size.x / 3),randi_range(center.y - size.y / 3, center.y + size.y / 3))
 		timer = 0
 
 	timer += delta

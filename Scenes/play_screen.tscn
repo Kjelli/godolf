@@ -11,7 +11,7 @@ script = ExtResource("1_r80s8")
 follow_viewport_enabled = true
 
 [node name="Course" parent="CanvasLayer" instance=ExtResource("2_aijva")]
-position = Vector2(-20, 18)
+position = Vector2(208, 112)
 is_display_only = true
 
 [node name="MainMenu" type="CanvasLayer" parent="."]
