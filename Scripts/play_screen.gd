@@ -56,5 +56,6 @@ func _on_quick_play_pressed() -> void:
 	_on_play_pressed()
 	pass # Replace with function body.
 
-func _on_course_spawner_spawned(node: Node) -> void:
-	print("Spawned " + str(node.get_path()))
+func _on_name_edit_text_changed(new_text: String) -> void:
+	%Networking.player_name = new_text
+	pass # Replace with function body.

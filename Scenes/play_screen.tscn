@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://0ccxx1gicv3q"]
 
 [ext_resource type="Script" path="res://Scripts/play_screen.gd" id="1_r80s8"]
-[ext_resource type="Script" path="res://Scripts/Multiplayer.gd" id="2_ee2x6"]
+[ext_resource type="Script" path="res://Scripts/Networking.gd" id="2_ee2x6"]
 [ext_resource type="Script" path="res://Scripts/CourseWrapper.gd" id="3_g646a"]
 [ext_resource type="Script" path="res://Scripts/Components/Wobbler.gd" id="3_pxmhw"]
 
@@ -17,7 +17,8 @@ spawn_limit = 1
 unique_name_in_owner = true
 script = ExtResource("3_g646a")
 
-[node name="Multiplayer" type="Node" parent="."]
+[node name="Networking" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("2_ee2x6")
 
 [node name="MainMenu" type="CanvasLayer" parent="."]
@@ -93,6 +94,24 @@ size_flags_horizontal = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer"]
 layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Name"
+
+[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/NameLabel"]
+script = ExtResource("3_pxmhw")
+
+[node name="NameEdit" type="LineEdit" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/NameEdit"]
+script = ExtResource("3_pxmhw")
 
 [node name="HostButton" type="Button" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -172,10 +191,10 @@ text = "Play selected"
 [node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer2/VBoxContainer/Play"]
 script = ExtResource("3_pxmhw")
 
-[connection signal="spawned" from="CourseSpawner" to="." method="_on_course_spawner_spawned"]
 [connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/QuickPlay" to="." method="_on_quick_play_pressed"]
 [connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
-[connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HostButton" to="Multiplayer" method="_on_host_button_pressed"]
-[connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/ConnectButton" to="Multiplayer" method="_on_connect_button_pressed"]
+[connection signal="text_changed" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/NameEdit" to="." method="_on_name_edit_text_changed"]
+[connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HostButton" to="Networking" method="_on_host_button_pressed"]
+[connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/ConnectButton" to="Networking" method="_on_connect_button_pressed"]
 [connection signal="item_selected" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer2/VBoxContainer/CourseList" to="." method="_on_course_list_item_selected"]
 [connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer2/VBoxContainer/Play" to="." method="_on_play_pressed"]
