@@ -1,23 +1,24 @@
-[gd_scene load_steps=4 format=3 uid="uid://0ccxx1gicv3q"]
+[gd_scene load_steps=5 format=3 uid="uid://0ccxx1gicv3q"]
 
 [ext_resource type="Script" path="res://Scripts/play_screen.gd" id="1_r80s8"]
 [ext_resource type="Script" path="res://Scripts/Multiplayer.gd" id="2_ee2x6"]
+[ext_resource type="Script" path="res://Scripts/CourseWrapper.gd" id="3_g646a"]
 [ext_resource type="Script" path="res://Scripts/Components/Wobbler.gd" id="3_pxmhw"]
 
 [node name="PlayScreen" type="Node"]
 script = ExtResource("1_r80s8")
 
-[node name="Multiplayer" type="Node" parent="."]
-script = ExtResource("2_ee2x6")
-
-[node name="LevelSpawner" type="MultiplayerSpawner" parent="."]
+[node name="CourseSpawner" type="MultiplayerSpawner" parent="."]
 unique_name_in_owner = true
-_spawnable_scenes = PackedStringArray("res://Scenes/Courses/course_01.tscn")
-spawn_path = NodePath("../Course")
+spawn_path = NodePath("../CourseWrapper")
 spawn_limit = 1
 
-[node name="Course" type="Node" parent="."]
+[node name="CourseWrapper" type="Node" parent="."]
 unique_name_in_owner = true
+script = ExtResource("3_g646a")
+
+[node name="Multiplayer" type="Node" parent="."]
+script = ExtResource("2_ee2x6")
 
 [node name="MainMenu" type="CanvasLayer" parent="."]
 unique_name_in_owner = true
@@ -171,6 +172,7 @@ text = "Play selected"
 [node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer2/VBoxContainer/Play"]
 script = ExtResource("3_pxmhw")
 
+[connection signal="spawned" from="CourseSpawner" to="." method="_on_course_spawner_spawned"]
 [connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/QuickPlay" to="." method="_on_quick_play_pressed"]
 [connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HostButton" to="Multiplayer" method="_on_host_button_pressed"]

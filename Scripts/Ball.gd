@@ -125,7 +125,7 @@ func _physics_process(delta):
 
 		sync_pos = position
 	else:
-		position = sync_pos
+		get_tree().create_tween().tween_property(self, "position", sync_pos, 0.5)
 		pass
 
 
@@ -133,6 +133,8 @@ func check_tile_type_under_ball() -> Variant:
 	var tile_pos = tile_map.local_to_map(transform.origin - tile_map.transform.origin)
 	var tile_atlas_coords = tile_map.get_cell_atlas_coords(TILE_MAP_GROUND_LAYER, tile_pos, true)
 	var tile_source_id = tile_map.get_cell_source_id(TILE_MAP_GROUND_LAYER, tile_pos, true)
+	if tile_source_id == -1:
+		return null
 	var tile_source : TileSetSource = tile_map.tile_set.get_source(tile_source_id)
 	if not tile_source:
 		return null
@@ -172,9 +174,9 @@ func on_collision(collision : KinematicCollision2D):
 	var body = collision.get_collider()
 	if body is TileMap:
 		var tile_rid = collision.get_collider_rid()
-		var collision_layer = PhysicsServer2D.body_get_collision_layer(tile_rid)
+		var body_collision_layer = PhysicsServer2D.body_get_collision_layer(tile_rid)
 		var tile_type = check_collision_tile(tile_rid)
-		if collision_layer == SPECIAL_LAYER and tile_type == "Water":
+		if body_collision_layer == SPECIAL_LAYER and tile_type == "Water":
 			sink_in_water()
 		else:
 			bounce_particles.emit_particle(transform, velocity, modulate, modulate, 0)
@@ -219,15 +221,10 @@ func good_bounce(b1: Ball, b2: Ball):
 	b1.bounced.rpc_id(b1.player_id, b1.get_path(), v1after)
 	b2.bounced.rpc_id(b2.player_id, b2.get_path(), v2after)
 
-@rpc("any_peer", "call_local", "reliable", 4)
+@rpc("any_peer", "call_local", "reliable")
 func bounced(ball_path : NodePath, target_velocity : Vector2):
-	var peer_id = multiplayer.get_remote_sender_id()
-	var receiver_id = multiplayer.get_unique_id()
-	if get_path().get_concatenated_names() == ball_path.get_concatenated_names():
-		Local.print(" I got it!")
+	if get_path() == ball_path:
 		velocity = target_velocity
-	else:
-		Local.print(" No, as " + str(get_path().get_concatenated_names()) + ", I won't touch that " + str(ball_path.get_concatenated_names()) + "!")
 
 func _on_entered_goal_proximity(goal : Goal):
 	nearby_goal = goal
@@ -253,7 +250,5 @@ func hit(charge : float, direction : Vector2):
 	times_hit += 1
 	hit_particles.emitting = true
 	velocity = (charge * 0.8 / (weight * 0.25)) * direction
-	print(str(player_id)," shot #" + str(times_hit))
-	Local.print(" hit ball with "+ str(charge)+ " charge, velocity is now " + str(velocity))
 
 	Events.ball_shot.emit(self)

@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://dwwpwxol6s0fm"]
+
+[node name="PlayerLabel" type="Label"]
+text = "Player 1"

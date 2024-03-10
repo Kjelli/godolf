@@ -2,10 +2,9 @@ extends Node
 
 const PORT = 13337
 
-func _ready():
-	# You can save bandwidth by disabling server relay and peer notifications.
-	multiplayer.server_relay = false
+@onready var course_wrapper : Node = %CourseWrapper
 
+func _ready():
 	# Automatically start the server in headless mode.
 	if DisplayServer.get_name() == "headless":
 		print("Automatically starting dedicated server.")
@@ -38,16 +37,16 @@ func _on_connect_button_pressed() -> void:
 
 # Call this function deferred and only on the main authority (server).
 func change_level(scene: PackedScene):
-	# Remove old level if any.
-	var level = %Course
-	for c in level.get_children():
-		level.remove_child(c)
+	# Remove old course if any.
+	for c in course_wrapper.get_children():
+		course_wrapper.remove_child(c)
 		c.queue_free()
 	# Add new level.
-	level.add_child(scene.instantiate())
+	course_wrapper.add_child(scene.instantiate())
 
 func start_game():
 	# Hide the UI and unpause to start the game.
 	%MainMenu.hide()
 	if multiplayer.is_server():
-		change_level.call_deferred(load("res://Scenes/Courses/course_01.tscn"))
+		#change_level.call_deferred(load("res://Scenes/Courses/course_01.tscn"))
+		change_level.call_deferred(load("res://Scenes/Courses/" + course_wrapper.selected_course))

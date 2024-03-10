@@ -1,47 +1,49 @@
-[gd_scene load_steps=8 format=3 uid="uid://datl8hc6b5xrt"]
+[gd_scene load_steps=10 format=3 uid="uid://bxufl5brjxexw"]
 
-[ext_resource type="Script" path="res://Scripts/Course.gd" id="1_ely6q"]
-[ext_resource type="PackedScene" uid="uid://j3cdaw1m1ad5" path="res://Scenes/spawnzone.tscn" id="2_eit3b"]
-[ext_resource type="PackedScene" uid="uid://kdvh5m8lrweg" path="res://Scenes/goal.tscn" id="3_21lol"]
-[ext_resource type="Shader" path="res://Shaders/cloud.gdshader" id="4_jjulk"]
-[ext_resource type="Texture2D" uid="uid://davagrodrkqll" path="res://resources/cloud.png" id="5_k7kvq"]
-[ext_resource type="TileSet" uid="uid://dq5k8vjyemokk" path="res://Tilesets/main.tres" id="6_knept"]
+[ext_resource type="Script" path="res://Scripts/Course.gd" id="1_ix1vk"]
+[ext_resource type="Shader" path="res://Shaders/diamond_pattern.gdshader" id="2_kfqan"]
+[ext_resource type="PackedScene" uid="uid://j3cdaw1m1ad5" path="res://Scenes/spawnzone.tscn" id="3_05ej8"]
+[ext_resource type="PackedScene" uid="uid://kdvh5m8lrweg" path="res://Scenes/goal.tscn" id="4_3xuhs"]
+[ext_resource type="Shader" path="res://Shaders/cloud.gdshader" id="5_1usq7"]
+[ext_resource type="Texture2D" uid="uid://davagrodrkqll" path="res://resources/cloud.png" id="6_elpqv"]
+[ext_resource type="TileSet" uid="uid://dq5k8vjyemokk" path="res://Tilesets/main.tres" id="7_3sn0a"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hk6pr"]
+shader = ExtResource("2_kfqan")
+shader_parameter/BackColor = Color(0, 0.4, 0.58, 1)
+shader_parameter/CloudColor = Color(0.18, 0.7, 0.87, 1)
+shader_parameter/speed = 0.5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ospym"]
-shader = ExtResource("4_jjulk")
+shader = ExtResource("5_1usq7")
 shader_parameter/custom_color = Color(0.101961, 0.101961, 0.101961, 0.054902)
 shader_parameter/direction = Vector2(1, 0)
 shader_parameter/speed_scale = 0.01
 
 [node name="Course" type="Node2D"]
-script = ExtResource("1_ely6q")
+script = ExtResource("1_ix1vk")
 course_par = 2
 
-[node name="SpawnZone" parent="." instance=ExtResource("2_eit3b")]
-unique_name_in_owner = true
-position = Vector2(144, 232)
-scale = Vector2(1.83, 1.83)
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -100
 
-[node name="Goal" parent="." instance=ExtResource("3_21lol")]
-z_index = 1
-y_sort_enabled = true
-position = Vector2(144, 65)
-
-[node name="Clouds" type="TextureRect" parent="."]
-top_level = true
-material = SubResource("ShaderMaterial_ospym")
-offset_top = 1.0
-offset_right = 287.0
-offset_bottom = 288.0
-texture = ExtResource("5_k7kvq")
-expand_mode = 2
-stretch_mode = 1
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_hk6pr")
+custom_minimum_size = Vector2(640, 480)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0, 1, 1, 1)
 metadata/_edit_lock_ = true
 
 [node name="TileMap" type="TileMap" parent="." groups=["golf_map"]]
 z_index = -1
 y_sort_enabled = true
-tile_set = ExtResource("6_knept")
+tile_set = ExtResource("7_3sn0a")
 format = 2
 layer_0/name = "Ground"
 layer_0/y_sort_enabled = true
@@ -57,3 +59,31 @@ layer_3/name = "Objects"
 layer_3/y_sort_enabled = true
 layer_3/z_index = 2
 layer_3/tile_data = PackedInt32Array(917505, 196608, 5, 983043, 327680, 5, 131086, 262144, 5, 196610, 262144, 5, 917520, 262144, 5)
+
+[node name="SpawnZone" parent="." instance=ExtResource("3_05ej8")]
+unique_name_in_owner = true
+position = Vector2(143, 231)
+scale = Vector2(1.83, 1.83)
+
+[node name="Goal" parent="." instance=ExtResource("4_3xuhs")]
+z_index = 1
+y_sort_enabled = true
+position = Vector2(144, 65)
+
+[node name="Clouds" type="TextureRect" parent="."]
+top_level = true
+material = SubResource("ShaderMaterial_ospym")
+offset_right = 287.0
+offset_bottom = 288.0
+texture = ExtResource("6_elpqv")
+expand_mode = 2
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
+unique_name_in_owner = true
+_spawnable_scenes = PackedStringArray("res://Scenes/player.tscn", "res://Scenes/ball.tscn")
+spawn_path = NodePath("../Players")
+
+[node name="Players" type="Node" parent="."]
+unique_name_in_owner = true

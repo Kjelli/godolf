@@ -11,7 +11,7 @@
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_db07g"]
 properties/0/path = NodePath(".:player_id")
 properties/0/spawn = true
-properties/0/replication_mode = 2
+properties/0/replication_mode = 1
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_dkxsp"]
 properties/0/path = NodePath(".:sync_pos")
@@ -72,7 +72,7 @@ scale_min = 0.15
 scale_max = 0.35
 scale_curve = SubResource("CurveTexture_xrsin")
 
-[node name="Ball" type="CharacterBody2D" node_paths=PackedStringArray("state_machine") groups=["camera_targets"]]
+[node name="Ball" type="CharacterBody2D" groups=["camera_targets"]]
 y_sort_enabled = true
 collision_mask = 9
 motion_mode = 1
@@ -80,13 +80,16 @@ slide_on_ceiling = false
 wall_min_slide_angle = 0.0872665
 safe_margin = 1.0
 script = ExtResource("1_8v3iu")
-state_machine = NodePath("")
 
 [node name="PlayerIdSynchronizer" type="MultiplayerSynchronizer" parent="."]
 unique_name_in_owner = true
+replication_interval = 0.5
+delta_interval = 0.5
 replication_config = SubResource("SceneReplicationConfig_db07g")
 
 [node name="DataSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_interval = 0.5
+delta_interval = 0.5
 replication_config = SubResource("SceneReplicationConfig_dkxsp")
 
 [node name="Sprite" type="Sprite2D" parent="."]

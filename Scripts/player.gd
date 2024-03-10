@@ -16,13 +16,9 @@ var is_swinging : bool
 # Set by the authority, synchronized on spawn.
 @export var player_id : int:
 	set(id):
-		if player_id != 0 && player_id != id:
-			print("Hmm, I don't think I want to overwrite ", str(player_id), " with ", str(id))
 		player_id = id
-		if $DataSynchronizer.get_multiplayer_authority() != id:
-			$DataSynchronizer.set_multiplayer_authority(id)
-		if $PlayerInput.get_multiplayer_authority() != id:
-			%PlayerInput.set_multiplayer_authority(id)
+		$DataSynchronizer.set_multiplayer_authority(id)
+		%PlayerInput.set_multiplayer_authority(id)
 		Events.player_authority_changed.emit(self, player_id)
 
 # syncables
@@ -46,9 +42,10 @@ func is_local_authority():
 	return player_id == multiplayer.get_unique_id()
 
 func _ready():
+	%Name.text = str(player_id)
 	Events.player_spawned.emit(self)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	update_animation()
 	update_actions()
 	pass
@@ -96,11 +93,9 @@ func update_local_animation():
 			animation_tree["parameters/conditions/is_moving"] = true
 
 	sync_is_swinging = is_aiming || is_swinging
-	#sync_anim = animation_player.current_animation
 	sync_direction = %PlayerInput.direction
 	sync_club_rot = club.rotation
 	sync_club_vis = club.visible
-
 
 func update_actions():
 	if !is_swinging && !is_aiming && can_swing() && %PlayerInput.pressed_swing():
@@ -148,12 +143,12 @@ func _physics_process(_delta):
 	# Get the input direction and handle the movement/deceleration.
 	if is_local_authority():
 		if is_aiming:
-			var rotation = - player_input.direction.normalized()
+			var target_rotation = - player_input.direction.normalized()
 			var distance = 10
 			var offset = Vector2(0, -6)
 
 			var pivot_point = ball_in_range.global_position
-			var point_to_aim_from = pivot_point + distance * rotation + offset
+			var point_to_aim_from = pivot_point + distance * target_rotation + offset
 			var distance_to_point = point_to_aim_from - global_position
 			velocity = velocity.lerp(distance_to_point * 8, 1)
 			pass
@@ -166,11 +161,10 @@ func _physics_process(_delta):
 				velocity = velocity.lerp(player_input.direction * move_speed, 0.5)
 
 		move_and_slide()
-
 		sync_pos = position
 	else:
-		move_and_slide()
-		position = sync_pos
+		if sync_pos != Vector2.ZERO:
+			get_tree().create_tween().tween_property(self, "position", sync_pos, 0.2)
 
 func can_swing():
 	if !ball_in_range:

@@ -37,7 +37,6 @@ func _ready():
 		spawn_player(1)
 
 func on_peer_connected(player_id : int):
-	Local.print(" Player connected: " + str(player_id) + "!")
 	spawn_player(player_id)
 
 func spawn_camera(is_cinematic : bool = false) -> void:
@@ -54,11 +53,6 @@ func spawn_player(player_id : int) -> void:
 	%Players.add_child(player, true)
 	%Players.add_child(ball, true)
 
-	await get_tree().create_timer(1).timeout
-
-	_handoff.rpc(player.get_path(), player_id)
-	_handoff.rpc(ball.get_path(), player_id)
-
 func del_player(id: int):
 	if not $Players.has_node("player_" + str(id)):
 		return
@@ -73,20 +67,3 @@ func _exit_tree():
 		return
 	multiplayer.peer_connected.disconnect(spawn_player)
 	multiplayer.peer_disconnected.disconnect(del_player)
-
-@rpc("authority", "call_local", "reliable")
-func _handoff(node_path : NodePath, auth_id):
-	var peer_id = multiplayer.get_remote_sender_id()
-	var receiver_id = multiplayer.get_unique_id()
-	print()
-	print("[RPC]: ", peer_id, " -> ", receiver_id)
-	Local.print(" I will make sure that " + str(node_path) + " has auth id " + str(auth_id))
-	await get_tree().create_timer(1).timeout
-	var node = $Players.get_node(node_path)
-	if node:
-		Local.print(" I did mp auth with this node: " + node.name + " (set it to " + str(auth_id) +")")
-		node.set_multiplayer_authority(auth_id)
-		if node.player_id:
-			node.player_id = auth_id
-	else:
-		Local.print(" I couldn't find them ?!?!?!??!?!?!?!")

@@ -1,11 +1,10 @@
-[gd_scene load_steps=65 format=3 uid="uid://c2it6aijh30am"]
+[gd_scene load_steps=64 format=3 uid="uid://c2it6aijh30am"]
 
 [ext_resource type="Texture2D" uid="uid://cmuwdke5npuqy" path="res://resources/golf.png" id="1_h0ikx"]
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_vg6jp"]
 [ext_resource type="Script" path="res://Scripts/PlayerInput.gd" id="2_dbhay"]
-[ext_resource type="Script" path="res://Scripts/Components/StateMachine.gd" id="3_hgr2l"]
 [ext_resource type="PackedScene" uid="uid://bxtrc3nxvsvgk" path="res://Scenes/club.tscn" id="3_q4ucv"]
-[ext_resource type="Script" path="res://Scripts/States/PlayerSwinging.gd" id="8_0bm6g"]
+[ext_resource type="Script" path="res://Scripts/Components/Wobbler.gd" id="5_yin6y"]
 
 [sub_resource type="Shader" id="Shader_wdekn"]
 code = "shader_type canvas_item;
@@ -41,12 +40,12 @@ shader_parameter/modulate = null
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_n50uc"]
 properties/0/path = NodePath(".:player_id")
 properties/0/spawn = true
-properties/0/replication_mode = 2
+properties/0/replication_mode = 1
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_2ratp"]
 properties/0/path = NodePath(".:sync_pos")
 properties/0/spawn = true
-properties/0/replication_mode = 1
+properties/0/replication_mode = 2
 properties/1/path = NodePath(".:sync_club_vis")
 properties/1/spawn = true
 properties/1/replication_mode = 2
@@ -499,16 +498,19 @@ transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition
 z_index = 1
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_qhnu6")
-position = Vector2(0, -5)
 collision_layer = 2
 collision_mask = 2
 motion_mode = 1
 script = ExtResource("1_vg6jp")
 
 [node name="PlayerIdSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_interval = 0.5
+delta_interval = 0.5
 replication_config = SubResource("SceneReplicationConfig_n50uc")
 
 [node name="DataSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_interval = 0.2
+delta_interval = 0.2
 replication_config = SubResource("SceneReplicationConfig_2ratp")
 
 [node name="PlayerInput" type="Node" parent="."]
@@ -525,6 +527,10 @@ frame = 10
 position = Vector2(0, 5)
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_or3ir")
+
+[node name="Club" parent="." instance=ExtResource("3_q4ucv")]
+unique_name_in_owner = true
+visible = false
 
 [node name="BallRange" type="Area2D" parent="."]
 
@@ -554,18 +560,22 @@ parameters/Idle/blend_position = Vector2(0, 0)
 parameters/Swing/blend_position = -0.613737
 parameters/Walk/blend_position = Vector2(0, 0)
 
-[node name="Club" parent="." instance=ExtResource("3_q4ucv")]
+[node name="Name" type="Label" parent="."]
 unique_name_in_owner = true
-visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -19.0
+offset_top = -27.0
+offset_right = 21.0
+offset_bottom = -12.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
 
-[node name="StateMachine" type="Node" parent="."]
-unique_name_in_owner = true
-script = ExtResource("3_hgr2l")
-
-[node name="PlayerSwinging" type="Node" parent="StateMachine" node_paths=PackedStringArray("player", "animation_tree")]
-script = ExtResource("8_0bm6g")
-player = NodePath("../..")
-animation_tree = NodePath("../../AnimationTree")
+[node name="Node" type="Node" parent="Name"]
+script = ExtResource("5_yin6y")
 
 [connection signal="body_entered" from="BallRange" to="." method="_on_ball_range_body_entered"]
 [connection signal="body_shape_exited" from="BallRange" to="." method="_on_ball_range_body_shape_exited"]
