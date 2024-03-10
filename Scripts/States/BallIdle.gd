@@ -12,5 +12,6 @@ func OnEnter():
 	pass
 
 func OnExit():
+	Local.print(" - The ball " + ball.name + " is no longer idle")
 	pulser.disable()
 	pass

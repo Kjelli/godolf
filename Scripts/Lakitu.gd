@@ -1,13 +1,15 @@
 extends Camera2D
 class_name Lakitu
 
-var current_target : Node2D
-var is_cinematic : bool = false
-
 const REFRESH_TARGET_INTERVAL_SECONDS = 1
 const PLAYER_LERP = 0.25
 const BALL_LERP = 1.0
 const CINEMATIC_LERP = 0.001
+
+var is_cinematic : bool = false
+
+var current_target : Node2D
+
 var timer = 0
 var lerp_weight = 0.9
 
@@ -19,6 +21,7 @@ const CINEMATIC_REFRESH_TARGET_INTERVAL_SECONDS = 6
 
 func _ready():
 	Events.connect(Events.player_spawned.get_name(), _on_player_spawned)
+	Events.connect(Events.player_authority_changed.get_name(), _on_player_authority_changed)
 	Events.connect(Events.ball_shot.get_name(), _on_ball_shot)
 	Events.connect(Events.ball_stopped.get_name(), _on_ball_stopped)
 	Events.connect(Events.ball_sunk.get_name(), _on_ball_sunk)
@@ -30,12 +33,6 @@ func _process(delta : float):
 	if is_cinematic:
 		handle_cinematic_movement(delta)
 		return
-	if not current_target and timer >= REFRESH_TARGET_INTERVAL_SECONDS:
-		find_target()
-		timer = 0
-		return
-	elif not current_target:
-		timer += delta
 
 	if current_target && is_instance_valid(current_target):
 		position = position.lerp(current_target.position, lerp_weight)
@@ -54,44 +51,39 @@ func handle_cinematic_movement(delta : float):
 	position = position.lerp(cinematic_target, CINEMATIC_LERP)
 
 func _on_player_spawned(player : Player):
+	if !player.is_local_authority():
+		return
+	current_target = player
+	lerp_weight = PLAYER_LERP
+
+func _on_player_authority_changed(player : Player, _player_id : int):
+	if !player.is_local_authority():
+		return
 	current_target = player
 	lerp_weight = PLAYER_LERP
 
 func _on_ball_shot(ball : Ball):
+	if !ball.is_local_authority():
+		return
 	current_target = ball
 	lerp_weight = BALL_LERP
 
 func _on_ball_stopped(ball : Ball):
+	Local.print(" Oh, a ball stopped?")
+	if !ball.is_local_authority():
+		Local.print(" Oh, it was " + ball.name + ", that's not mine! And it certainly does not belong to " + ball.owning_player.name)
+		return
 	current_target = ball.owning_player
 	lerp_weight = PLAYER_LERP
 
 func _on_ball_sunk(ball : Ball):
+	if ball.player_id != multiplayer.get_unique_id():
+		return
 	current_target = ball.owning_player
 	lerp_weight = PLAYER_LERP
 
-func find_target():
-	var targets = get_tree().get_nodes_in_group("camera_targets")
-
-	var player_i = targets.find(Player)
-	if player_i:
-		print("Spectating Player")
-		current_target = targets[player_i]
-		return
-
-	var ball_i = targets.find(Ball)
-	if ball_i:
-		print("Spectating Ball")
-		current_target = targets[ball_i]
-		return
-
-	var goal_i = targets.find(Ball)
-	if goal_i:
-		print("Spectating goal")
-		current_target = targets[goal_i]
-		return
-
-static func create(is_cinematic : bool = false) -> Lakitu:
+static func create(as_cinematic : bool = false) -> Lakitu:
 	var scn = preload("res://Scenes/lakitu.tscn")
 	var instance = scn.instantiate()
-	instance.is_cinematic = is_cinematic
+	instance.is_cinematic = as_cinematic
 	return instance

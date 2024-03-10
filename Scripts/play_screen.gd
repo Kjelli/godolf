@@ -1,7 +1,11 @@
-extends Node2D
+extends Node
 
 @onready var items : ItemList = %CourseList
 @onready var courses : PackedStringArray
+@onready var host_button : Button = %HostButton
+@onready var connect_button : Button = %ConnectButton
+@onready var ip_edit : LineEdit = %IpEdit
+
 var selected_course : String
 
 func _ready():
@@ -9,14 +13,16 @@ func _ready():
 	scan_scenes()
 	pass # Replace with function body.
 
+func _process(_delta) -> void:
+	if Input.is_action_just_pressed("cancel"):
+		%MainMenu.show()
+
 func scan_scenes():
 	var paths = []
-	var numScenes = 0
 	var dir = DirAccess.open("res://Scenes/Courses")
 	dir.list_dir_begin()
 	var file_name = dir.get_next()
 	while (file_name != ""):
-		print(file_name)
 		if file_name == ".." or file_name == ".":
 			# Directories, Skip.
 			pass
@@ -28,7 +34,9 @@ func scan_scenes():
 		courses.append(scene)
 
 func _on_play_pressed():
-	get_tree().change_scene_to_file("res://Scenes/Courses/" + selected_course)
+	var scene = load("res://Scenes/Courses/" + selected_course)
+	%MainMenu.hide()
+	add_child.call_deferred(scene.instantiate())
 	pass # Replace with function body.
 
 func _on_quit_pressed():

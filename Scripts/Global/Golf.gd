@@ -4,10 +4,10 @@ class Score:
 	var name : String
 	var value : int
 
-	static func create(name : String, value : int) -> Score:
+	static func create(new_name : String, new_value : int) -> Score:
 		var score = Score.new()
-		score.name = name
-		score.value = value
+		score.name = new_name
+		score.value = new_value
 		return score
 
 

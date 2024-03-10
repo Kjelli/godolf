@@ -4,7 +4,7 @@ class_name Trail
 const MAX_POINTS : int = 2000
 @onready var curve := Curve2D.new()
 
-func _process(delta):
+func _process(_delta):
 	curve.add_point(get_parent().global_position)
 	if curve.get_baked_points().size() > MAX_POINTS:
 		curve.remove_point(0)

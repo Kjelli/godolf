@@ -10,16 +10,11 @@ func OnEnter():
 	sinkTween.tween_property(ball, "modulate", Color(0,0,0,0), 0.5)
 	await sinkTween.finished
 
-	onSunk()
 	pass
 
 func OnExit():
 	pass
 
-func onSunk():
-	Events.ball_sunk.emit(ball)
-	print("Nice! Sunk on shot #" + str(ball.times_hit))
-	ball.call_deferred("queue_free")
 
 func Physics_Update(_delta : float):
 	ball.velocity = (ball.is_in_goal.position - ball.position).normalized() * 10

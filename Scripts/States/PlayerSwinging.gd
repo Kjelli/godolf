@@ -3,20 +3,15 @@ class_name PlayerSwinging
 
 @export var player : Player
 @export var animation_tree : AnimationTree
-@export var direction : Direction
+@onready var player_input : PlayerInput = %PlayerInput
 
 var club : Node2D
 
 func OnEnter():
-	var children = player.get_children()
-	for child in children:
-		if child is Club:
-			club = child
-
 	var leftSwing = PI * club.charge / club.max_charge
 	var rightSwing = - PI * club.charge / club.max_charge
 
-	var afterSwing = leftSwing if direction.value().x < 0 else rightSwing
+	var afterSwing = leftSwing if player_input.direction.x < 0 else rightSwing
 
 	var tween = get_tree().create_tween()
 	tween.set_ease(Tween.EASE_OUT)
@@ -29,16 +24,15 @@ func OnEnter():
 	pass
 
 func _on_swing():
-	player.ball_in_range.hit(club.charge, direction)
-	pass
+	if player.ball_in_range:
+		player.ball_in_range.hit(club.charge, player_input.direction)
 
 func _on_after_swing():
 	Transitioned.emit(self, "PlayerIdle")
-	pass
 
 func OnExit():
-	club.queue_free()
-	direction.set_eight_directional()
+	club.hide()
+	player_input.set_direction_eight_directional()
 	animation_tree["parameters/conditions/swing"] = false
 	pass
 

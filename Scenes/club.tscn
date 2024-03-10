@@ -11,7 +11,6 @@ show_behind_parent = true
 z_index = 1
 disable_mode = 1
 script = ExtResource("1_avwbi")
-min_charge = 0.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1, 11.875)
