@@ -13,6 +13,8 @@ var is_swinging : bool
 
 @export var move_speed := 50
 
+var player_name : String
+
 # Set by the authority, synchronized on spawn.
 @export var player_id : int:
 	set(id):
@@ -29,9 +31,11 @@ var is_swinging : bool
 @export var sync_direction : Vector2
 @export var sync_is_swinging : bool
 
-static func create(new_player_id : int, initial_position : Vector2) -> Player:
+static func create(new_player_id : int, new_player_name : String, initial_position : Vector2) -> Player:
 	var player : Player = preload("res://Scenes/player.tscn").instantiate()
 	player.player_id = new_player_id
+	player.player_name = new_player_name
+	player.sync_pos = initial_position
 	player.position = initial_position
 	player.name = "player_" + str(new_player_id)
 	return player
@@ -42,7 +46,7 @@ func is_local_authority():
 	return player_id == multiplayer.get_unique_id()
 
 func _ready():
-	%Name.text = str(player_id)
+	%Name.text = str(player_name)
 	Events.player_spawned.emit(self)
 
 func _process(_delta: float) -> void:

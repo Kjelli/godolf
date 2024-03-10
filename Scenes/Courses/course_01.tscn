@@ -76,10 +76,5 @@ texture = ExtResource("5_7w7uw")
 expand_mode = 2
 stretch_mode = 1
 
-[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
-unique_name_in_owner = true
-_spawnable_scenes = PackedStringArray("res://Scenes/player.tscn", "res://Scenes/ball.tscn")
-spawn_path = NodePath("../Players")
-
 [node name="Players" type="Node" parent="."]
 unique_name_in_owner = true

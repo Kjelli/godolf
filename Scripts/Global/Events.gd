@@ -1,5 +1,10 @@
 extends Node
 
+# Network related
+signal handshake_received(handshake : Handshake)
+signal someone_disconnected(player_id : int, player_name : String)
+
+# In game
 signal player_spawned(player : Player)
 signal player_authority_changed(player : Player, player_id : int)
 

@@ -7,6 +7,8 @@ const PORT = 13337
 
 static var player_name : String
 
+static var connected_players : Array = []
+
 func _ready() -> void:
 	# Automatically start the server in headless mode.
 	if DisplayServer.get_name() == "headless":
@@ -14,6 +16,7 @@ func _ready() -> void:
 		_on_host_button_pressed.call_deferred()
 
 	multiplayer.connected_to_server.connect(on_connect_to_server)
+	multiplayer.peer_disconnected.connect(on_peer_disconnected)
 
 func _on_host_button_pressed() -> void:
 	# Start as server.
@@ -23,20 +26,49 @@ func _on_host_button_pressed() -> void:
 		OS.alert("Failed to start multiplayer server.")
 		return
 	multiplayer.set_multiplayer_peer(peer)
-	start_game()
+	connected_players.append(Handshake.create(1, player_name))
+	load_course()
 
 func on_connect_to_server() -> void:
+	Local.print("Connected! Sending handshake to server in 1 s.")
+	await get_tree().create_timer(1).timeout
 	send_info.rpc_id(1, multiplayer.get_unique_id(), player_name)
+	Local.print("Sent handshake to server.")
+
+@rpc("any_peer", "call_local")
+func send_info(received_player_id : int, received_player_name : String) -> void:
+	var handshake = Handshake.create(received_player_id, received_player_name)
+	Events.handshake_received.emit(handshake)
+	Local.print("Handshake from " + received_player_name + " with ID " + str(received_player_id))
+	connected_players.append(handshake)
+	# Send all connections back
+	if multiplayer.is_server():
+		# notify new client about old clients
+		for existing_peer : Handshake in connected_players:
+			if existing_peer.player_id == received_player_id:
+				continue
+			send_info.rpc_id(received_player_id, existing_peer.player_id, existing_peer.player_name)
+
+		# notify old clients about new client
+		for existing_peer : Handshake in connected_players:
+			if existing_peer.player_id == received_player_id:
+				continue
+			send_info.rpc_id(existing_peer.player_id, received_player_id, received_player_name)
+
+func on_peer_disconnected(player_id : int):
+	notify_disconnect(player_id)
 
 @rpc("any_peer", "call_remote")
-func send_info(received_player_id : int, received_player_name : String) -> void:
-	Local.print("Handshake from "+ received_player_name + " with ID " + str(received_player_id))
+func notify_disconnect(player_id : int):
+	for existing_player : Handshake in connected_players:
+		if existing_player.player_id == player_id:
+			var idx = connected_players.find(existing_player)
+			connected_players.remove_at(idx)
+			Events.someone_disconnected.emit(existing_player.player_id, existing_player.player_name)
+			break
 	if multiplayer.is_server():
-		send_info.rpc_id(received_player_id, 1, player_name)
-		for peer in multiplayer.get_peers():
-			if peer == 1 || peer == received_player_id:
-				continue
-			send_info.rpc_id(peer, received_player_id, received_player_name)
+		for existing_peer : Handshake in connected_players:
+			notify_disconnect.rpc_id(existing_peer.player_id, player_id)
 
 func _on_connect_button_pressed() -> void:
 	# Start as client.
@@ -50,7 +82,7 @@ func _on_connect_button_pressed() -> void:
 		OS.alert("Failed to start multiplayer client.")
 		return
 	multiplayer.set_multiplayer_peer(peer)
-	start_game()
+	load_course()
 
 # Call this function deferred and only on the main authority (server).
 func change_level(scene: PackedScene) -> void:
@@ -61,7 +93,7 @@ func change_level(scene: PackedScene) -> void:
 	# Add new level.
 	course_wrapper.add_child(scene.instantiate())
 
-func start_game() -> void:
+func load_course() -> void:
 	# Hide the UI and unpause to start the game.
 	%MainMenu.hide()
 	if multiplayer.is_server():

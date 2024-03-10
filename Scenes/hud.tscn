@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cw2shrgidjs3s"]
+[gd_scene load_steps=11 format=3 uid="uid://cw2shrgidjs3s"]
 
 [ext_resource type="Script" path="res://Scripts/ChargeBar.gd" id="1_7t76o"]
 [ext_resource type="Texture2D" uid="uid://vkkihgyvgvlp" path="res://resources/chargebar.png" id="2_752ma"]
@@ -10,6 +10,31 @@
 [ext_resource type="Script" path="res://Scripts/Components/Wobbler.gd" id="6_2rsj0"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_5bir5"]
+
+[sub_resource type="GDScript" id="GDScript_alyjy"]
+script/source = "extends VBoxContainer
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	Events.handshake_received.connect(on_handshake)
+	Events.someone_disconnected.connect(on_disconnect)
+	create_label(Networking.player_name)
+
+func on_handshake(handshake : Handshake):
+	create_label(handshake.player_name)
+
+func create_label(player_name : String):
+	var label = Label.new()
+	label.text = player_name
+	add_child(label)
+
+func on_disconnect(player_id : int, player_name : String):
+	for child : Label in get_children():
+		if child.text == str(player_name):
+			child.queue_free()
+			break
+"
 
 [node name="UI" type="CanvasLayer"]
 
@@ -59,12 +84,12 @@ metadata/_edit_use_anchors_ = true
 [node name="Wobbler" type="Node" parent="HBoxContainer/MarginContainer/PanelContainer/CourseInfo/ParLabel"]
 script = ExtResource("6_2rsj0")
 
-[node name="Debug" type="Label" parent="HBoxContainer/MarginContainer/PanelContainer/CourseInfo"]
+[node name="NameLabel" type="Label" parent="HBoxContainer/MarginContainer/PanelContainer/CourseInfo"]
 layout_mode = 2
 text = "-1"
 script = ExtResource("3_ilixk")
 
-[node name="Debug2" type="Label" parent="HBoxContainer/MarginContainer/PanelContainer/CourseInfo"]
+[node name="IdLabel" type="Label" parent="HBoxContainer/MarginContainer/PanelContainer/CourseInfo"]
 layout_mode = 2
 text = "-1"
 script = ExtResource("4_o0ncp")
@@ -166,3 +191,18 @@ script = ExtResource("5_6mt71")
 
 [node name="Wobbler" type="Node" parent="AnnouncementLabel"]
 script = ExtResource("6_2rsj0")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -16.0
+offset_right = 32.0
+offset_bottom = 16.0
+grow_vertical = 2
+size_flags_horizontal = 0
+
+[node name="PlayerList" type="VBoxContainer" parent="PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+script = SubResource("GDScript_alyjy")
