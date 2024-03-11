@@ -6,6 +6,7 @@ const PORT = 25565
 @onready var course_wrapper : Node = %CourseWrapper
 
 static var player_name : String
+static var player_color : Color
 
 static var connected_players : Array = []
 

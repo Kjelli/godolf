@@ -5,9 +5,18 @@ extends Node
 @onready var host_button : Button = %HostButton
 @onready var connect_button : Button = %ConnectButton
 @onready var ip_edit : LineEdit = %IpEdit
+@onready var color_picker : ColorRect = %ColorPicker
 
+@onready var networking : Networking = %Networking
 @onready var course_wrapper : Node = %CourseWrapper
 @onready var course_spawner : MultiplayerSpawner = %CourseSpawner
+
+var colors : Array = [
+	Color(1,1,1,1),
+	Color(1,0,0,1),
+	Color(0,1,0,1),
+	Color(0,0,1,1),
+]
 
 func _ready():
 	DisplayServer.window_set_min_size(Vector2i(640, 480))
@@ -57,5 +66,14 @@ func _on_quick_play_pressed() -> void:
 	pass # Replace with function body.
 
 func _on_name_edit_text_changed(new_text: String) -> void:
-	%Networking.player_name = new_text
+	networking.player_name = new_text
+	pass # Replace with function body.
+
+
+func _on_color_picker_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		var mbe = event as InputEventMouseButton
+		if mbe.button_index == 1 && mbe.pressed:
+			color_picker.color = colors[(colors.find(color_picker.color) + 1) % colors.size()]
+			networking.player_color = color_picker.color
 	pass # Replace with function body.

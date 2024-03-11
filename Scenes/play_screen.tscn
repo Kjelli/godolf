@@ -69,6 +69,15 @@ text = "Quick play"
 [node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/QuickPlay"]
 script = ExtResource("3_pxmhw")
 
+[node name="Play" type="Button" parent="MainMenu/HBoxContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+text = "Play selected"
+
+[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Play"]
+script = ExtResource("3_pxmhw")
+
 [node name="Quit" type="Button" parent="MainMenu/HBoxContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 4
@@ -88,12 +97,48 @@ theme_override_constants/margin_bottom = 40
 [node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/HBoxContainer/MarginContainer2"]
 layout_mode = 2
 
+[node name="PanelContainer2" type="PanelContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+text = "Select course"
+
+[node name="CourseList" type="ItemList" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer2/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+allow_search = false
+
+[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer2/VBoxContainer/CourseList"]
+script = ExtResource("3_pxmhw")
+
 [node name="PanelContainer" type="PanelContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer"]
 layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ColorLabel" type="Label" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Color"
+
+[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/ColorLabel"]
+script = ExtResource("3_pxmhw")
+
+[node name="ColorPicker" type="ColorRect" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -113,88 +158,62 @@ size_flags_horizontal = 3
 [node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/NameEdit"]
 script = ExtResource("3_pxmhw")
 
-[node name="HostButton" type="Button" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Host"
-
-[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HostButton"]
-script = ExtResource("3_pxmhw")
-
-[node name="MarginContainer" type="MarginContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="Spacer" type="MarginContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Label" type="Label" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer"]
-layout_mode = 2
-text = "- OR -"
-horizontal_alignment = 1
-
-[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer/Label"]
-script = ExtResource("3_pxmhw")
-
-[node name="MarginContainer2" type="MarginContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_right = 5
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer2"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="IpLabel" type="Label" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
+[node name="IpLabel" type="Label" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
 layout_mode = 2
 text = "IP"
 
-[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer2/HBoxContainer/IpLabel"]
+[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4/IpLabel"]
 script = ExtResource("3_pxmhw")
 
-[node name="IpEdit" type="LineEdit" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
+[node name="IpEdit" type="LineEdit" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "127.0.0.1"
 
-[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/MarginContainer2/HBoxContainer/IpEdit"]
+[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4/IpEdit"]
 script = ExtResource("3_pxmhw")
 
-[node name="ConnectButton" type="Button" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_right = 5
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HostButton" type="Button" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
+text = "Host"
+
+[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3/HostButton"]
+script = ExtResource("3_pxmhw")
+
+[node name="ConnectButton" type="Button" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
 text = "Connect"
 
-[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/ConnectButton"]
-script = ExtResource("3_pxmhw")
-
-[node name="PanelContainer2" type="PanelContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer2"]
-layout_mode = 2
-
-[node name="CourseList" type="ItemList" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer2/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 3
-allow_search = false
-
-[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer2/VBoxContainer/CourseList"]
-script = ExtResource("3_pxmhw")
-
-[node name="Play" type="Button" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer2/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 4
-text = "Play selected"
-
-[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer2/VBoxContainer/Play"]
+[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3/ConnectButton"]
 script = ExtResource("3_pxmhw")
 
 [connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/QuickPlay" to="." method="_on_quick_play_pressed"]
+[connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
-[connection signal="text_changed" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/NameEdit" to="." method="_on_name_edit_text_changed"]
-[connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HostButton" to="Networking" method="_on_host_button_pressed"]
-[connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/ConnectButton" to="Networking" method="_on_connect_button_pressed"]
 [connection signal="item_selected" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer2/VBoxContainer/CourseList" to="." method="_on_course_list_item_selected"]
-[connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer2/VBoxContainer/Play" to="." method="_on_play_pressed"]
+[connection signal="gui_input" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/ColorPicker" to="." method="_on_color_picker_gui_input"]
+[connection signal="text_changed" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/NameEdit" to="." method="_on_name_edit_text_changed"]
+[connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3/HostButton" to="Networking" method="_on_host_button_pressed"]
+[connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3/ConnectButton" to="Networking" method="_on_connect_button_pressed"]

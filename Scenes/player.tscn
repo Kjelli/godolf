@@ -41,6 +41,9 @@ shader_parameter/modulate = null
 properties/0/path = NodePath(".:player_id")
 properties/0/spawn = true
 properties/0/replication_mode = 2
+properties/1/path = NodePath(".:player_name")
+properties/1/spawn = true
+properties/1/replication_mode = 2
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_2ratp"]
 properties/0/path = NodePath(".:sync_pos")
@@ -58,9 +61,6 @@ properties/3/replication_mode = 2
 properties/4/path = NodePath(".:sync_club_rot")
 properties/4/spawn = true
 properties/4/replication_mode = 2
-properties/5/path = NodePath(".:player_name")
-properties/5/spawn = true
-properties/5/replication_mode = 2
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bj76v"]
 atlas = ExtResource("1_h0ikx")

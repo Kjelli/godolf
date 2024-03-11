@@ -1,10 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://cw2shrgidjs3s"]
+[gd_scene load_steps=10 format=3 uid="uid://cw2shrgidjs3s"]
 
 [ext_resource type="Script" path="res://Scripts/ChargeBar.gd" id="1_7t76o"]
 [ext_resource type="Texture2D" uid="uid://vkkihgyvgvlp" path="res://resources/chargebar.png" id="2_752ma"]
 [ext_resource type="Script" path="res://Scripts/CourseInfo.gd" id="3_ev3mm"]
 [ext_resource type="Script" path="res://Scripts/DebugLabel.gd" id="3_ilixk"]
-[ext_resource type="Script" path="res://Scripts/Debug2.gd" id="4_o0ncp"]
 [ext_resource type="Script" path="res://Scripts/ShotsInfo.gd" id="4_p8jci"]
 [ext_resource type="Script" path="res://Scripts/AnnouncementInfo.gd" id="5_6mt71"]
 [ext_resource type="Script" path="res://Scripts/Components/Wobbler.gd" id="6_2rsj0"]
@@ -87,11 +86,6 @@ script = ExtResource("6_2rsj0")
 layout_mode = 2
 text = "-1"
 script = ExtResource("3_ilixk")
-
-[node name="IdLabel" type="Label" parent="HBoxContainer/MarginContainer/PanelContainer/CourseInfo"]
-layout_mode = 2
-text = "-1"
-script = ExtResource("4_o0ncp")
 
 [node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer"]
 layout_mode = 2
@@ -191,17 +185,32 @@ script = ExtResource("5_6mt71")
 [node name="Wobbler" type="Node" parent="AnnouncementLabel"]
 script = ExtResource("6_2rsj0")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_top = -16.0
-offset_right = 32.0
-offset_bottom = 16.0
+offset_top = -25.5
+offset_right = 80.0
+offset_bottom = 25.5
 grow_vertical = 2
 size_flags_horizontal = 0
+theme_override_constants/margin_left = 20
 
-[node name="PlayerList" type="VBoxContainer" parent="PanelContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="PlayersLabel" type="Label" parent="MarginContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "[ Players ]"
+
+[node name="Wobbler" type="Node" parent="MarginContainer/PanelContainer/VBoxContainer/PlayersLabel"]
+script = ExtResource("6_2rsj0")
+
+[node name="PlayerList" type="VBoxContainer" parent="MarginContainer/PanelContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 script = SubResource("GDScript_alyjy")
