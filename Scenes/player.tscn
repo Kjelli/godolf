@@ -37,7 +37,7 @@ shader = SubResource("Shader_wdekn")
 shader_parameter/radius = 5.0
 shader_parameter/modulate = null
 
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_n50uc"]
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_pd2ek"]
 properties/0/path = NodePath(".:player_id")
 properties/0/spawn = true
 properties/0/replication_mode = 2
@@ -504,9 +504,7 @@ motion_mode = 1
 script = ExtResource("1_vg6jp")
 
 [node name="PlayerIdSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_interval = 0.5
-delta_interval = 0.5
-replication_config = SubResource("SceneReplicationConfig_n50uc")
+replication_config = SubResource("SceneReplicationConfig_pd2ek")
 
 [node name="DataSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_interval = 0.2
@@ -575,7 +573,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 
-[node name="Node" type="Node" parent="Name"]
+[node name="Wobbler" type="Node" parent="Name"]
 script = ExtResource("5_yin6y")
 
 [connection signal="body_entered" from="BallRange" to="." method="_on_ball_range_body_entered"]
