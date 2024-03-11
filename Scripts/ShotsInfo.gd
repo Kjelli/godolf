@@ -7,9 +7,9 @@ func _ready():
 	Events.connect(Events.ball_sunk.get_name(), lock_count)
 
 func update_count(ball : Ball):
-	if ball.is_local_authority():
+	if ball.is_multiplayer_authority():
 		shots.text = str(ball.times_hit)
 
 func lock_count(ball : Ball):
-	if ball.is_local_authority():
+	if ball.is_multiplayer_authority():
 		shots.modulate = Color(0, 1, 0, 1)

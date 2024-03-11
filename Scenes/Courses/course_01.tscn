@@ -78,3 +78,14 @@ stretch_mode = 1
 
 [node name="Players" type="Node" parent="."]
 unique_name_in_owner = true
+
+[node name="Balls" type="Node" parent="."]
+unique_name_in_owner = true
+
+[node name="BallSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Scenes/ball.tscn")
+spawn_path = NodePath("../Balls")
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Scenes/player.tscn")
+spawn_path = NodePath("../Players")

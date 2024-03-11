@@ -26,7 +26,11 @@ var current_trail : Trail
 @export var sync_pos : Vector2
 
 # Set by the authority, synchronized on spawn.
-@export var player_id : int
+@export var player_id : int:
+	set(id):
+		player_id = id
+		set_multiplayer_authority.call_deferred(id, false)
+		$DataSynchronizer.set_multiplayer_authority.call_deferred(id)
 
 var last_shot_from : Vector2
 var times_hit : int = 0
@@ -35,36 +39,30 @@ var is_tweening_into_goal : bool
 signal entered_goal_proximity
 signal left_goal_proximity
 
-func _enter_tree() -> void:
-	set_multiplayer_authority(player_id)
-
 static func create(player : Player, initial_position : Vector2) -> Ball:
 	var ball : Ball = preload("res://Scenes/ball.tscn").instantiate()
 	ball.owning_player = player
 	ball.player_id = player.player_id
 	ball.position = initial_position
+	ball.sync_pos = initial_position
 	ball.last_shot_from = initial_position
 	ball.name = "ball_" + str(ball.player_id)
 	return ball;
 
-func is_local_authority():
-	if not multiplayer:
-		return false
-	return player_id == multiplayer.get_unique_id()
-
 func _ready():
+	position = sync_pos
 	if not owning_player:
 		var eligible_players = get_tree().get_nodes_in_group("players")
 		for eligible_player in eligible_players:
 			if eligible_player.name == "player_" + str(player_id):
 				owning_player = eligible_player
 
-	if !is_local_authority():
+	if !is_multiplayer_authority():
 		pulser.disable()
 
 
 func _physics_process(delta):
-	if is_local_authority():
+	if is_multiplayer_authority():
 		acceleration = acceleration.lerp(Vector2.ZERO, 0.15)
 		velocity = (velocity + acceleration * delta) * 0.985
 

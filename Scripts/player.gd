@@ -13,10 +13,13 @@ var is_swinging : bool
 
 @export var move_speed := 50
 
-var player_name : String
+@export var player_name : String
 
 # Set by the authority, synchronized on spawn.
-@export var player_id : int
+@export var player_id : int:
+	set(id):
+		player_id = id
+		on_player_id_set.call_deferred()
 
 # syncables
 @export var sync_pos : Vector2
@@ -25,11 +28,6 @@ var player_name : String
 @export var sync_anim : String
 @export var sync_direction : Vector2
 @export var sync_is_swinging : bool
-
-func _enter_tree() -> void:
-	($DataSynchronizer as MultiplayerSynchronizer).synchronized.connect(on_data_synchronized)
-	($DataSynchronizer as MultiplayerSynchronizer).delta_synchronized.connect(on_data_delta_synchronized)
-	set_multiplayer_authority(player_id)
 
 func on_data_synchronized():
 	Local.print("Data synchronized")
@@ -46,17 +44,22 @@ static func create(new_player_id : int, new_player_name : String, initial_positi
 	player.name = "player_" + str(new_player_id)
 	return player
 
-func _ready():
+func on_player_id_set():
+	print(player_name)
+	set_multiplayer_authority(player_id, false)
+	%PlayerInput.set_multiplayer_authority(player_id)
+	$DataSynchronizer.set_multiplayer_authority(player_id)
 	%Name.text = str(player_name) + " " + str(player_id)
 	%Name.modulate = Color(0, 0, 1, 1) if is_multiplayer_authority() else Color(1, 1, 1, 1)
 	Events.player_spawned.emit(self)
-	position = sync_pos
+	pass
 
+func _ready():
+	position = sync_pos
 
 func _process(_delta: float) -> void:
 	update_animation()
 	update_actions()
-	pass
 
 func update_animation():
 	if is_multiplayer_authority():
@@ -172,15 +175,14 @@ func _physics_process(_delta):
 		move_and_slide()
 		sync_pos = position
 	else:
-		if sync_pos != Vector2.ZERO:
-			get_tree().create_tween().tween_property(self, "position", sync_pos, 0.2)
+		get_tree().create_tween().tween_property(self, "position", sync_pos, 0.2)
 
 func can_swing():
 	if !ball_in_range:
 		return false
 	if ball_in_range.velocity != Vector2.ZERO:
 		return false
-	if !ball_in_range.is_local_authority:
+	if !ball_in_range.is_multiplayer_authority():
 		return false
 	return true
 
