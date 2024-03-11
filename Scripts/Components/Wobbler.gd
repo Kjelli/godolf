@@ -6,7 +6,6 @@ func _ready() -> void:
 	parent = get_parent()
 	parent.pivot_offset = parent.get_rect().size
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	time_alive += delta

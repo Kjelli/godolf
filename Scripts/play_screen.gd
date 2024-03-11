@@ -20,6 +20,10 @@ var colors : Array = [
 
 func _ready():
 	DisplayServer.window_set_min_size(Vector2i(640, 480))
+
+	color_picker.color = Color(randf(), randf(), randf(), 1)
+	networking.player_color = color_picker.color
+
 	scan_scenes()
 	items.select(0)
 	_on_course_list_item_selected(0)
@@ -74,6 +78,6 @@ func _on_color_picker_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		var mbe = event as InputEventMouseButton
 		if mbe.button_index == 1 && mbe.pressed:
-			color_picker.color = colors[(colors.find(color_picker.color) + 1) % colors.size()]
+			color_picker.color = Color(randf(), randf(), randf(), 1)
 			networking.player_color = color_picker.color
 	pass # Replace with function body.

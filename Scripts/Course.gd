@@ -24,17 +24,16 @@ func _ready():
 	if not multiplayer.is_server():
 		return
 
-	# Events.handshake_received.connect(try_spawn)
-	spawn_player(1, Networking.player_name)
-
 	Events.handshake_received.connect(on_handshake)
 
-func on_handshake(handshake : Handshake):
-	spawn_player(handshake.player_id, handshake.player_name)
+	spawn_player(1, Networking.player_name, Networking.player_color)
 
-func spawn_player(player_id : int, player_name : String) -> void:
+func on_handshake(handshake : Handshake):
+	spawn_player(handshake.player_id, handshake.player_name, handshake.player_color)
+
+func spawn_player(player_id : int, player_name : String, player_color : Color) -> void:
 	var point = spawn_zone.draw_point()
-	var player : Player = Player.create(player_id, player_name, point)
+	var player : Player = Player.create(player_id, player_name, player_color, point)
 
 	var point2 = spawn_zone.draw_point()
 	var ball : Ball = Ball.create(player, point2)

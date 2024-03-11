@@ -13,13 +13,13 @@ var is_swinging : bool
 
 @export var move_speed := 50
 
-@export var player_name : String
-
 # Set by the authority, synchronized on spawn.
 @export var player_id : int:
 	set(id):
 		player_id = id
 		on_player_id_set.call_deferred()
+@export var player_name : String
+@export var player_color : Color
 
 # syncables
 @export var sync_pos : Vector2
@@ -29,10 +29,16 @@ var is_swinging : bool
 @export var sync_direction : Vector2
 @export var sync_is_swinging : bool
 
-static func create(new_player_id : int, new_player_name : String, initial_position : Vector2) -> Player:
+static func create(
+	new_player_id : int,
+	new_player_name : String,
+	new_player_color : Color,
+	initial_position : Vector2) -> Player:
+
 	var player : Player = preload("res://Scenes/player.tscn").instantiate()
 	player.player_id = new_player_id
 	player.player_name = new_player_name
+	player.player_color = new_player_color
 	player.sync_pos = initial_position
 	player.position = initial_position
 	player.name = str(new_player_id)
@@ -42,9 +48,8 @@ func on_player_id_set():
 	set_multiplayer_authority(player_id, false)
 	%PlayerInput.set_multiplayer_authority(player_id)
 	$DataSynchronizer.set_multiplayer_authority(player_id)
-	Local.print("Player with id " + str(player_id) + " got name: " + player_name)
 	%Name.text = str(player_name)
-	%Name.modulate = Color(1, 1, 0.5, 1) if is_multiplayer_authority() else Color(0.8, 0.8, 0.8, 1)
+	%Name.modulate = player_color
 	Events.player_spawned.emit(self)
 
 func _ready():
@@ -71,7 +76,7 @@ func update_animation():
 		animation_tree["parameters/Swing/blend_position"] = y
 
 		club.visible = sync_club_vis
-		club.rotation = sync_club_rot
+		Local.tween(club, "rotation", sync_club_rot, 0.1)
 
 func update_local_animation():
 	if %PlayerInput.direction != Vector2.ZERO:

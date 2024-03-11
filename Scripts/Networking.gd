@@ -30,7 +30,7 @@ func _on_host_button_pressed() -> void:
 		OS.alert("Failed to start multiplayer server.")
 		return
 	multiplayer.set_multiplayer_peer(peer)
-	connected_players.append(Handshake.create(1, player_name))
+	connected_players.append(Handshake.create(1, player_name, player_color))
 	load_course()
 
 func _on_connect_button_pressed() -> void:
@@ -52,13 +52,14 @@ func _on_connect_button_pressed() -> void:
 	load_course()
 
 func on_connect_to_server() -> void:
-	send_info.rpc_id(1, multiplayer.get_unique_id(), player_name)
+	send_info.rpc_id(1, multiplayer.get_unique_id(), player_name, player_color.to_html())
 
 @rpc("any_peer", "call_remote")
-func send_info(received_player_id : int, received_player_name : String) -> void:
-	if not multiplayer.is_server():
-		Local.print("Got handshake from " + str(received_player_id) + " having name " + received_player_name)
-	var handshake = Handshake.create(received_player_id, received_player_name)
+func send_info(received_player_id : int, received_player_name : String, received_player_color : String) -> void:
+	var handshake = Handshake.create(
+		received_player_id,
+		received_player_name,
+		Color(received_player_color))
 	connected_players.append(handshake)
 	Events.handshake_received.emit(handshake)
 
@@ -68,13 +69,13 @@ func send_info(received_player_id : int, received_player_name : String) -> void:
 		for existing_peer : Handshake in connected_players:
 			if existing_peer.player_id == received_player_id:
 				continue
-			send_info.rpc_id(received_player_id, existing_peer.player_id, existing_peer.player_name)
+			send_info.rpc_id(received_player_id, existing_peer.player_id, existing_peer.player_name, existing_peer.player_color)
 
 		# notify old clients about new client
 		for existing_peer : Handshake in connected_players:
 			if existing_peer.player_id == 1 || existing_peer.player_id == received_player_id:
 				continue
-			send_info.rpc_id(existing_peer.player_id, received_player_id, received_player_name)
+			send_info.rpc_id(existing_peer.player_id, received_player_id, received_player_name, received_player_color)
 
 func on_peer_disconnected(player_id : int):
 	notify_disconnect(player_id)

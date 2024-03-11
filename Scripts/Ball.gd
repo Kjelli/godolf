@@ -9,7 +9,6 @@ signal entered_goal_proximity
 signal left_goal_proximity
 
 @export var weight := 0.75
-@export var state_machine : StateMachine
 
 @onready var hit_particles : GPUParticles2D = %HitParticles
 @onready var splash_particles : GPUParticles2D = %SplashParticles
@@ -30,7 +29,11 @@ var last_shot_from : Vector2
 var times_hit : int = 0
 var is_tweening_into_goal : bool
 
+@export var aim_color : Color
 @export var sync_pos : Vector2
+@export var sync_aim_vis : bool
+@export var sync_aim_scale : Vector2
+@export var sync_aim_rot : float
 
 # Set by the authority, synchronized on spawn.
 @export var player_id : int:
@@ -42,6 +45,7 @@ var is_tweening_into_goal : bool
 func on_player_id_set():
 	set_multiplayer_authority(player_id, false)
 	$DataSynchronizer.set_multiplayer_authority(player_id)
+	aim_line.modulate = Color(aim_color)
 
 	if !is_multiplayer_authority():
 		pulser.disable()
@@ -49,6 +53,7 @@ func on_player_id_set():
 static func create(player : Player, initial_position : Vector2) -> Ball:
 	var ball : Ball = preload("res://Scenes/ball.tscn").instantiate()
 	ball.owning_player = player
+	ball.aim_color = player.player_color
 	ball.player_id = player.player_id
 	ball.position = initial_position
 	ball.sync_pos = initial_position
@@ -64,6 +69,16 @@ func _ready():
 		for eligible_player in eligible_players:
 			if eligible_player.name == str(player_id):
 				owning_player = eligible_player
+
+func _process(delta: float) -> void:
+	if is_multiplayer_authority():
+		sync_aim_vis = aim_line.visible
+		sync_aim_scale = aim_line.scale
+		sync_aim_rot = aim_line.rotation
+	else:
+		aim_line.visible = sync_aim_vis
+		Local.tween(aim_line, "scale", sync_aim_scale, 0.1)
+		Local.tween(aim_line, "rotation", sync_aim_rot, 0.1)
 
 func _physics_process(delta):
 	if is_multiplayer_authority():
