@@ -1,7 +1,7 @@
 extends Node
 class_name Networking
 
-const PORT = 13337
+const PORT = 25565
 
 @onready var course_wrapper : Node = %CourseWrapper
 
@@ -19,6 +19,9 @@ func _ready() -> void:
 	multiplayer.peer_disconnected.connect(on_peer_disconnected)
 
 func _on_host_button_pressed() -> void:
+	if %NameEdit.text == "":
+		OS.alert("A golfer needs a name!")
+		return
 	# Start as server.
 	var peer = ENetMultiplayerPeer.new()
 	peer.create_server(PORT)
@@ -29,15 +32,31 @@ func _on_host_button_pressed() -> void:
 	connected_players.append(Handshake.create(1, player_name))
 	load_course()
 
+func _on_connect_button_pressed() -> void:
+	# Start as client.
+	if %NameEdit.text == "":
+		OS.alert("A golfer needs a name!")
+		return
+
+	var url : String = %IpEdit.text
+	if url == "":
+		OS.alert("Need a remote to connect to.")
+		return
+	var peer = ENetMultiplayerPeer.new()
+	peer.create_client(url, PORT)
+	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
+		OS.alert("Failed to start multiplayer client.")
+		return
+	multiplayer.set_multiplayer_peer(peer)
+	load_course()
+
 func on_connect_to_server() -> void:
-	Local.print("Connected! Sending handshake to server.")
 	send_info.rpc_id(1, multiplayer.get_unique_id(), player_name)
-	Local.print("Sent handshake to server.")
 
 @rpc("any_peer", "call_remote")
 func send_info(received_player_id : int, received_player_name : String) -> void:
-	Local.print("Handshake from " + received_player_name + " with ID " + str(received_player_id))
-
+	if not multiplayer.is_server():
+		Local.print("Got handshake from " + str(received_player_id) + " having name " + received_player_name)
 	var handshake = Handshake.create(received_player_id, received_player_name)
 	connected_players.append(handshake)
 	Events.handshake_received.emit(handshake)
@@ -72,20 +91,6 @@ func notify_disconnect(player_id : int):
 			if existing_peer.player_id == 1 || existing_peer.player_id == player_id:
 				continue
 			notify_disconnect.rpc_id(existing_peer.player_id, player_id)
-
-func _on_connect_button_pressed() -> void:
-	# Start as client.
-	var url : String = %IpEdit.text
-	if url == "":
-		OS.alert("Need a remote to connect to.")
-		return
-	var peer = ENetMultiplayerPeer.new()
-	peer.create_client(url, PORT)
-	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
-		OS.alert("Failed to start multiplayer client.")
-		return
-	multiplayer.set_multiplayer_peer(peer)
-	load_course()
 
 # Call this function deferred and only on the main authority (server).
 func change_level(scene: PackedScene) -> void:

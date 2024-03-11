@@ -5,6 +5,9 @@ const TILE_MAP_GROUND_LAYER : int = 0
 const TILE_MAP_HILL_LAYER : int = 2
 const SPECIAL_LAYER : int = 8
 
+signal entered_goal_proximity
+signal left_goal_proximity
+
 @export var weight := 0.75
 @export var state_machine : StateMachine
 
@@ -20,8 +23,12 @@ var acceleration : Vector2
 var owning_player : Player
 var is_in_goal : Goal
 var nearby_goal : Goal
-var is_moving : bool
 var current_trail : Trail
+
+var is_moving : bool
+var last_shot_from : Vector2
+var times_hit : int = 0
+var is_tweening_into_goal : bool
 
 @export var sync_pos : Vector2
 
@@ -29,15 +36,15 @@ var current_trail : Trail
 @export var player_id : int:
 	set(id):
 		player_id = id
-		set_multiplayer_authority.call_deferred(id, false)
-		$DataSynchronizer.set_multiplayer_authority.call_deferred(id)
+		on_player_id_set.call_deferred()
 
-var last_shot_from : Vector2
-var times_hit : int = 0
-var is_tweening_into_goal : bool
 
-signal entered_goal_proximity
-signal left_goal_proximity
+func on_player_id_set():
+	set_multiplayer_authority(player_id, false)
+	$DataSynchronizer.set_multiplayer_authority(player_id)
+
+	if !is_multiplayer_authority():
+		pulser.disable()
 
 static func create(player : Player, initial_position : Vector2) -> Ball:
 	var ball : Ball = preload("res://Scenes/ball.tscn").instantiate()
@@ -51,15 +58,12 @@ static func create(player : Player, initial_position : Vector2) -> Ball:
 
 func _ready():
 	position = sync_pos
+
 	if not owning_player:
 		var eligible_players = get_tree().get_nodes_in_group("players")
 		for eligible_player in eligible_players:
 			if eligible_player.name == "player_" + str(player_id):
 				owning_player = eligible_player
-
-	if !is_multiplayer_authority():
-		pulser.disable()
-
 
 func _physics_process(delta):
 	if is_multiplayer_authority():
@@ -124,7 +128,7 @@ func _physics_process(delta):
 
 		sync_pos = position
 	else:
-		get_tree().create_tween().tween_property(self, "position", sync_pos, 0.5)
+		get_tree().create_tween().tween_property(self, "position", sync_pos, 0.05)
 		pass
 
 

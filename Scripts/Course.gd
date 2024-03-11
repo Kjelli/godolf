@@ -25,48 +25,16 @@ func _ready():
 		return
 
 	# Events.handshake_received.connect(try_spawn)
-	old_spawn_player(1)
+	spawn_player(1, Networking.player_name)
 
-	multiplayer.peer_connected.connect(old_spawn_player)
+	Events.handshake_received.connect(on_handshake)
 
-#func try_spawn(handshake : Handshake):
-	#if multiplayer.is_server():
-		## spawn at server
-		#spawn_player(handshake.player_id, handshake.player_name)
-#
-		## spawn new one at existing places
-		#for peer : Handshake in Networking.connected_players:
-			#if peer.player_id == 1:
-				#continue
-			#spawn_player.rpc_id(peer.player_id, handshake.player_id, handshake.player_name)
-#
-		## spawn existing one at new place
-		#for peer : Handshake in Networking.connected_players:
-			#if peer.player_id == handshake.player_id:
-				#continue
-			#spawn_player.rpc_id(handshake.player_id, peer.player_id, peer.player_name)
+func on_handshake(handshake : Handshake):
+	spawn_player(handshake.player_id, handshake.player_name)
 
-#@rpc("authority", "call_local", "reliable", 1)
-#func spawn_player(player_id : int, player_name : String) -> void:
-	#Local.print("Spawning " + str(player_name) + " locally with id " + str(player_id))
-#
-	#if not multiplayer.is_server():
-		#await Local.timer(0.2).timeout
-#
-	#var point = spawn_zone.draw_point()
-	#var player : Player = Player.create(player_id, player_name, point)
-#
-	#var point2 = spawn_zone.draw_point()
-	#var ball : Ball = Ball.create(player, point2)
-#
-	#%Players.add_child(player, true)
-	#%Players.add_child(ball, true)
-#
-	#print("Spawned ", player_name, " with path ", player.get_path())
-
-func old_spawn_player(player_id : int) -> void:
+func spawn_player(player_id : int, player_name : String) -> void:
 	var point = spawn_zone.draw_point()
-	var player : Player = Player.create(player_id, "player_name", point)
+	var player : Player = Player.create(player_id, player_name, point)
 
 	var point2 = spawn_zone.draw_point()
 	var ball : Ball = Ball.create(player, point2)
@@ -91,5 +59,5 @@ func del_player(id: int, player_name : String):
 func _exit_tree():
 	if not multiplayer.is_server():
 		return
-	multiplayer.peer_connected.disconnect(old_spawn_player)
+	multiplayer.peer_connected.disconnect(spawn_player)
 	multiplayer.peer_disconnected.disconnect(del_player)

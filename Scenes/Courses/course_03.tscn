@@ -38,6 +38,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 1, 1, 1)
+metadata/_edit_lock_ = true
 
 [node name="TileMap" type="TileMap" parent="." groups=["golf_map"]]
 z_index = -1
@@ -78,11 +79,19 @@ offset_bottom = 192.0
 texture = ExtResource("6_1bwdi")
 expand_mode = 2
 stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="Players" type="Node" parent="."]
+unique_name_in_owner = true
+
+[node name="Balls" type="Node" parent="."]
+unique_name_in_owner = true
 
 [node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
 unique_name_in_owner = true
 _spawnable_scenes = PackedStringArray("res://Scenes/player.tscn", "res://Scenes/ball.tscn")
 spawn_path = NodePath("../Players")
 
-[node name="Players" type="Node" parent="."]
-unique_name_in_owner = true
+[node name="BallSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Scenes/ball.tscn")
+spawn_path = NodePath("../Balls")

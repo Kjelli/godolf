@@ -88,8 +88,8 @@ delta_interval = 0.5
 replication_config = SubResource("SceneReplicationConfig_db07g")
 
 [node name="DataSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_interval = 0.5
-delta_interval = 0.5
+replication_interval = 0.05
+delta_interval = 0.05
 replication_config = SubResource("SceneReplicationConfig_dkxsp")
 
 [node name="Sprite" type="Sprite2D" parent="."]

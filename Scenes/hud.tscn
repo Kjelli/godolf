@@ -23,9 +23,9 @@ func _ready() -> void:
 func on_handshake(handshake : Handshake):
 	create_label(handshake.player_name, handshake.player_id)
 
-func create_label(player_name : String, player_id : int):
+func create_label(player_name : String, _player_id : int):
 	var label = Label.new()
-	label.text = player_name + \" (\" + str(player_id) + \")\"
+	label.text = player_name
 	add_child(label)
 
 func on_disconnect(_player_id : int, player_name : String):

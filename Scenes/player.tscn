@@ -510,8 +510,8 @@ script = ExtResource("1_vg6jp")
 replication_config = SubResource("SceneReplicationConfig_pd2ek")
 
 [node name="DataSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_interval = 0.2
-delta_interval = 0.2
+replication_interval = 0.05
+delta_interval = 0.05
 replication_config = SubResource("SceneReplicationConfig_2ratp")
 
 [node name="PlayerInput" type="Node" parent="."]

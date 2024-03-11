@@ -29,12 +29,6 @@ var is_swinging : bool
 @export var sync_direction : Vector2
 @export var sync_is_swinging : bool
 
-func on_data_synchronized():
-	Local.print("Data synchronized")
-
-func on_data_delta_synchronized():
-	Local.print("Data delta synchronized")
-
 static func create(new_player_id : int, new_player_name : String, initial_position : Vector2) -> Player:
 	var player : Player = preload("res://Scenes/player.tscn").instantiate()
 	player.player_id = new_player_id
@@ -45,14 +39,13 @@ static func create(new_player_id : int, new_player_name : String, initial_positi
 	return player
 
 func on_player_id_set():
-	print(player_name)
 	set_multiplayer_authority(player_id, false)
 	%PlayerInput.set_multiplayer_authority(player_id)
 	$DataSynchronizer.set_multiplayer_authority(player_id)
-	%Name.text = str(player_name) + " " + str(player_id)
-	%Name.modulate = Color(0, 0, 1, 1) if is_multiplayer_authority() else Color(1, 1, 1, 1)
+	Local.print("Player with id " + str(player_id) + " got name: " + player_name)
+	%Name.text = str(player_name)
+	%Name.modulate = Color(1, 1, 1, 1) if is_multiplayer_authority() else Color(0.8, 0.8, 0.8, 1)
 	Events.player_spawned.emit(self)
-	pass
 
 func _ready():
 	position = sync_pos
@@ -115,7 +108,6 @@ func update_actions():
 		player_input.set_direction_rotational()
 		player_input.direction = player_input.direction.normalized()
 		club.show()
-		print("is_multiplayer_authority(): ", is_multiplayer_authority())
 	elif !is_swinging &&  is_aiming && !%PlayerInput.pressed_swing():
 		var axis_input = Input.get_axis("down", "up")
 		var fine = Input.is_action_pressed("fine")
@@ -175,7 +167,7 @@ func _physics_process(_delta):
 		move_and_slide()
 		sync_pos = position
 	else:
-		get_tree().create_tween().tween_property(self, "position", sync_pos, 0.2)
+		get_tree().create_tween().tween_property(self, "position", sync_pos, 0.05)
 
 func can_swing():
 	if !ball_in_range:
