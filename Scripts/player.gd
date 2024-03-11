@@ -35,7 +35,7 @@ static func create(new_player_id : int, new_player_name : String, initial_positi
 	player.player_name = new_player_name
 	player.sync_pos = initial_position
 	player.position = initial_position
-	player.name = "player_" + str(new_player_id)
+	player.name = str(new_player_id)
 	return player
 
 func on_player_id_set():

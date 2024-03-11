@@ -48,13 +48,13 @@ func spawn_camera(is_cinematic : bool = false) -> void:
 
 func del_player(id: int, player_name : String):
 	Local.print(player_name + " disconnected!")
-	if not $Players.has_node("player_" + str(id)):
+	if not $Players.has_node(str(id)):
 		return
-	$Players.get_node("player_" + str(id)).queue_free()
+	$Players.get_node(str(id)).queue_free()
 
-	if not $Balls.has_node("ball_" + str(id)):
+	if not $Balls.has_node(str(id)):
 		return
-	$Balls.get_node("ball_" + str(id)).queue_free()
+	$Balls.get_node(str(id)).queue_free()
 
 func _exit_tree():
 	if not multiplayer.is_server():

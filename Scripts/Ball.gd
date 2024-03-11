@@ -53,7 +53,7 @@ static func create(player : Player, initial_position : Vector2) -> Ball:
 	ball.position = initial_position
 	ball.sync_pos = initial_position
 	ball.last_shot_from = initial_position
-	ball.name = "ball_" + str(ball.player_id)
+	ball.name = str(ball.player_id)
 	return ball;
 
 func _ready():
@@ -62,7 +62,7 @@ func _ready():
 	if not owning_player:
 		var eligible_players = get_tree().get_nodes_in_group("players")
 		for eligible_player in eligible_players:
-			if eligible_player.name == "player_" + str(player_id):
+			if eligible_player.name == str(player_id):
 				owning_player = eligible_player
 
 func _physics_process(delta):
