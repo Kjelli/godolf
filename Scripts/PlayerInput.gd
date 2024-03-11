@@ -9,9 +9,6 @@ enum DirectionMode { Ignore, EightDirections, Rotation }
 @export var direction := Vector2()
 
 func _ready():
-	# Only process for the local player.
-	set_process(get_multiplayer_authority() == multiplayer.get_unique_id())
-
 	if initial_direction_mode:
 		direction_mode = initial_direction_mode
 

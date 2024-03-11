@@ -16,12 +16,12 @@ var is_swinging : bool
 var player_name : String
 
 # Set by the authority, synchronized on spawn.
-@export var player_id : int:
-	set(id):
-		player_id = id
-		$DataSynchronizer.set_multiplayer_authority(id)
-		%PlayerInput.set_multiplayer_authority(id)
-		Events.player_authority_changed.emit(self, player_id)
+@export var player_id : int #:
+	#set(id):
+		#player_id = id
+		#$DataSynchronizer.set_multiplayer_authority(id)
+		#%PlayerInput.set_multiplayer_authority(id)
+		#Events.player_authority_changed.emit(self, player_id)
 
 # syncables
 @export var sync_pos : Vector2
@@ -46,7 +46,7 @@ func is_local_authority():
 	return player_id == multiplayer.get_unique_id()
 
 func _ready():
-	%Name.text = str(player_name)
+	%Name.text = str(player_name) + " " + str(is_local_authority())
 	Events.player_spawned.emit(self)
 
 func _process(_delta: float) -> void:

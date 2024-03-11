@@ -30,17 +30,18 @@ func _on_host_button_pressed() -> void:
 	load_course()
 
 func on_connect_to_server() -> void:
-	Local.print("Connected! Sending handshake to server in 1 s.")
-	await get_tree().create_timer(1).timeout
+	Local.print("Connected! Sending handshake to server.")
 	send_info.rpc_id(1, multiplayer.get_unique_id(), player_name)
 	Local.print("Sent handshake to server.")
 
-@rpc("any_peer", "call_local")
+@rpc("any_peer", "call_remote")
 func send_info(received_player_id : int, received_player_name : String) -> void:
-	var handshake = Handshake.create(received_player_id, received_player_name)
-	Events.handshake_received.emit(handshake)
 	Local.print("Handshake from " + received_player_name + " with ID " + str(received_player_id))
+
+	var handshake = Handshake.create(received_player_id, received_player_name)
 	connected_players.append(handshake)
+	Events.handshake_received.emit(handshake)
+
 	# Send all connections back
 	if multiplayer.is_server():
 		# notify new client about old clients
@@ -51,14 +52,14 @@ func send_info(received_player_id : int, received_player_name : String) -> void:
 
 		# notify old clients about new client
 		for existing_peer : Handshake in connected_players:
-			if existing_peer.player_id == received_player_id:
+			if existing_peer.player_id == 1 || existing_peer.player_id == received_player_id:
 				continue
 			send_info.rpc_id(existing_peer.player_id, received_player_id, received_player_name)
 
 func on_peer_disconnected(player_id : int):
 	notify_disconnect(player_id)
 
-@rpc("any_peer", "call_remote")
+@rpc("any_peer", "call_local")
 func notify_disconnect(player_id : int):
 	for existing_player : Handshake in connected_players:
 		if existing_player.player_id == player_id:
@@ -68,6 +69,8 @@ func notify_disconnect(player_id : int):
 			break
 	if multiplayer.is_server():
 		for existing_peer : Handshake in connected_players:
+			if existing_peer.player_id == 1 || existing_peer.player_id == player_id:
+				continue
 			notify_disconnect.rpc_id(existing_peer.player_id, player_id)
 
 func _on_connect_button_pressed() -> void:

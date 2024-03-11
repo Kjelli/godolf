@@ -28,17 +28,23 @@ func _ready():
 
 func try_spawn(handshake : Handshake):
 	if multiplayer.is_server():
-		# spawn on server
+		# spawn at server
 		spawn_player(handshake.player_id, handshake.player_name)
 
 		# spawn new one at existing places
 		for peer : Handshake in Networking.connected_players:
-			Local.print("Asking " + peer.player_name + " to spawn " + handshake.player_name + " locally")
+			Local.print("First loop: Asking " + peer.player_name + " to spawn " + handshake.player_name + " locally")
+			if peer.player_id == 1:
+				print("nah skipping")
+				continue
 			spawn_player.rpc_id(peer.player_id, handshake.player_id, handshake.player_name)
 
 		# spawn existing one at new place
 		for peer : Handshake in Networking.connected_players:
-			Local.print("Asking " + handshake.player_name + " to spawn " + peer.player_name + " locally")
+			Local.print("Second loop: Asking " + handshake.player_name + " to spawn " + peer.player_name + " locally")
+			if peer.player_id == handshake.player_id:
+				print("nah skipping")
+				continue
 			spawn_player.rpc_id(handshake.player_id, peer.player_id, peer.player_name)
 
 func spawn_camera(is_cinematic : bool = false) -> void:
@@ -55,6 +61,9 @@ func spawn_player(player_id : int, player_name : String) -> void:
 
 	%Players.add_child(player, true)
 	%Players.add_child(ball, true)
+
+	player.set_multiplayer_authority(player_id)
+	ball.set_multiplayer_authority(player_id)
 
 func del_player(id: int):
 	if not $Players.has_node("player_" + str(id)):

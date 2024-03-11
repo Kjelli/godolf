@@ -516,6 +516,7 @@ replication_config = SubResource("SceneReplicationConfig_2ratp")
 [node name="PlayerInput" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("2_dbhay")
+direction_mode = 1
 initial_direction_mode = 1
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
