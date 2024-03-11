@@ -40,7 +40,7 @@ shader_parameter/modulate = null
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_n50uc"]
 properties/0/path = NodePath(".:player_id")
 properties/0/spawn = true
-properties/0/replication_mode = 1
+properties/0/replication_mode = 2
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_2ratp"]
 properties/0/path = NodePath(".:sync_pos")

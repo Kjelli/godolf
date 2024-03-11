@@ -14,22 +14,21 @@
 [sub_resource type="GDScript" id="GDScript_alyjy"]
 script/source = "extends VBoxContainer
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Events.handshake_received.connect(on_handshake)
 	Events.someone_disconnected.connect(on_disconnect)
-	create_label(Networking.player_name)
+	create_label(Networking.player_name, multiplayer.get_unique_id())
 
 func on_handshake(handshake : Handshake):
-	create_label(handshake.player_name)
+	create_label(handshake.player_name, handshake.player_id)
 
-func create_label(player_name : String):
+func create_label(player_name : String, player_id : int):
 	var label = Label.new()
-	label.text = player_name
+	label.text = player_name + \" (\" + str(player_id) + \")\"
 	add_child(label)
 
-func on_disconnect(player_id : int, player_name : String):
+func on_disconnect(_player_id : int, player_name : String):
 	for child : Label in get_children():
 		if child.text == str(player_name):
 			child.queue_free()

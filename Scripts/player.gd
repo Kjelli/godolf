@@ -16,12 +16,7 @@ var is_swinging : bool
 var player_name : String
 
 # Set by the authority, synchronized on spawn.
-@export var player_id : int #:
-	#set(id):
-		#player_id = id
-		#$DataSynchronizer.set_multiplayer_authority(id)
-		#%PlayerInput.set_multiplayer_authority(id)
-		#Events.player_authority_changed.emit(self, player_id)
+@export var player_id : int
 
 # syncables
 @export var sync_pos : Vector2
@@ -31,6 +26,12 @@ var player_name : String
 @export var sync_direction : Vector2
 @export var sync_is_swinging : bool
 
+func _enter_tree() -> void:
+	Local.print(player_name + " is " + str(player_id))
+	Local.print(str(multiplayer.get_unique_id()))
+	Local.print(str(get_multiplayer_authority()))
+	Local.print(str(is_multiplayer_authority()))
+
 static func create(new_player_id : int, new_player_name : String, initial_position : Vector2) -> Player:
 	var player : Player = preload("res://Scenes/player.tscn").instantiate()
 	player.player_id = new_player_id
@@ -38,16 +39,21 @@ static func create(new_player_id : int, new_player_name : String, initial_positi
 	player.sync_pos = initial_position
 	player.position = initial_position
 	player.name = "player_" + str(new_player_id)
+	player.set_multiplayer_authority.call_deferred(new_player_id)
 	return player
 
 func is_local_authority():
 	if not multiplayer:
 		return false
+
 	return player_id == multiplayer.get_unique_id()
 
 func _ready():
-	%Name.text = str(player_name) + " " + str(is_local_authority())
+	%Name.text = str(player_name) + " " + str(player_id)
+	%Name.modulate = Color(0, 0, 1, 1) if is_local_authority() else Color(1, 1, 1, 1)
 	Events.player_spawned.emit(self)
+	position = sync_pos
+
 
 func _process(_delta: float) -> void:
 	update_animation()
@@ -108,6 +114,7 @@ func update_actions():
 		player_input.set_direction_rotational()
 		player_input.direction = player_input.direction.normalized()
 		club.show()
+		print("is_multiplayer_authority(): ", is_multiplayer_authority())
 	elif !is_swinging &&  is_aiming && !%PlayerInput.pressed_swing():
 		var axis_input = Input.get_axis("down", "up")
 		var fine = Input.is_action_pressed("fine")

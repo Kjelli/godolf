@@ -26,10 +26,7 @@ var current_trail : Trail
 @export var sync_pos : Vector2
 
 # Set by the authority, synchronized on spawn.
-@export var player_id : int:
-	set(id):
-		player_id = id
-		$DataSynchronizer.set_multiplayer_authority(id)
+@export var player_id : int
 
 var last_shot_from : Vector2
 var times_hit : int = 0
@@ -44,6 +41,7 @@ static func create(player : Player, initial_position : Vector2) -> Ball:
 	ball.player_id = player.player_id
 	ball.position = initial_position
 	ball.name = "ball_" + str(ball.player_id)
+	ball.set_multiplayer_authority(ball.player_id)
 	return ball;
 
 func is_local_authority():
