@@ -31,7 +31,7 @@ func _ready():
 func try_spawn(handshake : Handshake):
 	if multiplayer.is_server():
 		# spawn at server
-		spawn_player.call_deferred(handshake.player_id, handshake.player_name)
+		spawn_player(handshake.player_id, handshake.player_name)
 
 		# spawn new one at existing places
 		for peer : Handshake in Networking.connected_players:
@@ -52,11 +52,15 @@ func spawn_camera(is_cinematic : bool = false) -> void:
 @rpc("authority", "call_local", "reliable", 1)
 func spawn_player(player_id : int, player_name : String) -> void:
 	Local.print("Spawning " + str(player_name) + " locally with id " + str(player_id))
-	var point = spawn_zone.draw_point()
-	var middle = spawn_zone.draw_point()
 
+	if not multiplayer.is_server():
+		await Local.timer(0.2).timeout
+
+	var point = spawn_zone.draw_point()
 	var player : Player = Player.create(player_id, player_name, point)
-	var ball : Ball = Ball.create(player, middle)
+
+	var point2 = spawn_zone.draw_point()
+	var ball : Ball = Ball.create(player, point2)
 
 	%Players.add_child(player, true)
 	%Players.add_child(ball, true)

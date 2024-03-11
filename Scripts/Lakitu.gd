@@ -51,33 +51,31 @@ func handle_cinematic_movement(delta : float):
 	position = position.lerp(cinematic_target, CINEMATIC_LERP)
 
 func _on_player_spawned(player : Player):
-	if !player.is_local_authority():
+	if !player.is_multiplayer_authority():
 		return
 	current_target = player
 	lerp_weight = PLAYER_LERP
 
 func _on_player_authority_changed(player : Player, _player_id : int):
-	if !player.is_local_authority():
+	if !player.is_multiplayer_authority():
 		return
 	current_target = player
 	lerp_weight = PLAYER_LERP
 
 func _on_ball_shot(ball : Ball):
-	if !ball.is_local_authority():
+	if !ball.is_multiplayer_authority():
 		return
 	current_target = ball
 	lerp_weight = BALL_LERP
 
 func _on_ball_stopped(ball : Ball):
-	Local.print(" Oh, a ball stopped?")
-	if !ball.is_local_authority():
-		Local.print(" Oh, it was " + ball.name + ", that's not mine! And it certainly does not belong to " + ball.owning_player.name)
+	if !ball.is_multiplayer_authority():
 		return
 	current_target = ball.owning_player
 	lerp_weight = PLAYER_LERP
 
 func _on_ball_sunk(ball : Ball):
-	if ball.player_id != multiplayer.get_unique_id():
+	if !ball.is_multiplayer_authority():
 		return
 	current_target = ball.owning_player
 	lerp_weight = PLAYER_LERP

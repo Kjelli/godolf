@@ -35,13 +35,16 @@ var is_tweening_into_goal : bool
 signal entered_goal_proximity
 signal left_goal_proximity
 
+func _enter_tree() -> void:
+	set_multiplayer_authority(player_id)
+
 static func create(player : Player, initial_position : Vector2) -> Ball:
 	var ball : Ball = preload("res://Scenes/ball.tscn").instantiate()
 	ball.owning_player = player
 	ball.player_id = player.player_id
 	ball.position = initial_position
+	ball.last_shot_from = initial_position
 	ball.name = "ball_" + str(ball.player_id)
-	ball.set_multiplayer_authority(ball.player_id)
 	return ball;
 
 func is_local_authority():
