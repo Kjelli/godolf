@@ -1,7 +1,21 @@
-[gd_resource type="Theme" load_steps=15 format=3 uid="uid://c6xmle10dxmjm"]
+[gd_resource type="Theme" load_steps=23 format=3 uid="uid://c6xmle10dxmjm"]
 
 [ext_resource type="FontFile" uid="uid://bp7dibf5mckj6" path="res://resources/rainyhearts.ttf" id="1_dolcy"]
 [ext_resource type="Texture2D" uid="uid://n16nhg6lu03f" path="res://resources/gui.png" id="2_ivuxg"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jkc63"]
+texture = ExtResource("2_ivuxg")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+expand_margin_left = 6.0
+expand_margin_top = 6.0
+expand_margin_right = 6.0
+expand_margin_bottom = 6.0
+region_rect = Rect2(48, 192, 48, 48)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_krvlv"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fyibi"]
 texture = ExtResource("2_ivuxg")
@@ -9,6 +23,10 @@ texture_margin_left = 16.0
 texture_margin_top = 16.0
 texture_margin_right = 16.0
 texture_margin_bottom = 16.0
+expand_margin_left = 6.0
+expand_margin_top = 6.0
+expand_margin_right = 6.0
+expand_margin_bottom = 6.0
 region_rect = Rect2(48, 48, 48, 48)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_l6fgm"]
@@ -17,6 +35,10 @@ texture_margin_left = 16.0
 texture_margin_top = 16.0
 texture_margin_right = 16.0
 texture_margin_bottom = 16.0
+expand_margin_left = 6.0
+expand_margin_top = 6.0
+expand_margin_right = 6.0
+expand_margin_bottom = 6.0
 region_rect = Rect2(48, 0, 48, 48)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2sgjv"]
@@ -25,7 +47,43 @@ texture_margin_left = 16.0
 texture_margin_top = 16.0
 texture_margin_right = 16.0
 texture_margin_bottom = 16.0
+expand_margin_left = 6.0
+expand_margin_top = 6.0
+expand_margin_right = 6.0
+expand_margin_bottom = 6.0
 region_rect = Rect2(48, 96, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tponi"]
+atlas = ExtResource("2_ivuxg")
+region = Rect2(112, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s6i04"]
+atlas = ExtResource("2_ivuxg")
+region = Rect2(112, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jyhu2"]
+atlas = ExtResource("2_ivuxg")
+region = Rect2(112, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tjml5"]
+atlas = ExtResource("2_ivuxg")
+region = Rect2(112, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ny7oc"]
+atlas = ExtResource("2_ivuxg")
+region = Rect2(112, 0, 16, 16)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vjmql"]
+texture = ExtResource("2_ivuxg")
+texture_margin_left = 16.0
+texture_margin_top = 16.0
+texture_margin_right = 16.0
+texture_margin_bottom = 16.0
+expand_margin_left = 6.0
+expand_margin_top = 6.0
+expand_margin_right = 6.0
+expand_margin_bottom = 6.0
+region_rect = Rect2(48, 144, 48, 48)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_googq"]
 content_margin_left = 2.0
@@ -100,9 +158,20 @@ default_font = ExtResource("1_dolcy")
 default_font_size = 16
 Button/font_sizes/font_size = 16
 Button/fonts/font = ExtResource("1_dolcy")
+Button/styles/disabled = SubResource("StyleBoxTexture_jkc63")
+Button/styles/focus = SubResource("StyleBoxEmpty_krvlv")
 Button/styles/hover = SubResource("StyleBoxTexture_fyibi")
 Button/styles/normal = SubResource("StyleBoxTexture_l6fgm")
 Button/styles/pressed = SubResource("StyleBoxTexture_2sgjv")
+CheckBox/icons/checked = SubResource("AtlasTexture_tponi")
+CheckBox/icons/checked_disabled = SubResource("AtlasTexture_s6i04")
+CheckBox/icons/radio_checked = SubResource("AtlasTexture_jyhu2")
+CheckBox/icons/radio_checked_disabled = SubResource("AtlasTexture_jyhu2")
+CheckBox/icons/radio_unchecked = SubResource("AtlasTexture_tjml5")
+CheckBox/icons/radio_unchecked_disabled = SubResource("AtlasTexture_tjml5")
+CheckBox/icons/unchecked = SubResource("AtlasTexture_ny7oc")
+CheckBox/icons/unchecked_disabled = SubResource("AtlasTexture_ny7oc")
+CheckBox/styles/hover_pressed = SubResource("StyleBoxTexture_vjmql")
 ItemList/fonts/font = ExtResource("1_dolcy")
 ItemList/styles/focus = SubResource("StyleBoxTexture_googq")
 ItemList/styles/panel = SubResource("StyleBoxTexture_fq37o")
@@ -110,6 +179,7 @@ ItemList/styles/selected = SubResource("StyleBoxFlat_vmidb")
 ItemList/styles/selected_focus = SubResource("StyleBoxFlat_wmflt")
 Label/fonts/font = ExtResource("1_dolcy")
 LineEdit/fonts/font = ExtResource("1_dolcy")
+OptionButton/constants/arrow_margin = 16
 OptionButton/fonts/font = ExtResource("1_dolcy")
 PanelContainer/styles/panel = SubResource("StyleBoxTexture_1twth")
 TabBar/fonts/font = ExtResource("1_dolcy")

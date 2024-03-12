@@ -73,7 +73,7 @@ func _ready():
 			if eligible_player.name == str(player_id):
 				owning_player = eligible_player
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if is_multiplayer_authority():
 		sync_aim_vis = aim_line.visible
 		sync_aim_scale = aim_line.scale

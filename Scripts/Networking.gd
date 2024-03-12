@@ -19,6 +19,8 @@ func _ready() -> void:
 	multiplayer.connected_to_server.connect(on_connect_to_server)
 	multiplayer.peer_disconnected.connect(on_peer_disconnected)
 
+	Events.game_start_requested.connect(on_game_start_requested)
+
 func _on_host_button_pressed() -> void:
 	if %NameEdit.text == "":
 		OS.alert("A golfer needs a name!")
@@ -33,7 +35,7 @@ func _on_host_button_pressed() -> void:
 
 	# Add self as a known connection
 	connected_players.append(Handshake.create(1, player_name, player_color))
-	load_course()
+	load_lobby()
 
 func _on_connect_button_pressed() -> void:
 	# Start as client.
@@ -51,7 +53,7 @@ func _on_connect_button_pressed() -> void:
 		OS.alert("Failed to start multiplayer client.")
 		return
 	multiplayer.set_multiplayer_peer(peer)
-	load_course()
+	load_lobby()
 
 func on_connect_to_server() -> void:
 	send_info.rpc_id(1, multiplayer.get_unique_id(), player_name, player_color.to_html())
@@ -116,3 +118,6 @@ func load_course() -> void:
 	%MainMenu.hide()
 	if multiplayer.is_server():
 		change_level.call_deferred(load("res://Scenes/Courses/" + scene_wrapper.selected_course))
+
+func on_game_start_requested(game_descriptor : GameDescriptor):
+	change_level.call_deferred(game_descriptor.course)

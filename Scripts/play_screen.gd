@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 @onready var items : ItemList = %CourseList
 @onready var courses : PackedStringArray
@@ -10,13 +10,6 @@ extends Node2D
 @onready var networking : Networking = %Networking
 @onready var scene_wrapper : Node = %SceneWrapper
 @onready var course_spawner : MultiplayerSpawner = %CourseSpawner
-
-var colors : Array = [
-	Color(1,1,1,1),
-	Color(1,0,0,1),
-	Color(0,1,0,1),
-	Color(0,0,1,1),
-]
 
 func _ready():
 	DisplayServer.window_set_min_size(Vector2i(640, 480))
@@ -44,6 +37,8 @@ func scan_scenes():
 		else:
 			paths.push_back(file_name.replace(".remap",""))
 		file_name = dir.get_next()
+
+	# pre-add lobby
 	for scene in paths:
 		items.add_item(scene.replace(".tscn", ""))
 		courses.append(scene)
@@ -57,7 +52,6 @@ func _on_play_pressed():
 
 func _on_quit_pressed():
 	get_tree().quit()
-
 
 func _on_course_list_item_selected(index: int) -> void:
 	scene_wrapper.selected_course = courses[index]

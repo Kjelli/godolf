@@ -50,9 +50,10 @@ func on_player_id_set():
 	$DataSynchronizer.set_multiplayer_authority(player_id)
 	%Name.text = str(player_name)
 	%Name.modulate = player_color
-	Events.player_spawned.emit(self)
 
 func _ready():
+	Events.player_spawned.emit(self)
+
 	position = sync_pos
 
 func _process(_delta: float) -> void:

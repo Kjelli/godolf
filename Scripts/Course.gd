@@ -3,17 +3,12 @@ class_name Course
 
 @onready var spawn_zone : SpawnZone = $SpawnZone
 
-@export var is_display_only : bool
 @export var course_par : int = 3
 
 var lakitu : Lakitu
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	if is_display_only:
-		spawn_camera(true)
-		return
-
 	add_child(load("res://Scenes/hud.tscn").instantiate())
 	Golf.set_par(course_par)
 	spawn_camera()
@@ -26,9 +21,16 @@ func _ready():
 
 	Events.handshake_received.connect(on_handshake)
 
-	spawn_player(1, Networking.player_name, Networking.player_color)
+	if Networking.connected_players.size() == 0:
+		spawn_player(1, Networking.player_name, Networking.player_color)
+
+	for existing_peer in Networking.connected_players:
+		spawn_player_from_handshake.call_deferred(existing_peer)
 
 func on_handshake(handshake : Handshake):
+	spawn_player_from_handshake(handshake)
+
+func spawn_player_from_handshake(handshake : Handshake):
 	spawn_player(handshake.player_id, handshake.player_name, handshake.player_color)
 
 func spawn_player(player_id : int, player_name : String, player_color : Color) -> void:
@@ -41,8 +43,8 @@ func spawn_player(player_id : int, player_name : String, player_color : Color) -
 	%Players.add_child(player, true)
 	%Balls.add_child(ball, true)
 
-func spawn_camera(is_cinematic : bool = false) -> void:
-	lakitu = Lakitu.create(is_cinematic)
+func spawn_camera() -> void:
+	lakitu = Lakitu.create()
 	add_child(lakitu)
 
 func del_player(id: int, player_name : String):

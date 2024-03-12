@@ -17,38 +17,32 @@ var lerp_weight = 0.9
 var tilemap : TileMap
 var cinematic_target : Vector2
 
-const CINEMATIC_REFRESH_TARGET_INTERVAL_SECONDS = 6
+func _enter_tree() -> void:
+	Events.player_spawned.connect(_on_player_spawned)
+	Events.player_authority_changed.connect(_on_player_authority_changed)
+	Events.ball_shot.connect(_on_ball_shot)
+	Events.ball_stopped.connect(_on_ball_stopped)
+	Events.ball_sunk.connect(_on_ball_sunk)
 
 func _ready():
-	Events.connect(Events.player_spawned.get_name(), _on_player_spawned)
-	Events.connect(Events.player_authority_changed.get_name(), _on_player_authority_changed)
-	Events.connect(Events.ball_shot.get_name(), _on_ball_shot)
-	Events.connect(Events.ball_stopped.get_name(), _on_ball_stopped)
-	Events.connect(Events.ball_sunk.get_name(), _on_ball_sunk)
 	if is_cinematic:
 		tilemap = get_tree().get_first_node_in_group("golf_map")
 	pass
 
 func _process(delta : float):
-	if is_cinematic:
-		handle_cinematic_movement(delta)
+	if (not current_target) || !is_instance_valid(current_target):
+		var players : Array[Node] = get_tree().get_nodes_in_group("players")
+		for player in players:
+			if player.name.to_int() == multiplayer.get_unique_id():
+				current_target = player
+
+	if current_target && !current_target.is_multiplayer_authority():
+		current_target = null
 		return
+
 
 	if current_target && is_instance_valid(current_target):
 		position = position.lerp(current_target.position, lerp_weight)
-
-func handle_cinematic_movement(delta : float):
-	if cinematic_target == Vector2.ZERO || timer > CINEMATIC_REFRESH_TARGET_INTERVAL_SECONDS:
-		var bounds : Rect2i = tilemap.get_used_rect()
-		var size = bounds.size * tilemap.tile_set.tile_size / zoom.x
-		var center = Vector2(size.x / 2, size.y / 2)
-		if position == Vector2.ZERO:
-			position = center
-		cinematic_target = Vector2(randi_range(center.x - size.x / 3, center.x + size.x / 3),randi_range(center.y - size.y / 3, center.y + size.y / 3))
-		timer = 0
-
-	timer += delta
-	position = position.lerp(cinematic_target, CINEMATIC_LERP)
 
 func _on_player_spawned(player : Player):
 	if !player.is_multiplayer_authority():
@@ -80,8 +74,7 @@ func _on_ball_sunk(ball : Ball):
 	current_target = ball.owning_player
 	lerp_weight = PLAYER_LERP
 
-static func create(as_cinematic : bool = false) -> Lakitu:
+static func create() -> Lakitu:
 	var scn = preload("res://Scenes/lakitu.tscn")
 	var instance = scn.instantiate()
-	instance.is_cinematic = as_cinematic
 	return instance

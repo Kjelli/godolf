@@ -2,21 +2,21 @@ extends VBoxContainer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	Events.handshake_received.connect(on_handshake)
+	Events.player_spawned.connect(on_player_spawned)
 	Events.someone_disconnected.connect(on_disconnect)
-	create_label(Networking.player_name, multiplayer.get_unique_id(), Networking.player_color)
 
-func on_handshake(handshake : Handshake):
-	create_label(handshake.player_name, handshake.player_id, handshake.player_color)
+func on_player_spawned(player : Player):
+	create_label(player.player_name, player.player_id, player.player_color)
 
-func create_label(player_name : String, _player_id : int, player_color : Color):
+func create_label(player_name : String, player_id : int, player_color : Color):
+	print("Adding player label for ", player_name, " on player ", str(player_id), " spawned!")
 	var label = Label.new()
-	label.modulate = player_color
+	label.name = str(player_id)
 	label.text = player_name
-	add_child(label)
+	label.modulate = player_color
+	add_child(label, true)
 
 func on_disconnect(_player_id : int, player_name : String):
 	for child : Label in get_children():
 		if child.text == str(player_name):
 			child.queue_free()
-			break
