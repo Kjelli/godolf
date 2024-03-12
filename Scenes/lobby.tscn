@@ -1,0 +1,135 @@
+[gd_scene load_steps=5 format=3 uid="uid://bave8n0jaepdf"]
+
+[ext_resource type="Script" path="res://Scripts/Lobby.gd" id="1_j3jp6"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_pvkah"]
+properties/0/path = NodePath("LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/ScrollContainer/VBoxContainer/CourseSelect:selected")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath("LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/ScrollContainer/VBoxContainer/CollisionToggle:button_pressed")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_0rxcb"]
+size = Vector2(16, 16)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_b3w4s"]
+size = Vector2(16, 16)
+
+[node name="Lobby" type="Node"]
+script = ExtResource("1_j3jp6")
+
+[node name="SettingsSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_pvkah")
+
+[node name="PlayerPanelSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Scenes/Gui/LobbyPlayerPanel.tscn")
+spawn_path = NodePath("../LobbyRoot/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/ScrollContainer/Players")
+
+[node name="LobbyRoot" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+
+[node name="MarginContainer" type="MarginContainer" parent="LobbyRoot"]
+custom_minimum_size = Vector2(640, 480)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LobbyRoot/MarginContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="LobbyRoot/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Lobby"
+
+[node name="Spacer" type="MarginContainer" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 20
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Connected players"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Players" type="VBoxContainer" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="StartGameButton" type="Button" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Start Game"
+
+[node name="PanelContainer2" type="PanelContainer" parent="LobbyRoot/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+text = "Settings"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+vertical_scroll_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CourseSelect" type="OptionButton" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+item_count = 3
+selected = 0
+popup/item_0/text = "Select Course"
+popup/item_0/id = 0
+popup/item_0/disabled = true
+popup/item_1/text = "Course 1"
+popup/item_1/icon = SubResource("PlaceholderTexture2D_0rxcb")
+popup/item_1/id = 1
+popup/item_2/text = "Course 2"
+popup/item_2/icon = SubResource("PlaceholderTexture2D_b3w4s")
+popup/item_2/id = 2
+
+[node name="CollisionToggle" type="CheckBox" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Collision"
+
+[connection signal="pressed" from="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/StartGameButton" to="." method="_on_start_game_button_pressed"]
+[connection signal="item_selected" from="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/ScrollContainer/VBoxContainer/CourseSelect" to="." method="_on_course_select_item_selected"]

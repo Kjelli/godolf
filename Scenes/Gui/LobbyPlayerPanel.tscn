@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3 uid="uid://uqcoqlt1g16y"]
+
+[ext_resource type="Script" path="res://Scenes/Gui/LobbyPlayerPanel.gd" id="1_anyrt"]
+[ext_resource type="Texture2D" uid="uid://cw47cvwbqpx37" path="res://resources/kick.png" id="1_q1ej4"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_rfsoj"]
+properties/0/path = NodePath("..:player_id")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath("..:player_name")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+properties/2/path = NodePath("..:player_color")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ymsnd"]
+atlas = ExtResource("1_q1ej4")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jmclo"]
+atlas = ExtResource("1_q1ej4")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_76gkb"]
+atlas = ExtResource("1_q1ej4")
+region = Rect2(0, 16, 16, 16)
+
+[node name="PlayerPanel" type="PanelContainer"]
+size_flags_horizontal = 3
+script = ExtResource("1_anyrt")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="PlayerIdSynchronizer" type="MultiplayerSynchronizer" parent="HBoxContainer"]
+replication_config = SubResource("SceneReplicationConfig_rfsoj")
+
+[node name="PlayerNameLabel" type="Label" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "Kjelli"
+
+[node name="KickButton" type="TextureButton" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+texture_normal = SubResource("AtlasTexture_ymsnd")
+texture_pressed = SubResource("AtlasTexture_jmclo")
+texture_hover = SubResource("AtlasTexture_76gkb")
