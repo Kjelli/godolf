@@ -1,4 +1,4 @@
-extends Node
+extends Node2D
 
 @onready var items : ItemList = %CourseList
 @onready var courses : PackedStringArray
@@ -8,7 +8,7 @@ extends Node
 @onready var color_picker : ColorRect = %ColorPicker
 
 @onready var networking : Networking = %Networking
-@onready var course_wrapper : Node = %CourseWrapper
+@onready var scene_wrapper : Node = %SceneWrapper
 @onready var course_spawner : MultiplayerSpawner = %CourseSpawner
 
 var colors : Array = [
@@ -50,7 +50,7 @@ func scan_scenes():
 		course_spawner.add_spawnable_scene("res://Scenes/Courses/" + scene)
 
 func _on_play_pressed():
-	var scene = load("res://Scenes/Courses/" + course_wrapper.selected_course)
+	var scene = load("res://Scenes/Courses/" + scene_wrapper.selected_course)
 	%MainMenu.hide()
 	add_child.call_deferred(scene.instantiate())
 	pass # Replace with function body.
@@ -60,12 +60,12 @@ func _on_quit_pressed():
 
 
 func _on_course_list_item_selected(index: int) -> void:
-	course_wrapper.selected_course = courses[index]
+	scene_wrapper.selected_course = courses[index]
 	pass # Replace with function body.
 
 
 func _on_quick_play_pressed() -> void:
-	course_wrapper.selected_course = courses[randi_range(0, courses.size()-1)]
+	scene_wrapper.selected_course = courses[randi_range(0, courses.size()-1)]
 	_on_play_pressed()
 	pass # Replace with function body.
 

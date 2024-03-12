@@ -3,7 +3,7 @@ class_name Networking
 
 const PORT = 25565
 
-@onready var course_wrapper : Node = %CourseWrapper
+@onready var scene_wrapper : Node = %SceneWrapper
 
 static var player_name : String
 static var player_color : Color
@@ -30,6 +30,8 @@ func _on_host_button_pressed() -> void:
 		OS.alert("Failed to start multiplayer server.")
 		return
 	multiplayer.set_multiplayer_peer(peer)
+
+	# Add self as a known connection
 	connected_players.append(Handshake.create(1, player_name, player_color))
 	load_course()
 
@@ -69,7 +71,7 @@ func send_info(received_player_id : int, received_player_name : String, received
 		for existing_peer : Handshake in connected_players:
 			if existing_peer.player_id == received_player_id:
 				continue
-			send_info.rpc_id(received_player_id, existing_peer.player_id, existing_peer.player_name, existing_peer.player_color)
+			send_info.rpc_id(received_player_id, existing_peer.player_id, existing_peer.player_name, existing_peer.player_color.to_html())
 
 		# notify old clients about new client
 		for existing_peer : Handshake in connected_players:
@@ -97,15 +99,20 @@ func notify_disconnect(player_id : int):
 # Call this function deferred and only on the main authority (server).
 func change_level(scene: PackedScene) -> void:
 	# Remove old course if any.
-	for c in course_wrapper.get_children():
-		course_wrapper.remove_child(c)
+	for c in scene_wrapper.get_children():
+		scene_wrapper.remove_child(c)
 		c.queue_free()
 	# Add new level.
-	course_wrapper.add_child(scene.instantiate())
+	scene_wrapper.add_child(scene.instantiate())
+
+func load_lobby() -> void:
+	# Hide the UI and unpause to start the game.
+	%MainMenu.hide()
+	if multiplayer.is_server():
+		change_level.call_deferred(load("res://Scenes/lobby.tscn"))
 
 func load_course() -> void:
 	# Hide the UI and unpause to start the game.
 	%MainMenu.hide()
 	if multiplayer.is_server():
-		#change_level.call_deferred(load("res://Scenes/Courses/course_01.tscn"))
-		change_level.call_deferred(load("res://Scenes/Courses/" + course_wrapper.selected_course))
+		change_level.call_deferred(load("res://Scenes/Courses/" + scene_wrapper.selected_course))

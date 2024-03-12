@@ -5,15 +5,15 @@
 [ext_resource type="Script" path="res://Scripts/CourseWrapper.gd" id="3_g646a"]
 [ext_resource type="Script" path="res://Scripts/Components/Wobbler.gd" id="3_pxmhw"]
 
-[node name="PlayScreen" type="Node"]
+[node name="PlayScreen" type="Node2D"]
 script = ExtResource("1_r80s8")
 
 [node name="CourseSpawner" type="MultiplayerSpawner" parent="."]
 unique_name_in_owner = true
-spawn_path = NodePath("../CourseWrapper")
+spawn_path = NodePath("../SceneWrapper")
 spawn_limit = 1
 
-[node name="CourseWrapper" type="Node" parent="."]
+[node name="SceneWrapper" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("3_g646a")
 
