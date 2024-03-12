@@ -29,6 +29,15 @@ properties/2/replication_mode = 2
 properties/3/path = NodePath(".:sync_aim_rot")
 properties/3/spawn = true
 properties/3/replication_mode = 2
+properties/4/path = NodePath(".:sync_mod_a")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+properties/5/path = NodePath(".:sync_splash_emit")
+properties/5/spawn = true
+properties/5/replication_mode = 2
+properties/6/path = NodePath(".:sync_scale")
+properties/6/spawn = true
+properties/6/replication_mode = 2
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jqxxf"]
 radius = 2.0

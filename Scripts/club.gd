@@ -10,7 +10,7 @@ func update_charge(player_id : int, charge_delta : float, x_direction : float):
 
 	var leftSwing = PI * charge / max_charge
 	var rightSwing = - PI * charge / max_charge
-	rotation = leftSwing if x_direction < 0 else rightSwing
+	Local.tween(self, "rotation",leftSwing if x_direction < 0 else rightSwing, 0.1)
 
 	Events.charge_updated.emit(player_id, min_charge, charge, max_charge)
 

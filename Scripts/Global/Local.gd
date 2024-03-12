@@ -16,5 +16,8 @@ func print_rpc(msg : String = ""):
 func tween(object : Object, property : NodePath, final_val : Variant, duration : float) -> PropertyTweener:
 	return get_tree().create_tween().tween_property(object, property, final_val, duration)
 
+func tween_custom(callable : Callable, from_val : Variant, final_val : Variant, duration : float) -> MethodTweener:
+	return get_tree().create_tween().tween_method(callable, from_val, final_val, duration)
+
 func timer(duration : float) -> SceneTreeTimer:
 	return get_tree().create_timer(duration)

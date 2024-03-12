@@ -25,6 +25,7 @@ var nearby_goal : Goal
 var current_trail : Trail
 
 var is_moving : bool
+var is_in_water : bool
 var last_shot_from : Vector2
 var times_hit : int = 0
 var is_tweening_into_goal : bool
@@ -34,13 +35,15 @@ var is_tweening_into_goal : bool
 @export var sync_aim_vis : bool
 @export var sync_aim_scale : Vector2
 @export var sync_aim_rot : float
+@export var sync_mod_a : float
+@export var sync_splash_emit : bool
+@export var sync_scale : Vector2
 
 # Set by the authority, synchronized on spawn.
 @export var player_id : int:
 	set(id):
 		player_id = id
 		on_player_id_set.call_deferred()
-
 
 func on_player_id_set():
 	set_multiplayer_authority(player_id, false)
@@ -75,77 +78,84 @@ func _process(delta: float) -> void:
 		sync_aim_vis = aim_line.visible
 		sync_aim_scale = aim_line.scale
 		sync_aim_rot = aim_line.rotation
+		sync_mod_a = sprite.modulate.a
+		sync_splash_emit = splash_particles.emitting
+		sync_scale = scale
 	else:
 		aim_line.visible = sync_aim_vis
+		splash_particles.emitting = sync_splash_emit
+		Local.tween(sprite, "modulate:a", sync_mod_a, 0.1)
+		Local.tween(self, "scale", sync_scale, 0.1)
 		Local.tween(aim_line, "scale", sync_aim_scale, 0.1)
-		Local.tween(aim_line, "rotation", sync_aim_rot, 0.1)
+		Local.tween(aim_line, "rotation", aim_line.rotation + wrapf(sync_aim_rot - aim_line.rotation, -PI, PI), 0.1)
 
 func _physics_process(delta):
 	if is_multiplayer_authority():
-		acceleration = acceleration.lerp(Vector2.ZERO, 0.15)
-		velocity = (velocity + acceleration * delta) * 0.985
-
-		var tile_type = check_tile_type_under_ball()
-		var elevation = check_elevation_under_ball()
-
-		if velocity.length_squared() < 0.25 && acceleration.length_squared() < 0.25 && not elevation:
-			if is_moving:
-				pulser.enable()
-				is_moving = false
-				current_trail.stop()
-				current_trail = null
-				Events.ball_stopped.emit(self)
-				velocity = Vector2.ZERO
-				acceleration = Vector2.ZERO
-
-		elif not is_moving:
-			is_moving = true
-			pulser.disable()
-			current_trail = Trail.create()
-			add_child(current_trail)
-
-		if nearby_goal:
-			var direction = (nearby_goal.transform.get_origin() - transform.get_origin()).normalized()
-			var distance = (nearby_goal.transform.get_origin() - transform.get_origin()).length()
-
-			var bowl_range = 14
-			if distance < bowl_range:
-				var distance_percent = 1 - distance / bowl_range
-				scale = Vector2(0.3 + (1 - distance_percent) * 0.7, 0.3 + (1 - distance_percent) * 0.7)
-				acceleration = (direction * distance) * 8
-			else:
-				scale = Vector2(1.0, 1.0)
-
-			if distance < 4 && velocity.length_squared() < 2500:
-				sink(nearby_goal)
-
-		if is_in_goal:
-			velocity = (is_in_goal.position - position).normalized() * 10
-
-		if is_in_goal && !is_tweening_into_goal:
-			is_tweening_into_goal = true
-			acceleration = Vector2.ZERO
-			var sinkTween = get_tree().create_tween()
-			sinkTween.set_ease(Tween.EASE_IN)
-			sinkTween.tween_property(self, "position", is_in_goal.position, 0.2)
-			sinkTween.tween_property(self, "modulate", Color(0,0,0,0), 0.5)
-			sinkTween.tween_callback(on_sunk)
-
-		if elevation:
-			velocity += 5 * elevation * weight
-
-		if tile_type == "Sand":
-			velocity *= 0.95
-
-		var collision = move_and_collide(velocity * delta)
-		if collision:
-			on_collision(collision)
-
-		sync_pos = position
+		update_local_physics(delta)
 	else:
 		get_tree().create_tween().tween_property(self, "position", sync_pos, 0.05)
-		pass
 
+func update_local_physics(delta : float):
+	acceleration = acceleration.lerp(Vector2.ZERO, 0.15)
+	velocity = (velocity + acceleration * delta) * 0.985
+
+	var tile_type = check_tile_type_under_ball()
+	var elevation = check_elevation_under_ball()
+
+	if velocity.length_squared() < 0.25 && acceleration.length_squared() < 0.25 && not elevation:
+		if is_moving && !is_in_water:
+			pulser.enable()
+			is_moving = false
+			current_trail.stop()
+			current_trail = null
+			Events.ball_stopped.emit(self)
+			velocity = Vector2.ZERO
+			acceleration = Vector2.ZERO
+
+	elif not is_moving:
+		is_moving = true
+		pulser.disable()
+		current_trail = Trail.create()
+		add_child(current_trail)
+
+	if nearby_goal:
+		var direction = (nearby_goal.transform.get_origin() - transform.get_origin()).normalized()
+		var distance = (nearby_goal.transform.get_origin() - transform.get_origin()).length()
+
+		var bowl_range = 14
+		if distance < bowl_range:
+			var distance_percent = 1 - distance / bowl_range
+			scale = Vector2(0.3 + (1 - distance_percent) * 0.7, 0.3 + (1 - distance_percent) * 0.7)
+			acceleration = (direction * distance) * 8
+		else:
+			scale = Vector2(1.0, 1.0)
+
+		if distance < 4 && velocity.length_squared() < 2500:
+			sink(nearby_goal)
+
+	if is_in_goal:
+		velocity = (is_in_goal.position - position).normalized() * 10
+
+	if is_in_goal && !is_tweening_into_goal:
+		is_tweening_into_goal = true
+		acceleration = Vector2.ZERO
+		var sinkTween = get_tree().create_tween()
+		sinkTween.set_ease(Tween.EASE_IN)
+		sinkTween.tween_property(self, "position", is_in_goal.position, 0.2)
+		sinkTween.tween_property(self, "modulate", Color(0,0,0,0), 0.5)
+		sinkTween.tween_callback(on_sunk)
+
+	if elevation:
+		velocity += 5 * elevation * weight
+
+	if tile_type == "Sand":
+		velocity *= 0.95
+
+	var collision = move_and_collide(velocity * delta)
+	if collision:
+		on_collision(collision)
+
+	sync_pos = position
 
 func check_tile_type_under_ball() -> Variant:
 	var tile_pos = tile_map.local_to_map(transform.origin - tile_map.transform.origin)
@@ -210,12 +220,14 @@ func on_sunk():
 	call_deferred("queue_free")
 
 func sink_in_water():
+	is_in_water = true
 	splash_particles.emitting = true
 	velocity = Vector2.ZERO
 	acceleration = Vector2.ZERO
 	sprite.modulate.a = 0
 	await get_tree().create_timer(1).timeout
 
+	is_in_water = false
 	sprite.modulate.a = 1
 	global_position = last_shot_from
 	Events.ball_stopped.emit(self)

@@ -76,6 +76,7 @@ func update_animation():
 		animation_tree["parameters/Swing/blend_position"] = y
 
 		club.visible = sync_club_vis
+		#Local.tween(club, "rotation", sync_club_rot, 0.1) # Works but on hard left angle does full rotation
 		Local.tween(club, "rotation", sync_club_rot, 0.1)
 
 func update_local_animation():
@@ -176,6 +177,8 @@ func _physics_process(_delta):
 
 func can_swing():
 	if !ball_in_range:
+		return false
+	if ball_in_range.is_in_water:
 		return false
 	if ball_in_range.velocity != Vector2.ZERO:
 		return false
