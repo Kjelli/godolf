@@ -29,7 +29,7 @@ func _ready():
 		tilemap = get_tree().get_first_node_in_group("golf_map")
 	pass
 
-func _process(delta : float):
+func _process(_delta : float):
 	if (not current_target) || !is_instance_valid(current_target):
 		var players : Array[Node] = get_tree().get_nodes_in_group("players")
 		for player in players:

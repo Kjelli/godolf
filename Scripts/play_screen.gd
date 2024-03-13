@@ -1,15 +1,16 @@
 extends Node
 
+@onready var networking : Networking = %Networking
+@onready var scene_wrapper : Node = %SceneWrapper
+@onready var course_spawner : MultiplayerSpawner = %CourseSpawner
+
 @onready var items : ItemList = %CourseList
-@onready var courses : PackedStringArray
 @onready var host_button : Button = %HostButton
 @onready var connect_button : Button = %ConnectButton
 @onready var ip_edit : LineEdit = %IpEdit
 @onready var color_picker : ColorRect = %ColorPicker
 
-@onready var networking : Networking = %Networking
-@onready var scene_wrapper : Node = %SceneWrapper
-@onready var course_spawner : MultiplayerSpawner = %CourseSpawner
+@onready var courses : PackedStringArray
 
 func _ready():
 	DisplayServer.window_set_min_size(Vector2i(640, 480))
@@ -23,6 +24,14 @@ func _ready():
 
 func _process(_delta) -> void:
 	if Input.is_action_just_pressed("cancel"):
+		for child in scene_wrapper.get_children():
+			scene_wrapper.remove_child(child)
+			child.queue_free()
+
+			if multiplayer.multiplayer_peer:
+				multiplayer.multiplayer_peer.close()
+				multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
+			Networking.connected_players.clear()
 		%MainMenu.show()
 
 func scan_scenes():
@@ -47,7 +56,7 @@ func scan_scenes():
 func _on_play_pressed():
 	var scene = load("res://Scenes/Courses/" + scene_wrapper.selected_course)
 	%MainMenu.hide()
-	add_child.call_deferred(scene.instantiate())
+	scene_wrapper.add_child.call_deferred(scene.instantiate())
 	pass # Replace with function body.
 
 func _on_quit_pressed():

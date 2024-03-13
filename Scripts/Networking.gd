@@ -4,6 +4,9 @@ class_name Networking
 const PORT = 25565
 
 @onready var scene_wrapper : Node = %SceneWrapper
+@onready var main_menu : CanvasLayer = %MainMenu
+@onready var name_edit : LineEdit = %NameEdit
+@onready var ip_edit : LineEdit = %IpEdit
 
 static var player_name : String
 static var player_color : Color
@@ -18,11 +21,12 @@ func _ready() -> void:
 
 	multiplayer.connected_to_server.connect(on_connect_to_server)
 	multiplayer.peer_disconnected.connect(on_peer_disconnected)
+	multiplayer.server_disconnected.connect(on_disconnect_from_server)
 
 	Events.game_start_requested.connect(on_game_start_requested)
 
 func _on_host_button_pressed() -> void:
-	if %NameEdit.text == "":
+	if name_edit.text == "":
 		OS.alert("A golfer needs a name!")
 		return
 	# Start as server.
@@ -39,11 +43,11 @@ func _on_host_button_pressed() -> void:
 
 func _on_connect_button_pressed() -> void:
 	# Start as client.
-	if %NameEdit.text == "":
+	if name_edit.text == "":
 		OS.alert("A golfer needs a name!")
 		return
 
-	var url : String = %IpEdit.text
+	var url : String = ip_edit.text
 	if url == "":
 		OS.alert("Need a remote to connect to.")
 		return
@@ -57,6 +61,12 @@ func _on_connect_button_pressed() -> void:
 
 func on_connect_to_server() -> void:
 	send_info.rpc_id(1, multiplayer.get_unique_id(), player_name, player_color.to_html())
+
+func on_disconnect_from_server():
+	for c in scene_wrapper.get_children():
+		scene_wrapper.remove_child(c)
+		c.queue_free()
+	main_menu.show()
 
 @rpc("any_peer", "call_remote")
 func send_info(received_player_id : int, received_player_name : String, received_player_color : String) -> void:
@@ -109,13 +119,13 @@ func change_level(scene: PackedScene) -> void:
 
 func load_lobby() -> void:
 	# Hide the UI and unpause to start the game.
-	%MainMenu.hide()
+	main_menu.hide()
 	if multiplayer.is_server():
 		change_level.call_deferred(load("res://Scenes/lobby.tscn"))
 
 func load_course() -> void:
 	# Hide the UI and unpause to start the game.
-	%MainMenu.hide()
+	main_menu.hide()
 	if multiplayer.is_server():
 		change_level.call_deferred(load("res://Scenes/Courses/" + scene_wrapper.selected_course))
 

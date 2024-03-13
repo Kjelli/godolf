@@ -16,7 +16,7 @@ func _ready():
 	Events.someone_disconnected.connect(del_player)
 
 	# We only need to spawn players on the server.
-	if not multiplayer.is_server():
+	if (not multiplayer.multiplayer_peer is OfflineMultiplayerPeer) && not multiplayer.is_server():
 		return
 
 	Events.handshake_received.connect(on_handshake)
@@ -58,7 +58,7 @@ func del_player(id: int, player_name : String):
 	$Balls.get_node(str(id)).queue_free()
 
 func _exit_tree():
-	if not multiplayer.is_server():
+	if (not multiplayer.multiplayer_peer is OfflineMultiplayerPeer) || not multiplayer.is_server():
 		return
-	multiplayer.peer_connected.disconnect(spawn_player)
-	multiplayer.peer_disconnected.disconnect(del_player)
+	Events.handshake_received.disconnect(on_handshake)
+	Events.someone_disconnected.disconnect(del_player)
