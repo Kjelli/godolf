@@ -109,19 +109,22 @@ func notify_disconnect(player_id : int):
 			notify_disconnect.rpc_id(existing_peer.player_id, player_id)
 
 # Call this function deferred and only on the main authority (server).
-func change_level(scene: PackedScene) -> void:
+func change_level(game_descriptor: GameDescriptor) -> void:
 	# Remove old course if any.
 	for c in scene_wrapper.get_children():
 		scene_wrapper.remove_child(c)
 		c.queue_free()
 	# Add new level.
-	scene_wrapper.add_child(scene.instantiate())
+	var course : Course = game_descriptor.course.instantiate()
+	course.use_ball_collision = game_descriptor.use_ball_collision
+	scene_wrapper.add_child(course)
 
 func load_lobby() -> void:
 	# Hide the UI and unpause to start the game.
 	main_menu.hide()
 	if multiplayer.is_server():
-		change_level.call_deferred(load("res://Scenes/lobby.tscn"))
+		var lobby = load("res://Scenes/lobby.tscn").instantiate()
+		scene_wrapper.add_child(lobby)
 
 func load_course() -> void:
 	# Hide the UI and unpause to start the game.
@@ -130,4 +133,4 @@ func load_course() -> void:
 		change_level.call_deferred(load("res://Scenes/Courses/" + scene_wrapper.selected_course))
 
 func on_game_start_requested(game_descriptor : GameDescriptor):
-	change_level.call_deferred(game_descriptor.course)
+	change_level.call_deferred(game_descriptor)

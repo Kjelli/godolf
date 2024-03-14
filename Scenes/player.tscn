@@ -537,6 +537,8 @@ unique_name_in_owner = true
 visible = false
 
 [node name="BallRange" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BallRange"]
 position = Vector2(0, 5)

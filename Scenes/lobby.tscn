@@ -129,7 +129,7 @@ popup/item_2/id = 2
 [node name="CollisionToggle" type="CheckBox" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/ScrollContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Collision"
+text = "Balls collide"
 
 [connection signal="pressed" from="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/StartGameButton" to="." method="_on_start_game_button_pressed"]
 [connection signal="item_selected" from="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/ScrollContainer/VBoxContainer/CourseSelect" to="." method="_on_course_select_item_selected"]

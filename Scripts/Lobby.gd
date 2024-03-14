@@ -29,12 +29,15 @@ func on_someone_disconnected(player_id : int, _player_name : String):
 	if players.has_node(str(player_id)):
 		players.get_node(str(player_id)).queue_free()
 
-func _on_course_select_item_selected(index: int) -> void:
-	pass # Replace with function body.
-
 
 func _on_start_game_button_pressed() -> void:
 	var selected_course = "res://Scenes/Courses/course_01.tscn"
 	var game_descriptor : GameDescriptor = GameDescriptor.create(load(selected_course), collision_toggle.button_pressed)
 	Events.game_start_requested.emit(game_descriptor)
 	pass # Replace with function body.
+
+# Settings
+
+func _on_course_select_item_selected(index: int) -> void:
+	pass # Replace with function body.
+

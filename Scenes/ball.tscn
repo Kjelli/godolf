@@ -95,6 +95,7 @@ scale_curve = SubResource("CurveTexture_xrsin")
 
 [node name="Ball" type="CharacterBody2D" groups=["camera_targets"]]
 y_sort_enabled = true
+collision_layer = 16
 collision_mask = 9
 motion_mode = 1
 slide_on_ceiling = false

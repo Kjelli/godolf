@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cw2shrgidjs3s"]
+[gd_scene load_steps=11 format=3 uid="uid://cw2shrgidjs3s"]
 
 [ext_resource type="Script" path="res://Scripts/ChargeBar.gd" id="1_7t76o"]
 [ext_resource type="Texture2D" uid="uid://vkkihgyvgvlp" path="res://resources/chargebar.png" id="2_752ma"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://Scripts/AnnouncementInfo.gd" id="5_6mt71"]
 [ext_resource type="Script" path="res://Scripts/Components/Wobbler.gd" id="6_2rsj0"]
 [ext_resource type="Script" path="res://Scripts/PlayerList.gd" id="8_i6rsw"]
+[ext_resource type="Script" path="res://Scripts/ScoreTable.gd" id="9_q77wk"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_5bir5"]
 
@@ -163,6 +164,7 @@ script = ExtResource("5_6mt71")
 script = ExtResource("6_2rsj0")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
+visible = false
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
@@ -175,7 +177,8 @@ theme_override_constants/margin_left = 20
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer"]
 layout_mode = 2
@@ -191,3 +194,36 @@ script = ExtResource("6_2rsj0")
 unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("8_i6rsw")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -89.5
+offset_top = -57.5
+offset_right = 89.5
+offset_bottom = -6.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("9_q77wk")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Score"
+
+[node name="ScoreTable" type="GridContainer" parent="PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 8
+columns = 20

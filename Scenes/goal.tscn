@@ -84,6 +84,8 @@ pause_between = 5
 pulse_direction = 0
 
 [node name="GoalProximity" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GoalProximity"]
 shape = SubResource("CircleShape2D_3yj3c")
