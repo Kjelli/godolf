@@ -11,3 +11,7 @@ We're online! 🤯
 Will this work?
 
 ![image](https://github.com/Kjelli/godolf/assets/6494395/0a718f28-fd99-44c6-a4b0-15aa3ab17b4d)
+
+That gui tho!
+
+![image](https://github.com/Kjelli/godolf/assets/6494395/045a6bc2-65be-420a-8ff3-2b4157e1cd91)
