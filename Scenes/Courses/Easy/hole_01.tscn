@@ -1,0 +1,92 @@
+[gd_scene load_steps=10 format=3 uid="uid://cpksbm7v1i565"]
+
+[ext_resource type="Script" path="res://Scripts/Hole.gd" id="1_ndld2"]
+[ext_resource type="Shader" path="res://Shaders/diamond_pattern.gdshader" id="2_uyt6r"]
+[ext_resource type="TileSet" uid="uid://dq5k8vjyemokk" path="res://Tilesets/main.tres" id="3_ceojw"]
+[ext_resource type="PackedScene" uid="uid://j3cdaw1m1ad5" path="res://Scenes/spawnzone.tscn" id="4_t8uko"]
+[ext_resource type="PackedScene" uid="uid://kdvh5m8lrweg" path="res://Scenes/goal.tscn" id="5_0pruu"]
+[ext_resource type="Shader" path="res://Shaders/cloud.gdshader" id="6_gobgt"]
+[ext_resource type="Texture2D" uid="uid://davagrodrkqll" path="res://resources/cloud.png" id="7_sfojn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hk6pr"]
+shader = ExtResource("2_uyt6r")
+shader_parameter/BackColor = Color(0, 0.4, 0.58, 1)
+shader_parameter/CloudColor = Color(0.18, 0.7, 0.87, 1)
+shader_parameter/speed = 0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ospym"]
+shader = ExtResource("6_gobgt")
+shader_parameter/custom_color = Color(0.101961, 0.101961, 0.101961, 0.054902)
+shader_parameter/direction = Vector2(1, 0)
+shader_parameter/speed_scale = 0.01
+
+[node name="Hole" type="Node2D"]
+script = ExtResource("1_ndld2")
+hole_par = 2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -100
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_hk6pr")
+custom_minimum_size = Vector2(640, 480)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0, 1, 1, 1)
+metadata/_edit_lock_ = true
+
+[node name="TileMap" type="TileMap" parent="." groups=["golf_map"]]
+z_index = -1
+y_sort_enabled = true
+tile_set = ExtResource("3_ceojw")
+format = 2
+layer_0/name = "Ground"
+layer_0/y_sort_enabled = true
+layer_0/tile_data = PackedInt32Array(0, 720896, 3, 65536, 720896, 3, 131072, 720896, 3, 196608, 720896, 3, 262144, 720896, 3, 1, 720896, 3, 65537, 393216, 3, 131073, 393216, 4, 196609, 393216, 5, 262145, 720896, 3, 2, 720896, 3, 65538, 458752, 3, 131074, 458752, 4, 196610, 458752, 5, 262146, 720896, 3, 3, 720896, 3, 65539, 458752, 3, 131075, 458752, 4, 196611, 458752, 5, 262147, 720896, 3, 4, 720896, 3, 65540, 524288, 3, 131076, 524288, 4, 196612, 524288, 5, 262148, 720896, 3, 5, 720896, 3, 65541, 720896, 3, 131077, 720896, 3, 196613, 720896, 3, 262149, 720896, 3, 6, 720896, 3, 65542, 720896, 3, 131078, 720896, 3, 196614, 720896, 3, 262150, 720896, 3, 7, 0, 6, 65543, 0, 8, 131079, 720896, 3, 196615, 0, 6, 262151, 0, 8, 8, 65536, 6, 65544, 65536, 8, 131080, 720896, 3, 196616, 65536, 6, 262152, 65536, 8, 9, 65536, 6, 65545, 65536, 8, 131081, 720896, 3, 196617, 65536, 6, 262153, 65536, 8, 10, 65536, 6, 65546, 65536, 8, 131082, 720896, 3, 196618, 65536, 6, 262154, 65536, 8, 11, 131072, 6, 65547, 131072, 8, 131083, 720896, 3, 196619, 131072, 6, 262155, 131072, 8, 12, 720896, 3, 65548, 720896, 3, 131084, 720896, 3, 196620, 720896, 3, 262156, 720896, 3, 13, 720896, 3, 65549, 393216, 3, 131085, 393216, 4, 196621, 393216, 5, 262157, 720896, 3, 14, 720896, 3, 65550, 458752, 3, 131086, 458752, 4, 196622, 458752, 5, 262158, 720896, 3, 15, 720896, 3, 65551, 524288, 3, 131087, 524288, 4, 196623, 524288, 5, 262159, 720896, 3, 16, 0, 9, 65552, 0, 11, 131088, 720896, 3, 196624, 0, 9, 262160, 0, 11, 17, 65536, 9, 65553, 196608, 10, 131089, 0, 10, 196625, 196608, 9, 262161, 65536, 11, 18, 65536, 9, 65554, 65536, 10, 131090, 65536, 10, 196626, 65536, 10, 262162, 65536, 11, 19, 131072, 9, 65555, 131072, 10, 131091, 131072, 10, 196627, 131072, 10, 262163, 131072, 11)
+layer_1/name = "Walls"
+layer_1/y_sort_enabled = true
+layer_1/z_index = 1
+layer_1/tile_data = PackedInt32Array(131072, 196609, 1, 196608, 196609, 1, 262144, 262145, 1, 262145, 65537, 3, 2, 65537, 3, 262146, 65537, 3, 3, 65537, 3, 262147, 65537, 3, 4, 65537, 3, 262148, 65537, 3, 5, 65537, 3, 262149, 65537, 3, 6, 65537, 3, 262150, 65537, 3, 7, 65537, 3, 262151, 65537, 3, 8, 65537, 3, 262152, 65537, 3, 9, 65537, 3, 262153, 65537, 3, 10, 65537, 3, 262154, 65537, 3, 11, 65537, 3, 262155, 65537, 3, 12, 65537, 3, 262156, 65537, 3, 13, 65537, 3, 262157, 65537, 3, 14, 65537, 3, 262158, 65537, 3, 15, 65537, 3, 262159, 65537, 3, 16, 65537, 3, 262160, 65537, 3, 17, 65537, 3, 262161, 65537, 3, 18, 65537, 3, 262162, 65537, 3, 19, 327681, 0, 65555, 196609, 1, 131091, 196609, 1, 196627, 196609, 1, 262163, 327681, 1, 65536, 196609, 1, 0, 262145, 0, 1, 65537, 3)
+layer_2/name = "Objects"
+layer_2/y_sort_enabled = true
+layer_2/z_index = 1
+layer_2/tile_data = PackedInt32Array()
+
+[node name="SpawnZone" parent="." instance=ExtResource("4_t8uko")]
+unique_name_in_owner = true
+position = Vector2(48, 39)
+scale = Vector2(1.83, 1.83)
+
+[node name="Goal" parent="." instance=ExtResource("5_0pruu")]
+z_index = 1
+y_sort_enabled = true
+position = Vector2(232, 40)
+
+[node name="Clouds" type="TextureRect" parent="."]
+top_level = true
+material = SubResource("ShaderMaterial_ospym")
+offset_right = 319.0
+offset_bottom = 78.0
+texture = ExtResource("7_sfojn")
+expand_mode = 2
+stretch_mode = 1
+metadata/_edit_lock_ = true
+
+[node name="Players" type="Node" parent="."]
+unique_name_in_owner = true
+
+[node name="Balls" type="Node" parent="."]
+unique_name_in_owner = true
+
+[node name="BallSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Scenes/ball.tscn")
+spawn_path = NodePath("../Balls")
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Scenes/player.tscn")
+spawn_path = NodePath("../Players")
