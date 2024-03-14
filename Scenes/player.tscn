@@ -503,7 +503,7 @@ transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition
 z_index = 1
 y_sort_enabled = true
 material = SubResource("ShaderMaterial_qhnu6")
-collision_layer = 2
+collision_layer = 0
 collision_mask = 2
 motion_mode = 1
 script = ExtResource("1_vg6jp")
@@ -581,7 +581,6 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-text = "Kjelli"
 horizontal_alignment = 1
 
 [connection signal="body_entered" from="BallRange" to="." method="_on_ball_range_body_entered"]

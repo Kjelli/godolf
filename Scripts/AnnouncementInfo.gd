@@ -1,15 +1,43 @@
-extends Label
+extends CanvasItem
+
+class BallSunkAnnouncement:
+	var player_name : String
+	var score_name : String
+	var score_color : Color
+
+	static func create(_player_name : String, _score_name : String, _score_color : Color) -> BallSunkAnnouncement:
+		var announcement : BallSunkAnnouncement = BallSunkAnnouncement.new()
+		announcement.player_name = _player_name
+		announcement.score_name = _score_name
+		announcement.score_color = _score_color
+		return announcement
+
+@onready var player_label : Label = %PlayerLabel
+@onready var score_label : Label = %ScoreLabel
+
+@onready var announcements : Array = []
+var current_announcement : BallSunkAnnouncement
 
 func _ready():
 	modulate = Color(1,1,1,0)
-	Events.connect(Events.ball_sunk.get_name(), announce_shot_score)
+	Events.ball_sunk.connect(announce_shot_score)
 
-func announce_shot_score(ball : Ball) -> void:
-	var score : Golf.Score = Golf.get_score(ball.times_hit, Golf.current_course_par)
-	text = score.name
+func announce_shot_score(player_id : int, player_name : String, times_hit : int) -> void:
+	var score : Golf.Score = Golf.get_score(times_hit, Golf.current_course_par)
+	var player = "You" if player_id == multiplayer.get_unique_id() else player_name
+	var score_color = Color(1,1,0) if score.value < 0 else Color(0,1,0) if score.value == 0 else Color(1,0,0)
 
-	modulate = Color(1,1,0,0) if score.value < 0 else Color(0,1,0,0) if score.value == 0 else Color(1,0,0,0)
+	announcements.append(BallSunkAnnouncement.create(player, score.name.to_upper(), score_color))
 
-	await get_tree().create_tween().tween_property(self, "modulate:a", 1.0, 1.0).finished
-	await get_tree().create_timer(2).timeout
-	await get_tree().create_tween().tween_property(self, "modulate:a", 0.0, 1.0).finished
+func _process(_delta: float) -> void:
+	if not current_announcement && announcements.size() > 0:
+		current_announcement = announcements.pop_front() as BallSunkAnnouncement
+
+		player_label.text = "%s got" % current_announcement.player_name
+		score_label.text = current_announcement.score_name
+		modulate = Color(current_announcement.score_color, 0)
+
+		await get_tree().create_tween().tween_property(self, "modulate:a", 1.0, 0.5).finished
+		await get_tree().create_timer(3).timeout
+		await get_tree().create_tween().tween_property(self, "modulate:a", 0.0, 0.5).finished
+		current_announcement = null

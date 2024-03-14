@@ -48,8 +48,10 @@ func on_player_id_set():
 	set_multiplayer_authority(player_id, false)
 	%PlayerInput.set_multiplayer_authority(player_id)
 	$DataSynchronizer.set_multiplayer_authority(player_id)
-	%Name.text = str(player_name)
-	%Name.modulate = player_color
+
+	if not is_multiplayer_authority():
+		%Name.text = str(player_name)
+		%Name.modulate = player_color
 
 func _ready():
 	Events.player_spawned.emit(self)

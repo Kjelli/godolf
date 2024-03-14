@@ -143,7 +143,7 @@ func update_local_physics(delta : float):
 		sinkTween.set_ease(Tween.EASE_IN)
 		sinkTween.tween_property(self, "position", is_in_goal.position, 0.2)
 		sinkTween.tween_property(self, "modulate", Color(0,0,0,0), 0.5)
-		sinkTween.tween_callback(on_sunk)
+		sinkTween.tween_callback(trigger_sink)
 
 	if elevation:
 		velocity += 5 * elevation * weight
@@ -214,9 +214,13 @@ func on_collision(collision : KinematicCollision2D):
 		good_bounce(self, body)
 		bounce_particles.emit_particle(body.transform, body.velocity, body.modulate, body.modulate, 0)
 
-func on_sunk():
-	Events.ball_sunk.emit(self)
-	print("Nice! Sunk on shot #" + str(times_hit))
+func trigger_sink():
+	on_sunk.rpc(owning_player.player_id, owning_player.player_name, times_hit)
+
+@rpc("any_peer", "call_local", "reliable")
+func on_sunk(_player_id : int, player_name : String, _times_hit : int):
+	Events.ball_sunk.emit(_player_id, player_name, _times_hit)
+	Local.print("Nice! Sunk on shot #" + str(times_hit))
 	call_deferred("queue_free")
 
 func sink_in_water():

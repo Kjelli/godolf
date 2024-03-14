@@ -15,4 +15,4 @@ signal charge_updated(player_id : int, min_charge : float, current_charge : floa
 
 signal ball_shot(ball : Ball)
 signal ball_stopped(ball : Ball)
-signal ball_sunk(ball : Ball)
+signal ball_sunk(player_id : int, player_name : String, times_hit : int)
