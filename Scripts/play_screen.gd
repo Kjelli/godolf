@@ -4,10 +4,16 @@ extends Node
 @onready var scene_wrapper : Node = %SceneWrapper
 @onready var course_spawner : MultiplayerSpawner = %CourseSpawner
 
+@onready var main_menu : CanvasLayer = %MainMenu
+@onready var singleplayer_menu : CanvasLayer = %SingleplayerMenu
+@onready var multiplayer_menu : CanvasLayer = %MultiplayerMenu
+
 @onready var hole_list : ItemList = %CourseList
+
 @onready var host_button : Button = %HostButton
 @onready var connect_button : Button = %ConnectButton
 @onready var ip_edit : LineEdit = %IpEdit
+@onready var port_edit : LineEdit = %PortEdit
 @onready var color_picker : ColorRect = %ColorPicker
 
 @onready var available_holes : Array
@@ -18,7 +24,7 @@ func _ready():
 	color_picker.color = Color(randf(), randf(), randf(), 1)
 	networking.player_color = color_picker.color
 
-	scan_scenes()
+	populate_single_player_holes()
 	hole_list.select(0)
 	_on_course_list_item_selected(0)
 
@@ -32,9 +38,12 @@ func _process(_delta) -> void:
 				multiplayer.multiplayer_peer.close()
 				multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 			Networking.connected_players.clear()
-		%MainMenu.show()
+		CourseContext.reset()
+		singleplayer_menu.hide()
+		multiplayer_menu.hide()
+		main_menu.show()
 
-func scan_scenes():
+func populate_single_player_holes():
 	var courses = CourseLoader.list_courses()
 	for course : CourseDescriptor in courses:
 		for hole : HoleDescriptor in course.holes:
@@ -44,28 +53,24 @@ func scan_scenes():
 
 func _on_play_pressed():
 	var hole_scene = load(scene_wrapper.selected_hole.scene_path)
-	CourseContext.init_course(scene_wrapper.selected_hole.part_of_course_name, scene_wrapper.selected_hole.display_name)
-	%MainMenu.hide()
+	CourseContext.init_course(scene_wrapper.selected_hole.part_of_course_name, scene_wrapper.selected_hole.display_name, false)
+	singleplayer_menu.hide()
+	multiplayer_menu.hide()
+	main_menu.hide()
 	scene_wrapper.add_child.call_deferred(hole_scene.instantiate())
-	pass # Replace with function body.
 
 func _on_quit_pressed():
 	get_tree().quit()
 
 func _on_course_list_item_selected(index: int) -> void:
 	scene_wrapper.selected_hole = available_holes[index]
-	pass # Replace with function body.
-
 
 func _on_quick_play_pressed() -> void:
 	scene_wrapper.selected_hole = available_holes[randi_range(0, available_holes.size()-1)]
 	_on_play_pressed()
-	pass # Replace with function body.
 
 func _on_name_edit_text_changed(new_text: String) -> void:
 	networking.player_name = new_text
-	pass # Replace with function body.
-
 
 func _on_color_picker_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -73,4 +78,30 @@ func _on_color_picker_gui_input(event: InputEvent) -> void:
 		if mbe.button_index == 1 && mbe.pressed:
 			color_picker.color = Color(randf(), randf(), randf(), 1)
 			networking.player_color = color_picker.color
+
+func _on_single_player_back_pressed() -> void:
+	singleplayer_menu.hide()
+	main_menu.show()
+
+func _on_singleplayer_button_pressed() -> void:
+	main_menu.hide()
+	singleplayer_menu.show()
+
+func _on_multiplayer_button_pressed() -> void:
+	main_menu.hide()
+	multiplayer_menu.show()
+
+func _on_multiplayer_back_button_pressed() -> void:
+	multiplayer_menu.hide()
+	main_menu.show()
 	pass # Replace with function body.
+
+func _on_host_button_pressed() -> void:
+	singleplayer_menu.hide()
+	multiplayer_menu.hide()
+	networking.host_server(port_edit.text.to_int())
+
+func _on_connect_button_pressed() -> void:
+	singleplayer_menu.hide()
+	multiplayer_menu.hide()
+	networking.connect_to_server(ip_edit.text, port_edit.text.to_int())

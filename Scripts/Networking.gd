@@ -1,12 +1,8 @@
 extends Node
 class_name Networking
 
-const PORT = 25565
-
 @onready var scene_wrapper : Node = %SceneWrapper
 @onready var main_menu : CanvasLayer = %MainMenu
-@onready var name_edit : LineEdit = %NameEdit
-@onready var ip_edit : LineEdit = %IpEdit
 
 static var player_name : String
 static var player_color : Color
@@ -17,21 +13,22 @@ func _ready() -> void:
 	# Automatically start the server in headless mode.
 	if DisplayServer.get_name() == "headless":
 		print("Automatically starting dedicated server.")
-		_on_host_button_pressed.call_deferred()
+		host_server.call_deferred()
 
 	multiplayer.connected_to_server.connect(on_connect_to_server)
 	multiplayer.peer_disconnected.connect(on_peer_disconnected)
 	multiplayer.server_disconnected.connect(on_disconnect_from_server)
 
 	Events.game_start_requested.connect(on_game_start_requested)
+	Events.game_over.connect(on_game_over)
 
-func _on_host_button_pressed() -> void:
-	if name_edit.text == "":
+func host_server(port : int) -> void:
+	if player_name == "":
 		OS.alert("A golfer needs a name!")
 		return
 	# Start as server.
 	var peer = ENetMultiplayerPeer.new()
-	peer.create_server(PORT)
+	peer.create_server(port)
 	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
 		OS.alert("Failed to start multiplayer server.")
 		return
@@ -41,18 +38,17 @@ func _on_host_button_pressed() -> void:
 	connected_players.append(Handshake.create(1, player_name, player_color))
 	load_lobby()
 
-func _on_connect_button_pressed() -> void:
+func connect_to_server(url : String, port : int) -> void:
 	# Start as client.
-	if name_edit.text == "":
+	if player_name == "":
 		OS.alert("A golfer needs a name!")
 		return
 
-	var url : String = ip_edit.text
 	if url == "":
 		OS.alert("Need a remote to connect to.")
 		return
 	var peer = ENetMultiplayerPeer.new()
-	peer.create_client(url, PORT)
+	peer.create_client(url, port)
 	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
 		OS.alert("Failed to start multiplayer client.")
 		return
@@ -111,21 +107,21 @@ func notify_disconnect(player_id : int):
 # Call this function deferred and only on the main authority (server).
 func change_level(game_descriptor: GameDescriptor) -> void:
 	# Remove old course if any.
-	for c in scene_wrapper.get_children():
-		scene_wrapper.remove_child(c)
-		c.queue_free()
+	clear_scenes()
 
 	# Add new level.
-	var hole : HoleDescriptor = game_descriptor.next_hole
-	if hole.hole_index == 0:
-		CourseContext.init_course.rpc(game_descriptor.course.course_name, hole.display_name)
-	var hole_scene : Hole = load(hole.scene_path).instantiate()
-	hole_scene.use_ball_collision = game_descriptor.use_ball_collision
-	scene_wrapper.add_child(hole_scene)
+	var hole_descriptor : HoleDescriptor = game_descriptor.next_hole
+	CourseContext.init_course.rpc(game_descriptor.course.course_name, hole_descriptor.display_name, game_descriptor.use_ball_collision)
+
+	var hole : Hole = load(hole_descriptor.scene_path).instantiate()
+	scene_wrapper.add_child(hole)
 
 func load_lobby() -> void:
 	# Hide the UI and unpause to start the game.
 	main_menu.hide()
+	# Remove old course if any.
+	clear_scenes()
+
 	if multiplayer.is_server():
 		var lobby = load("res://Scenes/lobby.tscn").instantiate()
 		scene_wrapper.add_child(lobby)
@@ -135,6 +131,19 @@ func load_course() -> void:
 	main_menu.hide()
 	if multiplayer.is_server():
 		change_level.call_deferred(load("res://Scenes/Courses/" + scene_wrapper.selected_course))
+
+func clear_scenes() -> void:
+	for c in scene_wrapper.get_children():
+		scene_wrapper.remove_child(c)
+		c.queue_free()
+
+func on_game_over() -> void:
+	CourseContext.reset()
+	if multiplayer.multiplayer_peer is OfflineMultiplayerPeer:
+		clear_scenes()
+		main_menu.show()
+	else:
+		load_lobby()
 
 func on_game_start_requested(game_descriptor : GameDescriptor):
 	change_level.call_deferred(game_descriptor)

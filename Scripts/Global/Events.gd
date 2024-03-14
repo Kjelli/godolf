@@ -6,6 +6,8 @@ signal someone_disconnected(player_id : int, player_name : String)
 
 # Lobby transition
 signal game_start_requested(game_descriptor : GameDescriptor)
+signal game_proceeding
+signal game_over
 
 # In game
 signal player_spawned(player : Player)
@@ -16,3 +18,5 @@ signal charge_updated(player_id : int, min_charge : float, current_charge : floa
 signal ball_shot(ball : Ball)
 signal ball_stopped(ball : Ball)
 signal ball_sunk(player_id : int, player_name : String, times_hit : int)
+
+signal player_score_updated(player_score : PlayerScore)

@@ -9,6 +9,9 @@ properties/0/replication_mode = 2
 properties/1/path = NodePath("LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/ScrollContainer/VBoxContainer/CollisionToggle:button_pressed")
 properties/1/spawn = true
 properties/1/replication_mode = 2
+properties/2/path = NodePath("LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/ScrollContainer/VBoxContainer/HoleCountLabel:text")
+properties/2/spawn = true
+properties/2/replication_mode = 2
 
 [node name="Lobby" type="Node"]
 script = ExtResource("1_j3jp6")
@@ -109,7 +112,6 @@ size_flags_vertical = 3
 [node name="CourseSelect" type="OptionButton" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/ScrollContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-selected = 0
 allow_reselect = true
 
 [node name="HoleCountLabel" type="Label" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/ScrollContainer/VBoxContainer"]

@@ -31,29 +31,31 @@ func _ready():
 
 func _process(_delta : float):
 	if (not current_target) || !is_instance_valid(current_target):
-		var players : Array[Node] = get_tree().get_nodes_in_group("players")
-		for player in players:
-			if player.name.to_int() == multiplayer.get_unique_id():
-				current_target = player
+		target_player_with_authority()
 
 	if current_target && !current_target.is_multiplayer_authority():
 		current_target = null
 		return
 
-
 	if current_target && is_instance_valid(current_target):
 		position = position.lerp(current_target.position, lerp_weight)
+
+func target_player_with_authority():
+	var players : Array[Node] = get_tree().get_nodes_in_group("players")
+	for player in players:
+		if player.name.to_int() == multiplayer.get_unique_id():
+			current_target = player
 
 func _on_player_spawned(player : Player):
 	if !player.is_multiplayer_authority():
 		return
-	current_target = player
+	target_player_with_authority()
 	lerp_weight = PLAYER_LERP
 
 func _on_player_authority_changed(player : Player, _player_id : int):
 	if !player.is_multiplayer_authority():
 		return
-	current_target = player
+	target_player_with_authority()
 	lerp_weight = PLAYER_LERP
 
 func _on_ball_shot(ball : Ball):
@@ -65,13 +67,13 @@ func _on_ball_shot(ball : Ball):
 func _on_ball_stopped(ball : Ball):
 	if !ball.is_multiplayer_authority():
 		return
-	current_target = ball.owning_player
+	target_player_with_authority()
 	lerp_weight = PLAYER_LERP
 
-func _on_ball_sunk(ball : Ball):
-	if !ball.is_multiplayer_authority():
+func _on_ball_sunk(player_id : int, player_name : String, times_hit : int):
+	if player_id != multiplayer.get_unique_id():
 		return
-	current_target = ball.owning_player
+	target_player_with_authority()
 	lerp_weight = PLAYER_LERP
 
 static func create() -> Lakitu:

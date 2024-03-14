@@ -48,7 +48,8 @@ func _on_start_game_button_pressed() -> void:
 # Settings
 
 func _on_course_select_item_selected(index: int) -> void:
-	selected_course = courses[index - 1]
+	selected_course = courses[index]
+	print("Selected " + selected_course.course_name, str(index))
 	hole_count_label.text = "%s holes" % selected_course.holes.size()
 	start_game_button.disabled = false
 

@@ -25,202 +25,296 @@ script = ExtResource("2_ee2x6")
 [node name="MainMenu" type="CanvasLayer" parent="."]
 unique_name_in_owner = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainMenu"]
+[node name="PanelContainer" type="PanelContainer" parent="MainMenu"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -319.0
-offset_top = -239.5
-offset_right = 319.0
-offset_bottom = 239.5
+offset_left = -102.0
+offset_top = -139.0
+offset_right = 102.0
+offset_bottom = 139.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="MarginContainer" type="MarginContainer" parent="MainMenu/HBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_top = 40
-theme_override_constants/margin_right = 40
-theme_override_constants/margin_bottom = 40
-
-[node name="PanelContainer" type="PanelContainer" parent="MainMenu/HBoxContainer/MarginContainer"]
-layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 0
+size_flags_vertical = 4
 
-[node name="MarginContainer" type="MarginContainer" parent="MainMenu/HBoxContainer/MarginContainer/PanelContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/HBoxContainer/MarginContainer/PanelContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/PanelContainer"]
 layout_mode = 2
 
-[node name="QuickPlay" type="Button" parent="MainMenu/HBoxContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MainMenu/PanelContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 32
-text = "Quick play"
+text = "Dumb people golfing"
 
-[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/QuickPlay"]
+[node name="Wobbler" type="Node" parent="MainMenu/PanelContainer/VBoxContainer/Label"]
 script = ExtResource("3_pxmhw")
 
-[node name="Play" type="Button" parent="MainMenu/HBoxContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="Spacer" type="MarginContainer" parent="MainMenu/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="SingleplayerButton" type="Button" parent="MainMenu/PanelContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 4
-text = "Play selected"
+text = "Singleplayer"
 
-[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Play"]
+[node name="Wobbler" type="Node" parent="MainMenu/PanelContainer/VBoxContainer/SingleplayerButton"]
 script = ExtResource("3_pxmhw")
 
-[node name="Quit" type="Button" parent="MainMenu/HBoxContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="MultiplayerButton" type="Button" parent="MainMenu/PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 4
+text = "Multiplayer"
+
+[node name="Wobbler" type="Node" parent="MainMenu/PanelContainer/VBoxContainer/MultiplayerButton"]
+script = ExtResource("3_pxmhw")
+
+[node name="QuitButton" type="Button" parent="MainMenu/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
 text = "Quit"
 
-[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Quit"]
+[node name="Wobbler" type="Node" parent="MainMenu/PanelContainer/VBoxContainer/QuitButton"]
 script = ExtResource("3_pxmhw")
 
-[node name="MarginContainer2" type="MarginContainer" parent="MainMenu/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_top = 40
-theme_override_constants/margin_right = 40
-theme_override_constants/margin_bottom = 40
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/HBoxContainer/MarginContainer2"]
-layout_mode = 2
-
-[node name="PanelContainer2" type="PanelContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer2"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer2/VBoxContainer"]
-layout_mode = 2
-text = "Select course"
-
-[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer2/VBoxContainer/Label"]
-script = ExtResource("3_pxmhw")
-
-[node name="CourseList" type="ItemList" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer2/VBoxContainer"]
+[node name="MultiplayerMenu" type="CanvasLayer" parent="."]
 unique_name_in_owner = true
+visible = false
+
+[node name="MultiplayerPanel" type="PanelContainer" parent="MultiplayerMenu"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -108.5
+offset_top = -151.0
+offset_right = 108.5
+offset_bottom = 151.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MultiplayerMenu/MultiplayerPanel"]
 layout_mode = 2
-size_flags_vertical = 3
-allow_search = false
 
-[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer2/VBoxContainer/CourseList"]
-script = ExtResource("3_pxmhw")
-
-[node name="PanelContainer" type="PanelContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer"]
+[node name="Label" type="Label" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
+text = "Multiplayer"
+horizontal_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer"]
+[node name="Spacer2" type="MarginContainer" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer"]
 layout_mode = 2
 
-[node name="ColorLabel" type="Label" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+[node name="ColorLabel" type="Label" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 text = "Color"
 
-[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/ColorLabel"]
+[node name="Wobbler" type="Node" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer2/ColorLabel"]
 script = ExtResource("3_pxmhw")
 
-[node name="ColorPicker" type="ColorRect" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+[node name="ColorPicker" type="ColorRect" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/ColorPicker"]
+[node name="Wobbler" type="Node" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer2/ColorPicker"]
 script = ExtResource("3_pxmhw")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer"]
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="NameLabel" type="Label" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Name"
 
-[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/NameLabel"]
+[node name="Wobbler" type="Node" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer/NameLabel"]
 script = ExtResource("3_pxmhw")
 
-[node name="NameEdit" type="LineEdit" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="NameEdit" type="LineEdit" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/NameEdit"]
+[node name="Wobbler" type="Node" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer/NameEdit"]
 script = ExtResource("3_pxmhw")
 
-[node name="Spacer" type="MarginContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="Spacer" type="MarginContainer" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer"]
 layout_mode = 2
 
-[node name="IpLabel" type="Label" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
+[node name="IpLabel" type="Label" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer4"]
 layout_mode = 2
 text = "IP"
 
-[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4/IpLabel"]
+[node name="Wobbler" type="Node" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer4/IpLabel"]
 script = ExtResource("3_pxmhw")
 
-[node name="IpEdit" type="LineEdit" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4"]
+[node name="IpEdit" type="LineEdit" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer4"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "127.0.0.1"
 
-[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer4/IpEdit"]
+[node name="Wobbler" type="Node" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer4/IpEdit"]
 script = ExtResource("3_pxmhw")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_right = 5
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="PortLabel" type="Label" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+text = "Port"
+
+[node name="Wobbler" type="Node" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer5/PortLabel"]
+script = ExtResource("3_pxmhw")
+
+[node name="PortEdit" type="LineEdit" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer5"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "25565"
+
+[node name="Wobbler" type="Node" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer5/PortEdit"]
+script = ExtResource("3_pxmhw")
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="HostButton" type="Button" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
+[node name="HostButton" type="Button" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 0
 text = "Host"
 
-[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3/HostButton"]
+[node name="Wobbler" type="Node" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer3/HostButton"]
 script = ExtResource("3_pxmhw")
 
-[node name="ConnectButton" type="Button" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3"]
+[node name="ConnectButton" type="Button" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer3"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 0
 text = "Connect"
 
-[node name="Wobbler" type="Node" parent="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3/ConnectButton"]
+[node name="Wobbler" type="Node" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer3/ConnectButton"]
 script = ExtResource("3_pxmhw")
 
-[connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/QuickPlay" to="." method="_on_quick_play_pressed"]
-[connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Play" to="." method="_on_play_pressed"]
-[connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer/PanelContainer/MarginContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
-[connection signal="item_selected" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer2/VBoxContainer/CourseList" to="." method="_on_course_list_item_selected"]
-[connection signal="gui_input" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2/ColorPicker" to="." method="_on_color_picker_gui_input"]
-[connection signal="text_changed" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer/NameEdit" to="." method="_on_name_edit_text_changed"]
-[connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3/HostButton" to="Networking" method="_on_host_button_pressed"]
-[connection signal="pressed" from="MainMenu/HBoxContainer/MarginContainer2/VBoxContainer/PanelContainer/VBoxContainer/HBoxContainer3/ConnectButton" to="Networking" method="_on_connect_button_pressed"]
+[node name="MultiplayerBackButton" type="Button" parent="MultiplayerMenu/MultiplayerPanel/VBoxContainer"]
+layout_mode = 2
+text = "Back"
+
+[node name="SingleplayerMenu" type="CanvasLayer" parent="."]
+unique_name_in_owner = true
+visible = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SingleplayerMenu"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -104.0
+offset_top = -189.5
+offset_right = 104.0
+offset_bottom = 189.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+
+[node name="PanelContainer" type="PanelContainer" parent="SingleplayerMenu/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SingleplayerMenu/VBoxContainer/PanelContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SingleplayerMenu/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Singleplayer"
+
+[node name="Spacer" type="MarginContainer" parent="SingleplayerMenu/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="QuickPlay" type="Button" parent="SingleplayerMenu/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Quick play"
+
+[node name="Wobbler" type="Node" parent="SingleplayerMenu/VBoxContainer/PanelContainer/VBoxContainer/QuickPlay"]
+script = ExtResource("3_pxmhw")
+
+[node name="Play" type="Button" parent="SingleplayerMenu/VBoxContainer/PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+text = "Play selected"
+
+[node name="Wobbler" type="Node" parent="SingleplayerMenu/VBoxContainer/PanelContainer/VBoxContainer/Play"]
+script = ExtResource("3_pxmhw")
+
+[node name="Back" type="Button" parent="SingleplayerMenu/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Back"
+
+[node name="Wobbler" type="Node" parent="SingleplayerMenu/VBoxContainer/PanelContainer/VBoxContainer/Back"]
+script = ExtResource("3_pxmhw")
+
+[node name="PanelContainer2" type="PanelContainer" parent="SingleplayerMenu/VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SingleplayerMenu/VBoxContainer/PanelContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SingleplayerMenu/VBoxContainer/PanelContainer2/VBoxContainer"]
+layout_mode = 2
+text = "Select hole"
+
+[node name="Wobbler" type="Node" parent="SingleplayerMenu/VBoxContainer/PanelContainer2/VBoxContainer/Label"]
+script = ExtResource("3_pxmhw")
+
+[node name="CourseList" type="ItemList" parent="SingleplayerMenu/VBoxContainer/PanelContainer2/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 3
+allow_search = false
+
+[node name="Wobbler" type="Node" parent="SingleplayerMenu/VBoxContainer/PanelContainer2/VBoxContainer/CourseList"]
+script = ExtResource("3_pxmhw")
+
+[connection signal="pressed" from="MainMenu/PanelContainer/VBoxContainer/SingleplayerButton" to="." method="_on_singleplayer_button_pressed"]
+[connection signal="pressed" from="MainMenu/PanelContainer/VBoxContainer/MultiplayerButton" to="." method="_on_multiplayer_button_pressed"]
+[connection signal="pressed" from="MainMenu/PanelContainer/VBoxContainer/QuitButton" to="." method="_on_quit_pressed"]
+[connection signal="gui_input" from="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer2/ColorPicker" to="." method="_on_color_picker_gui_input"]
+[connection signal="text_changed" from="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer/NameEdit" to="." method="_on_name_edit_text_changed"]
+[connection signal="pressed" from="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer3/HostButton" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="MultiplayerMenu/MultiplayerPanel/VBoxContainer/HBoxContainer3/ConnectButton" to="." method="_on_connect_button_pressed"]
+[connection signal="pressed" from="MultiplayerMenu/MultiplayerPanel/VBoxContainer/MultiplayerBackButton" to="." method="_on_multiplayer_back_button_pressed"]
+[connection signal="pressed" from="SingleplayerMenu/VBoxContainer/PanelContainer/VBoxContainer/QuickPlay" to="." method="_on_quick_play_pressed"]
+[connection signal="pressed" from="SingleplayerMenu/VBoxContainer/PanelContainer/VBoxContainer/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="SingleplayerMenu/VBoxContainer/PanelContainer/VBoxContainer/Back" to="." method="_on_single_player_back_pressed"]
+[connection signal="item_selected" from="SingleplayerMenu/VBoxContainer/PanelContainer2/VBoxContainer/CourseList" to="." method="_on_course_list_item_selected"]

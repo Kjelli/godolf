@@ -2,6 +2,7 @@ extends PanelContainer
 class_name ScoreTable
 
 @onready var table : GridContainer = %ScoreTable
+@onready var show_score_regardless : bool
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -16,12 +17,15 @@ func _ready() -> void:
 
 	modulate.a = 0.0
 
+	Events.game_proceeding.connect(on_game_proceeding)
 	Events.player_spawned.connect(on_player_spawn)
-	Events.ball_sunk.connect(on_ball_sunk)
-	Events.someone_disconnected.connect(remove_row_for_player)
+	Events.player_score_updated.connect(on_player_score_updated)
+	Events.someone_disconnected.connect(on_player_disconnected)
 
 func _process(_delta: float) -> void:
-	if modulate.a < 0.5 && Input.is_action_pressed("view_score"):
+	if show_score_regardless:
+		Local.tween(self, "modulate:a", 1.0, 0.15)
+	elif modulate.a < 0.5 && Input.is_action_pressed("view_score"):
 		Local.tween(self, "modulate:a", 1.0, 0.15)
 	elif modulate.a > 0.5 && not Input.is_action_pressed("view_score"):
 		Local.tween(self, "modulate:a", 0.0, 0.15)
@@ -39,7 +43,7 @@ func make_table_headers(_size : int) -> void:
 		if column == 0:
 			table.add_child(label("Par", Color.DIM_GRAY))
 		elif column == _size - 1:
-			table.add_child(label("%d" % CourseContext.current_course_descriptor.par_total))
+			table.add_child(label("%d" % CourseContext.current_course_descriptor.par_total, Color.YELLOW))
 		else:
 			table.add_child(label("%d" % (holes[column - 1] as HoleDescriptor).hole_par, Color.YELLOW))
 
@@ -47,6 +51,7 @@ func on_player_spawn(player : Player) -> void:
 	var player_score = CourseContext.get_score_by_player_id(player.player_id)
 	if not player_score:
 		player_score = PlayerScore.create(player.player_id, player.player_name, player.player_color, CourseContext.current_course_descriptor)
+		CourseContext.set_score(player_score)
 	make_row_for_player(player_score)
 
 func make_row_for_player(player_score : PlayerScore) -> void:
@@ -78,21 +83,32 @@ func remove_row_for_player(player_score : PlayerScore) -> void:
 		var child = table.get_node(str(column + start_index))
 		child.queue_free()
 
-func on_ball_sunk(player_id : int, _player_name : String, times_hit : int) -> void:
-	update_score_for_player(player_id, times_hit)
+func on_player_score_updated(score : PlayerScore) -> void:
+	update_score_table_for_player(score)
 
-func update_score_for_player(player_id : int, score : int) -> void:
-	var hole = CourseContext.hole_index
+func update_score_table_for_player(score : PlayerScore) -> void:
 	var start_index = -1
+	var player_id = score.player_id
 	for child : Label in table.get_children():
 		var target_label_name = str(player_id) if player_id != 1 else "server"
 		if child.name == target_label_name:
 			start_index = child.get_index()
 			break
 	# add one to offset player name
-	var to_update = table.get_child(start_index + hole + 1) as Label
-	to_update.text = str(score)
+	var hole_index = CourseContext.hole_index
+	var hole_to_update = table.get_child(start_index + hole_index + 1) as Label
+	hole_to_update.text = str(score.scores[hole_index])
 
+	# update sum
+	var sum_index = CourseContext.current_course_descriptor.holes.size()
+	var sum_to_update = table.get_child(start_index + sum_index + 1) as Label
+	sum_to_update.text = str(score.sum())
+
+func on_player_disconnected(player_id : int, _player_name : String) -> void:
+	remove_row_for_player(CourseContext.get_score_by_player_id(player_id))
+
+func on_game_proceeding() -> void:
+	show_score_regardless = true
 
 func label(text : String, color : Color = Color.WHITE, should_highlight = false) -> Label:
 	var new_label = Label.new()

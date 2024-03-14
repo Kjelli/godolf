@@ -4,5 +4,9 @@ extends Control
 @onready var par_label : Label = $ParLabel
 
 func _ready():
-	title.text = CourseContext.current_hole_descriptor.display_name
-	par_label.text = "Par %d" % CourseContext.current_hole_descriptor.hole_par
+	if CourseContext.current_hole_descriptor:
+		if CourseContext.current_hole_descriptor.display_name:
+			title.text = CourseContext.current_hole_descriptor.display_name
+
+		if CourseContext.current_hole_descriptor.hole_par:
+			par_label.text = "Par %d" % CourseContext.current_hole_descriptor.hole_par

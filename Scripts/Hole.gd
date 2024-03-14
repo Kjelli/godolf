@@ -6,9 +6,6 @@ class_name Hole
 
 var lakitu : Lakitu
 
-# Settings (from GameDescriptor)
-var use_ball_collision : bool
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	add_child(load("res://Scenes/hud.tscn").instantiate())
@@ -43,7 +40,7 @@ func spawn_player(player_id : int, player_name : String, player_color : Color) -
 	var point2 = spawn_zone.draw_point()
 	var ball : Ball = Ball.create(player, point2)
 
-	if use_ball_collision:
+	if CourseContext.use_ball_collision:
 		ball.set_collision_mask_value(5, true)
 
 	%Players.add_child(player, true)
