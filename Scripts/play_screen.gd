@@ -4,13 +4,13 @@ extends Node
 @onready var scene_wrapper : Node = %SceneWrapper
 @onready var course_spawner : MultiplayerSpawner = %CourseSpawner
 
-@onready var items : ItemList = %CourseList
+@onready var hole_list : ItemList = %CourseList
 @onready var host_button : Button = %HostButton
 @onready var connect_button : Button = %ConnectButton
 @onready var ip_edit : LineEdit = %IpEdit
 @onready var color_picker : ColorRect = %ColorPicker
 
-@onready var courses : PackedStringArray
+@onready var available_holes : Array
 
 func _ready():
 	DisplayServer.window_set_min_size(Vector2i(640, 480))
@@ -19,7 +19,7 @@ func _ready():
 	networking.player_color = color_picker.color
 
 	scan_scenes()
-	items.select(0)
+	hole_list.select(0)
 	_on_course_list_item_selected(0)
 
 func _process(_delta) -> void:
@@ -35,40 +35,30 @@ func _process(_delta) -> void:
 		%MainMenu.show()
 
 func scan_scenes():
-	var paths = []
-	var dir = DirAccess.open("res://Scenes/Courses")
-	dir.list_dir_begin()
-	var file_name = dir.get_next()
-	while (file_name != ""):
-		if file_name == ".." or file_name == ".":
-			# Directories, Skip.
-			pass
-		else:
-			paths.push_back(file_name.replace(".remap",""))
-		file_name = dir.get_next()
-
-	# pre-add lobby
-	for scene in paths:
-		items.add_item(scene.replace(".tscn", ""))
-		courses.append(scene)
-		course_spawner.add_spawnable_scene("res://Scenes/Courses/" + scene)
+	var courses = CourseLoader.list_courses()
+	for course : CourseDescriptor in courses:
+		for hole : HoleDescriptor in course.holes:
+			available_holes.append(hole)
+			hole_list.add_item(hole.display_name)
+			course_spawner.add_spawnable_scene(hole.scene_path)
 
 func _on_play_pressed():
-	var scene = load("res://Scenes/Courses/" + scene_wrapper.selected_course)
+	var hole_scene = load(scene_wrapper.selected_hole.scene_path)
+	CourseContext.init_course(scene_wrapper.selected_hole.part_of_course_name, scene_wrapper.selected_hole.display_name)
 	%MainMenu.hide()
-	scene_wrapper.add_child.call_deferred(scene.instantiate())
+	scene_wrapper.add_child.call_deferred(hole_scene.instantiate())
 	pass # Replace with function body.
 
 func _on_quit_pressed():
 	get_tree().quit()
 
 func _on_course_list_item_selected(index: int) -> void:
-	scene_wrapper.selected_course = courses[index]
+	scene_wrapper.selected_hole = available_holes[index]
 	pass # Replace with function body.
 
 
 func _on_quick_play_pressed() -> void:
-	scene_wrapper.selected_course = courses[randi_range(0, courses.size()-1)]
+	scene_wrapper.selected_hole = available_holes[randi_range(0, available_holes.size()-1)]
 	_on_play_pressed()
 	pass # Replace with function body.
 

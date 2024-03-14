@@ -269,7 +269,7 @@ func _on_left_goal_proximity(goal : Goal):
 
 func sink(goal : Goal):
 	is_in_goal = goal
-	if times_hit < Golf.current_course_par:
+	if times_hit < CourseContext.current_hole_descriptor.hole_par:
 		goal.emit_particles()
 
 func aim(charge : float, max_charge : float, direction : Vector2):

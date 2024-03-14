@@ -1,3 +1,3 @@
 extends Node
 
-@export var selected_course : String
+@export var selected_hole : HoleDescriptor

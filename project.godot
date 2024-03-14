@@ -20,6 +20,8 @@ config/icon="res://icon.svg"
 Events="*res://Scripts/Global/Events.gd"
 Golf="*res://Scripts/Global/Golf.gd"
 Local="*res://Scripts/Global/Local.gd"
+CourseLoader="*res://Scripts/Global/CourseLoader.gd"
+CourseContext="*res://Scripts/Global/CourseContext.gd"
 
 [collada]
 

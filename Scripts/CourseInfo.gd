@@ -4,7 +4,5 @@ extends Control
 @onready var par_label : Label = $ParLabel
 
 func _ready():
-	Golf.par_set.connect(update_par)
-
-func update_par(par : int):
-	par_label.text = "Par " + str(par)
+	title.text = CourseContext.current_hole_descriptor.display_name
+	par_label.text = "Par %d" % CourseContext.current_hole_descriptor.hole_par

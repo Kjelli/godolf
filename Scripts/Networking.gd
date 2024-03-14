@@ -114,10 +114,14 @@ func change_level(game_descriptor: GameDescriptor) -> void:
 	for c in scene_wrapper.get_children():
 		scene_wrapper.remove_child(c)
 		c.queue_free()
+
 	# Add new level.
-	var course : Course = game_descriptor.course.instantiate()
-	course.use_ball_collision = game_descriptor.use_ball_collision
-	scene_wrapper.add_child(course)
+	var hole : HoleDescriptor = game_descriptor.next_hole
+	if hole.hole_index == 0:
+		CourseContext.init_course.rpc(game_descriptor.course.course_name, hole.display_name)
+	var hole_scene : Hole = load(hole.scene_path).instantiate()
+	hole_scene.use_ball_collision = game_descriptor.use_ball_collision
+	scene_wrapper.add_child(hole_scene)
 
 func load_lobby() -> void:
 	# Hide the UI and unpause to start the game.

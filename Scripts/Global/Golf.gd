@@ -10,11 +10,6 @@ class Score:
 		score.value = new_value
 		return score
 
-
-var current_course_par = 3
-
-signal par_set(par : int)
-
 func get_score(shot_count : int, par : int) -> Score:
 
 	var diff = shot_count - par
@@ -42,6 +37,3 @@ func get_score(shot_count : int, par : int) -> Score:
 	else:
 		return Score.create("Wow", diff)
 
-func set_par(par : int):
-	current_course_par = par
-	par_set.emit(par)

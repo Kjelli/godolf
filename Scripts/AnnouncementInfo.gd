@@ -23,7 +23,7 @@ func _ready():
 	Events.ball_sunk.connect(announce_shot_score)
 
 func announce_shot_score(player_id : int, player_name : String, times_hit : int) -> void:
-	var score : Golf.Score = Golf.get_score(times_hit, Golf.current_course_par)
+	var score : Golf.Score = Golf.get_score(times_hit, CourseContext.current_hole_descriptor.hole_par)
 	var player = "You" if player_id == multiplayer.get_unique_id() else player_name
 	var score_color = Color(1,1,0) if score.value < 0 else Color(0,1,0) if score.value == 0 else Color(1,0,0)
 
