@@ -26,5 +26,5 @@ func _on_update_charge_bar(player_id : int, _min_charge : float, current_charge 
 func _on_ball_shot(_ball : Ball):
 	get_tree().create_tween().tween_property(self, "modulate:a", 0, 0.5)
 
-func _on_charge_interrupted(player_id : int):
+func _on_charge_interrupted(_player_id : int):
 	get_tree().create_tween().tween_property(self, "modulate:a", 0, 0.5)

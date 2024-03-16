@@ -60,7 +60,6 @@ func scan_hole(course_folder : String, hole_file : String, index : int) -> HoleD
 	return hole
 
 func try_get_hole_par(hole_scene_path : String):
-	print("loading path ", hole_scene_path)
 	var hole_scene = load(hole_scene_path) as PackedScene
 	var inst = hole_scene.instantiate() as Hole
 	var hole_par = inst.hole_par

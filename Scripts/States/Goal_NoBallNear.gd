@@ -9,9 +9,6 @@ func OnEnter():
 func OnExit():
 	pass
 
-func Update(_delta : float):
+func Process(_delta : float):
 	if goal.nearby_balls.size():
-		Transitioned.emit(self, "BallNear")
-	
-func Physics_Update(_delta : float):
-	pass
+		state_machine.transitioned.emit(self, "BallNear")

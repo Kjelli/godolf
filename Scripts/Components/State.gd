@@ -1,7 +1,7 @@
 extends Node
 class_name State
 
-signal Transitioned
+var state_machine : StateMachine
 
 func OnEnter():
 	pass
@@ -9,9 +9,9 @@ func OnEnter():
 func OnExit():
 	pass
 
-func Update(_delta : float):
+func Process(_delta : float):
 	pass
-	
-func Physics_Update(_delta : float):
+
+func Physics_Process(_delta : float):
 	pass
 

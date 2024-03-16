@@ -19,7 +19,6 @@ func setup_table(current_course_descriptor : CourseDescriptor, current_hole_desc
 		return
 
 	var hole_count = current_course_descriptor.holes.size()
-	var hole_index = current_hole_descriptor
 
 	# leave space for name and total
 	var column_count = hole_count + 2
