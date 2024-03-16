@@ -75,8 +75,9 @@ texture = ExtResource("7_417yr")
 expand_mode = 2
 stretch_mode = 1
 
-[node name="Players" type="Node" parent="."]
+[node name="Players" type="Node2D" parent="."]
 unique_name_in_owner = true
+y_sort_enabled = true
 
 [node name="Balls" type="Node" parent="."]
 unique_name_in_owner = true

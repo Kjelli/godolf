@@ -75,8 +75,9 @@ z_index = 1
 y_sort_enabled = true
 position = Vector2(375, 121)
 
-[node name="Players" type="Node" parent="."]
+[node name="Players" type="Node2D" parent="."]
 unique_name_in_owner = true
+y_sort_enabled = true
 
 [node name="Balls" type="Node" parent="."]
 unique_name_in_owner = true

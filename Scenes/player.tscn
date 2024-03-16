@@ -1,8 +1,7 @@
-[gd_scene load_steps=70 format=3 uid="uid://c2it6aijh30am"]
+[gd_scene load_steps=69 format=3 uid="uid://c2it6aijh30am"]
 
 [ext_resource type="Texture2D" uid="uid://cmuwdke5npuqy" path="res://resources/golf.png" id="1_h0ikx"]
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_vg6jp"]
-[ext_resource type="Texture2D" uid="uid://c0jicym37ujpm" path="res://resources/things.png" id="2_ate2m"]
 [ext_resource type="Script" path="res://Scripts/PlayerInput.gd" id="2_dbhay"]
 [ext_resource type="PackedScene" uid="uid://bxtrc3nxvsvgk" path="res://Scenes/club.tscn" id="3_q4ucv"]
 [ext_resource type="Script" path="res://Scripts/Components/StateMachine.gd" id="6_4wd0j"]
@@ -522,11 +521,6 @@ replication_config = SubResource("SceneReplicationConfig_pd2ek")
 replication_interval = 0.05
 delta_interval = 0.05
 replication_config = SubResource("SceneReplicationConfig_2ratp")
-
-[node name="Crown" type="Sprite2D" parent="."]
-position = Vector2(0, -9)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_ate2m")
 
 [node name="PlayerInput" type="Node" parent="."]
 unique_name_in_owner = true

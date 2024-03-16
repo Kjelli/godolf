@@ -48,6 +48,7 @@ var is_tweening_into_goal : bool
 func on_player_id_set():
 	set_multiplayer_authority(player_id, false)
 	$DataSynchronizer.set_multiplayer_authority(player_id)
+	modulate = Color(aim_color)
 	aim_line.modulate = Color(aim_color)
 
 	if !is_multiplayer_authority():
