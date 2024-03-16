@@ -36,6 +36,7 @@ func _process(_delta) -> void:
 
 			if multiplayer.multiplayer_peer:
 				multiplayer.multiplayer_peer.close()
+				Networking.connected_players.clear()
 				multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 			Networking.connected_players.clear()
 		CourseContext.reset()
