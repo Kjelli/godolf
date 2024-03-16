@@ -5,7 +5,7 @@ const base_path : String = "res://Scenes/Courses"
 @onready var courses : Array
 
 func _ready() -> void:
-	courses = load_courses()
+	load_courses()
 
 func get_by_name(course_name : String) -> CourseDescriptor:
 	for course : CourseDescriptor in courses:
@@ -16,8 +16,7 @@ func get_by_name(course_name : String) -> CourseDescriptor:
 func list_courses() -> Array:
 	return courses
 
-func load_courses() -> Array:
-	var courses = []
+func load_courses() -> void:
 	var course_folder = DirAccess.open(base_path)
 	course_folder.list_dir_begin()
 	var folder_name = course_folder.get_next()
@@ -30,11 +29,8 @@ func load_courses() -> Array:
 			if course.is_valid():
 				courses.push_back(course)
 		folder_name = course_folder.get_next()
-	return courses
 
 func scan_course(folder_name : String) -> CourseDescriptor:
-	print("Found course " + folder_name)
-
 	var course_descriptor = CourseDescriptor.new()
 	course_descriptor.course_name = folder_name
 
@@ -49,7 +45,6 @@ func scan_course(folder_name : String) -> CourseDescriptor:
 		course_descriptor.holes.append(hole)
 		index += 1
 
-		print("Found hole " + hole.display_name + " in course " + folder_name)
 		hole_file = hole_folder.get_next()
 
 	course_descriptor.par_total = par_total
@@ -59,12 +54,13 @@ func scan_hole(course_folder : String, hole_file : String, index : int) -> HoleD
 	var hole = HoleDescriptor.new()
 	hole.hole_index = index
 	hole.part_of_course_name = course_folder
-	hole.scene_path = base_path + "/" + course_folder + "/" + hole_file
+	hole.scene_path = base_path + "/" + course_folder + "/" + hole_file.replace(".remap", "")
 	hole.display_name = hole_file.replace(".tscn", "").replace(".remap", "")
 	hole.hole_par = try_get_hole_par(hole.scene_path)
 	return hole
 
 func try_get_hole_par(hole_scene_path : String):
+	print("loading path ", hole_scene_path)
 	var hole_scene = load(hole_scene_path) as PackedScene
 	var inst = hole_scene.instantiate() as Hole
 	var hole_par = inst.hole_par

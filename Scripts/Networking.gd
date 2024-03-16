@@ -116,6 +116,7 @@ func change_level(game_descriptor: GameDescriptor) -> void:
 	var hole : Hole = load(hole_descriptor.scene_path).instantiate()
 	scene_wrapper.add_child(hole)
 
+
 func load_lobby() -> void:
 	# Hide the UI and unpause to start the game.
 	main_menu.hide()
@@ -142,7 +143,7 @@ func on_game_over() -> void:
 	if multiplayer.multiplayer_peer is OfflineMultiplayerPeer:
 		clear_scenes()
 		main_menu.show()
-	else:
+	elif multiplayer.is_server():
 		load_lobby()
 
 func on_game_start_requested(game_descriptor : GameDescriptor):

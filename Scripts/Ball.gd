@@ -221,7 +221,8 @@ func trigger_sink():
 func on_sunk(_player_id : int, player_name : String, _times_hit : int):
 	Events.ball_sunk.emit(_player_id, player_name, _times_hit)
 	Local.print("Nice! Sunk on shot #" + str(times_hit))
-	call_deferred("queue_free")
+	if multiplayer.is_server():
+		queue_free()
 
 func sink_in_water():
 	is_in_water = true
@@ -286,3 +287,7 @@ func hit(charge : float, direction : Vector2):
 	velocity = (charge * 0.8 / (weight * 0.25)) * direction
 
 	Events.ball_shot.emit(self)
+
+	if CourseContext.use_ball_collision:
+		await Local.timer(0.2).timeout
+		set_collision_mask_value(5, true)

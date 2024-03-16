@@ -8,8 +8,9 @@ extends Node2D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	modulate = Color(1,1,1,0)
-	Events.connect(Events.charge_updated.get_name(), _on_update_charge_bar)
-	Events.connect(Events.ball_shot.get_name(), _on_ball_shot)
+	Events.charge_updated.connect(_on_update_charge_bar)
+	Events.charge_interrupted.connect(_on_charge_interrupted)
+	Events.ball_shot.connect(_on_ball_shot)
 	pass # Replace with function body.
 
 func _on_update_charge_bar(player_id : int, _min_charge : float, current_charge : float, max_charge : float):
@@ -23,4 +24,7 @@ func _on_update_charge_bar(player_id : int, _min_charge : float, current_charge 
 	charge_indicator.position.x = original_position.x + original_size.x * ((current_charge) / (max_charge) )
 
 func _on_ball_shot(_ball : Ball):
+	get_tree().create_tween().tween_property(self, "modulate:a", 0, 0.5)
+
+func _on_charge_interrupted(player_id : int):
 	get_tree().create_tween().tween_property(self, "modulate:a", 0, 0.5)

@@ -1,7 +1,8 @@
-[gd_scene load_steps=63 format=3 uid="uid://c2it6aijh30am"]
+[gd_scene load_steps=64 format=3 uid="uid://c2it6aijh30am"]
 
 [ext_resource type="Texture2D" uid="uid://cmuwdke5npuqy" path="res://resources/golf.png" id="1_h0ikx"]
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_vg6jp"]
+[ext_resource type="Texture2D" uid="uid://c0jicym37ujpm" path="res://resources/things.png" id="2_ate2m"]
 [ext_resource type="Script" path="res://Scripts/PlayerInput.gd" id="2_dbhay"]
 [ext_resource type="PackedScene" uid="uid://bxtrc3nxvsvgk" path="res://Scenes/club.tscn" id="3_q4ucv"]
 
@@ -516,6 +517,11 @@ replication_interval = 0.05
 delta_interval = 0.05
 replication_config = SubResource("SceneReplicationConfig_2ratp")
 
+[node name="Crown" type="Sprite2D" parent="."]
+position = Vector2(0, -9)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_ate2m")
+
 [node name="PlayerInput" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("2_dbhay")
@@ -539,11 +545,13 @@ visible = false
 [node name="BallRange" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 16
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BallRange"]
 position = Vector2(0, 5)
 shape = SubResource("CircleShape2D_trae2")
 debug_color = Color(0.784314, 0.956863, 1, 0.117647)
+metadata/_edit_lock_ = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 unique_name_in_owner = true
@@ -582,6 +590,7 @@ grow_vertical = 2
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 horizontal_alignment = 1
+metadata/_edit_lock_ = true
 
 [connection signal="body_entered" from="BallRange" to="." method="_on_ball_range_body_entered"]
 [connection signal="body_shape_exited" from="BallRange" to="." method="_on_ball_range_body_shape_exited"]

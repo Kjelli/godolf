@@ -6,7 +6,7 @@ var time_alive = 0
 func _ready() -> void:
 	parent = get_parent()
 	parent_scale = parent.scale
-	parent.pivot_offset = parent.get_rect().size * parent.scale.x
+	parent.pivot_offset = parent.get_rect().size * parent.scale.x / 2
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

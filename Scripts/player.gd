@@ -5,6 +5,15 @@ var ball_in_range : Ball
 var is_aiming : bool
 var is_swinging : bool
 
+enum State {
+	Idle,
+	Walking,
+	Aiming,
+	Swinging
+}
+
+var state := State.Idle
+
 # locals
 @onready var animation_tree : AnimationTree = %AnimationTree
 @onready var animation_player : AnimationPlayer = %AnimationPlayer
@@ -124,7 +133,15 @@ func update_actions():
 		var charge_delta = 0.1 * axis_input if fine else axis_input
 		club.update_charge(player_id, charge_delta, - player_input.direction.x)
 		ball_in_range.aim(club.charge, club.max_charge, player_input.direction)
-	elif !is_swinging &&  is_aiming && %PlayerInput.pressed_swing():
+
+		# If some cheeky ball movement occurs, cancel aiming and reset
+		if ball_in_range.velocity != Vector2.ZERO:
+			club.interrupted(player_id)
+			is_aiming = false
+			player_input.set_direction_eight_directional()
+			ball_in_range.aim_line.hide()
+
+	elif !is_swinging && is_aiming && %PlayerInput.pressed_swing():
 		is_aiming = false
 		is_swinging = true
 

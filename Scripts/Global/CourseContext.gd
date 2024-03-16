@@ -13,7 +13,7 @@ func _ready() -> void:
 
 @rpc("any_peer", "call_local", "reliable")
 func init_course(course_name : String, hole_name : String, settings_use_ball_collision : bool) -> void:
-	print("Initializing course " + course_name)
+	print("Initializing course ", course_name, " -> ", hole_name)
 	var course_descriptor = CourseLoader.get_by_name(course_name)
 	if not course_descriptor:
 		OS.alert("No course found by name '" + course_name + "'!")

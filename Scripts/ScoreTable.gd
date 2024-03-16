@@ -6,9 +6,20 @@ class_name ScoreTable
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	var hole_count = CourseContext.current_course_descriptor.holes.size()
-	var hole_index = CourseContext.current_hole_descriptor
-	var player_scores = CourseContext.player_scores
+	setup_table(CourseContext.current_course_descriptor, CourseContext.current_hole_descriptor)
+
+	Events.game_proceeding.connect(on_game_proceeding)
+	Events.player_spawned.connect(on_player_spawn)
+	Events.player_score_updated.connect(on_player_score_updated)
+	Events.someone_disconnected.connect(on_player_disconnected)
+
+func setup_table(current_course_descriptor : CourseDescriptor, current_hole_descriptor : HoleDescriptor):
+	if not current_course_descriptor:
+		print("Missing course descriptor, cannot build score table!")
+		return
+
+	var hole_count = current_course_descriptor.holes.size()
+	var hole_index = current_hole_descriptor
 
 	# leave space for name and total
 	var column_count = hole_count + 2
@@ -17,10 +28,11 @@ func _ready() -> void:
 
 	modulate.a = 0.0
 
-	Events.game_proceeding.connect(on_game_proceeding)
-	Events.player_spawned.connect(on_player_spawn)
-	Events.player_score_updated.connect(on_player_score_updated)
-	Events.someone_disconnected.connect(on_player_disconnected)
+func _exit_tree() -> void:
+	Events.game_proceeding.disconnect(on_game_proceeding)
+	Events.player_spawned.disconnect(on_player_spawn)
+	Events.player_score_updated.disconnect(on_player_score_updated)
+	Events.someone_disconnected.disconnect(on_player_disconnected)
 
 func _process(_delta: float) -> void:
 	if show_score_regardless:
@@ -38,7 +50,7 @@ func make_table_headers(_size : int) -> void:
 		elif column == _size - 1:
 			table.add_child(label("Total", Color.DIM_GRAY))
 		else:
-			table.add_child(label("%d" % column, Color.DIM_GRAY, column - 1 == CourseContext.hole_index))
+			table.add_child(label("%d" % column, Color.WHITE if column - 1 == CourseContext.hole_index else Color.DIM_GRAY))
 	for column in range(_size):
 		if column == 0:
 			table.add_child(label("Par", Color.DIM_GRAY))
@@ -67,20 +79,20 @@ func make_row_for_player(player_score : PlayerScore) -> void:
 		elif column == column_count - 1:
 			table.add_child(label("%d" % player_score.sum()))
 		else:
-			table.add_child(label("%d" % scores[column - 1], Color.WHITE, column -1 == CourseContext.hole_index))
+			table.add_child(label(("%d" % scores[column - 1]) if column - 1 < CourseContext.hole_index else "-", Color.WHITE if column - 1 == CourseContext.hole_index else Color.DIM_GRAY))
 
 func remove_row_for_player(player_score : PlayerScore) -> void:
-	var column_count = player_score.scores.size() + 1
+	var column_count = player_score.scores.size() + 2
 
 	var start_index = -1
 	for i in table.get_children().size():
 		var child = table.get_child(i) as Label
 		var target_label_name = str(player_score.player_id) if player_score.player_id != 1 else "server"
 		if child.name == target_label_name:
-			start_index = child.name.to_int()
+			start_index = child.get_index()
 			break
 	for column in range(column_count):
-		var child = table.get_node(str(column + start_index))
+		var child = table.get_child(column + start_index)
 		child.queue_free()
 
 func on_player_score_updated(score : PlayerScore) -> void:
@@ -110,14 +122,11 @@ func on_player_disconnected(player_id : int, _player_name : String) -> void:
 func on_game_proceeding() -> void:
 	show_score_regardless = true
 
-func label(text : String, color : Color = Color.WHITE, should_highlight = false) -> Label:
+func label(text : String, color : Color = Color.WHITE) -> Label:
 	var new_label = Label.new()
 	new_label.text = text
 	new_label.modulate = color
 	new_label.name = str(table.get_children().size())
 	new_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-
-	if should_highlight:
-		new_label.modulate = Color.AQUA
 
 	return new_label

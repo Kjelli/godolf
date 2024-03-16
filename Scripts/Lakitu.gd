@@ -41,6 +41,8 @@ func _process(_delta : float):
 		position = position.lerp(current_target.position, lerp_weight)
 
 func target_player_with_authority():
+	if is_queued_for_deletion() || not is_inside_tree():
+		return
 	var players : Array[Node] = get_tree().get_nodes_in_group("players")
 	for player in players:
 		if player.name.to_int() == multiplayer.get_unique_id():
@@ -70,7 +72,7 @@ func _on_ball_stopped(ball : Ball):
 	target_player_with_authority()
 	lerp_weight = PLAYER_LERP
 
-func _on_ball_sunk(player_id : int, player_name : String, times_hit : int):
+func _on_ball_sunk(player_id : int, _player_name : String, _times_hit : int):
 	if player_id != multiplayer.get_unique_id():
 		return
 	target_player_with_authority()

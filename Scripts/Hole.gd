@@ -11,8 +11,6 @@ func _ready():
 	add_child(load("res://Scenes/hud.tscn").instantiate())
 	spawn_camera()
 
-	Events.ball_sunk.connect(on_ball_sunk)
-
 	Events.someone_disconnected.connect(del_player)
 
 	# We only need to spawn players on the server.
@@ -37,11 +35,8 @@ func spawn_player(player_id : int, player_name : String, player_color : Color) -
 	var point = spawn_zone.draw_point()
 	var player : Player = Player.create(player_id, player_name, player_color, point)
 
-	var point2 = spawn_zone.draw_point()
+	var point2 = spawn_zone.draw_middle()
 	var ball : Ball = Ball.create(player, point2)
-
-	if CourseContext.use_ball_collision:
-		ball.set_collision_mask_value(5, true)
 
 	%Players.add_child(player, true)
 	%Balls.add_child(ball, true)
@@ -60,14 +55,8 @@ func del_player(id: int, player_name : String):
 		return
 	$Balls.get_node(str(id)).queue_free()
 
-func on_ball_sunk(player_id : int, _player_name : String, _times_hit : int):
-	# TODO: Do scores
-	pass
-
-
 func _exit_tree():
 	if (not multiplayer.multiplayer_peer is OfflineMultiplayerPeer) || not multiplayer.is_server():
 		return
 	Events.handshake_received.disconnect(on_handshake)
 	Events.someone_disconnected.disconnect(del_player)
-	Events.ball_sunk.disconnect(on_ball_sunk)

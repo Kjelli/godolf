@@ -11,6 +11,7 @@ extends Node
 @onready var selected_course : CourseDescriptor
 
 func _ready() -> void:
+	CourseContext.reset()
 	courses = CourseLoader.list_courses()
 	for course : CourseDescriptor in courses:
 		if multiplayer.is_server():
@@ -19,9 +20,9 @@ func _ready() -> void:
 		course_select.add_item(course.course_name)
 
 	for player : Handshake in Networking.connected_players:
-		var new_panel : LobbyPlayerPanel = LobbyPlayerPanel.create(1, player.player_name, player.player_color)
-		new_panel.name = str(1)
-		players.add_child(new_panel)
+		var new_panel : LobbyPlayerPanel = LobbyPlayerPanel.create(player.player_id, player.player_name, player.player_color)
+		new_panel.name = str(player.player_id)
+		players.add_child(new_panel, true)
 
 	if multiplayer.is_server():
 		Events.handshake_received.connect(on_handshake_received)

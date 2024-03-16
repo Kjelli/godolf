@@ -14,5 +14,9 @@ func update_charge(player_id : int, charge_delta : float, x_direction : float):
 
 	Events.charge_updated.emit(player_id, min_charge, charge, max_charge)
 
+func interrupted(player_id : int):
+	hide()
+	Events.charge_interrupted.emit(player_id)
+
 func get_charge_percent():
 	return charge / max_charge
