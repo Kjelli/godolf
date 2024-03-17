@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cw2shrgidjs3s"]
+[gd_scene load_steps=29 format=3 uid="uid://cw2shrgidjs3s"]
 
 [ext_resource type="Script" path="res://Scripts/ChargeBar.gd" id="1_7t76o"]
 [ext_resource type="Texture2D" uid="uid://vkkihgyvgvlp" path="res://resources/chargebar.png" id="2_752ma"]
@@ -6,13 +6,147 @@
 [ext_resource type="Script" path="res://Scripts/ShotsInfo.gd" id="4_p8jci"]
 [ext_resource type="Script" path="res://Scripts/AnnouncementInfo.gd" id="5_6mt71"]
 [ext_resource type="Script" path="res://Scripts/Components/Wobbler.gd" id="6_2rsj0"]
+[ext_resource type="Script" path="res://Scripts/TutorialOverlay.gd" id="8_h3i4o"]
+[ext_resource type="Texture2D" uid="uid://di8lfeayvx0gf" path="res://resources/keys_used.png" id="8_k1wee"]
 [ext_resource type="Script" path="res://Scripts/ScoreTable.gd" id="9_q77wk"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_5bir5"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_d3jgx"]
+atlas = ExtResource("8_k1wee")
+region = Rect2(0, 0, 12, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cj270"]
+atlas = ExtResource("8_k1wee")
+region = Rect2(0, 12, 12, 12)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1mj6g"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d3jgx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cj270")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eid16"]
+atlas = ExtResource("8_k1wee")
+region = Rect2(12, 0, 12, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h2t8j"]
+atlas = ExtResource("8_k1wee")
+region = Rect2(12, 12, 12, 12)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_l73yb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eid16")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h2t8j")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i65vc"]
+atlas = ExtResource("8_k1wee")
+region = Rect2(24, 0, 12, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jjwty"]
+atlas = ExtResource("8_k1wee")
+region = Rect2(24, 12, 12, 12)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_k076o"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i65vc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jjwty")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g1bpe"]
+atlas = ExtResource("8_k1wee")
+region = Rect2(36, 0, 12, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u0hb8"]
+atlas = ExtResource("8_k1wee")
+region = Rect2(36, 12, 12, 12)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2b0m3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g1bpe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u0hb8")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mao7s"]
+atlas = ExtResource("8_k1wee")
+region = Rect2(48, 0, 36, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gd13u"]
+atlas = ExtResource("8_k1wee")
+region = Rect2(48, 12, 36, 12)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5tygi"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mao7s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gd13u")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xg734"]
+atlas = ExtResource("8_k1wee")
+region = Rect2(108, 0, 24, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a5rl1"]
+atlas = ExtResource("8_k1wee")
+region = Rect2(108, 12, 24, 12)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3ky3l"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xg734")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a5rl1")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="UI" type="CanvasLayer"]
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="HoleMeta" type="HBoxContainer" parent="."]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -23,74 +157,74 @@ grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="HoleMeta"]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 
-[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/MarginContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="HoleMeta/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="CourseInfo" type="VBoxContainer" parent="HBoxContainer/MarginContainer/PanelContainer"]
+[node name="CourseInfo" type="VBoxContainer" parent="HoleMeta/MarginContainer/PanelContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 0
 script = ExtResource("3_ev3mm")
 
-[node name="TitleLabel" type="Label" parent="HBoxContainer/MarginContainer/PanelContainer/CourseInfo"]
+[node name="TitleLabel" type="Label" parent="HoleMeta/MarginContainer/PanelContainer/CourseInfo"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Hole 1"
 metadata/_edit_use_anchors_ = true
 
-[node name="Wobbler" type="Node" parent="HBoxContainer/MarginContainer/PanelContainer/CourseInfo/TitleLabel"]
+[node name="Wobbler" type="Node" parent="HoleMeta/MarginContainer/PanelContainer/CourseInfo/TitleLabel"]
 script = ExtResource("6_2rsj0")
 
-[node name="ParLabel" type="Label" parent="HBoxContainer/MarginContainer/PanelContainer/CourseInfo"]
+[node name="ParLabel" type="Label" parent="HoleMeta/MarginContainer/PanelContainer/CourseInfo"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Par 3"
 metadata/_edit_use_anchors_ = true
 
-[node name="Wobbler" type="Node" parent="HBoxContainer/MarginContainer/PanelContainer/CourseInfo/ParLabel"]
+[node name="Wobbler" type="Node" parent="HoleMeta/MarginContainer/PanelContainer/CourseInfo/ParLabel"]
 script = ExtResource("6_2rsj0")
 
-[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="HoleMeta"]
 layout_mode = 2
 size_flags_horizontal = 10
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 
-[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/MarginContainer2"]
+[node name="PanelContainer" type="PanelContainer" parent="HoleMeta/MarginContainer2"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 
-[node name="ShotsInfo" type="VBoxContainer" parent="HBoxContainer/MarginContainer2/PanelContainer"]
+[node name="ShotsInfo" type="VBoxContainer" parent="HoleMeta/MarginContainer2/PanelContainer"]
 layout_mode = 2
 size_flags_horizontal = 10
 size_flags_vertical = 0
 script = ExtResource("4_p8jci")
 
-[node name="ShotsLabel" type="Label" parent="HBoxContainer/MarginContainer2/PanelContainer/ShotsInfo"]
+[node name="ShotsLabel" type="Label" parent="HoleMeta/MarginContainer2/PanelContainer/ShotsInfo"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Shots"
 metadata/_edit_use_anchors_ = true
 
-[node name="Wobbler" type="Node" parent="HBoxContainer/MarginContainer2/PanelContainer/ShotsInfo/ShotsLabel"]
+[node name="Wobbler" type="Node" parent="HoleMeta/MarginContainer2/PanelContainer/ShotsInfo/ShotsLabel"]
 script = ExtResource("6_2rsj0")
 
-[node name="CountLabel" type="Label" parent="HBoxContainer/MarginContainer2/PanelContainer/ShotsInfo"]
+[node name="CountLabel" type="Label" parent="HoleMeta/MarginContainer2/PanelContainer/ShotsInfo"]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "0"
 horizontal_alignment = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="Wobbler" type="Node" parent="HBoxContainer/MarginContainer2/PanelContainer/ShotsInfo/CountLabel"]
+[node name="Wobbler" type="Node" parent="HoleMeta/MarginContainer2/PanelContainer/ShotsInfo/CountLabel"]
 script = ExtResource("6_2rsj0")
 
 [node name="ChargeBarControl" type="Control" parent="."]
@@ -171,7 +305,7 @@ horizontal_alignment = 1
 [node name="Wobbler" type="Node" parent="AnnouncementInfo/ScoreLabel"]
 script = ExtResource("6_2rsj0")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="Scoreboard" type="PanelContainer" parent="."]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -187,19 +321,325 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource("9_q77wk")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Scoreboard"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="Scoreboard/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 text = "Score"
 
-[node name="ScoreTable" type="GridContainer" parent="PanelContainer/VBoxContainer"]
+[node name="ScoreTable" type="GridContainer" parent="Scoreboard/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/h_separation = 16
 theme_override_constants/v_separation = 8
 columns = 20
+
+[node name="TutorialOverlay" type="MarginContainer" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -215.0
+offset_top = -192.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 20
+script = ExtResource("8_h3i4o")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TutorialOverlay"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="MovementControls" type="VBoxContainer" parent="TutorialOverlay/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Move" type="HBoxContainer" parent="TutorialOverlay/VBoxContainer/MovementControls"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="TutorialOverlay/VBoxContainer/MovementControls/Move"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/MovementControls/Move/Control"]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_1mj6g")
+autoplay = "default"
+centered = false
+
+[node name="Control2" type="Control" parent="TutorialOverlay/VBoxContainer/MovementControls/Move"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/MovementControls/Move/Control2"]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_l73yb")
+autoplay = "default"
+frame = 1
+centered = false
+
+[node name="Control3" type="Control" parent="TutorialOverlay/VBoxContainer/MovementControls/Move"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/MovementControls/Move/Control3"]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_k076o")
+autoplay = "default"
+centered = false
+
+[node name="Control4" type="Control" parent="TutorialOverlay/VBoxContainer/MovementControls/Move"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/MovementControls/Move/Control4"]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_2b0m3")
+autoplay = "default"
+frame = 1
+centered = false
+
+[node name="Label" type="Label" parent="TutorialOverlay/VBoxContainer/MovementControls/Move"]
+layout_mode = 2
+text = "Move"
+horizontal_alignment = 2
+
+[node name="EnterAim" type="HBoxContainer" parent="TutorialOverlay/VBoxContainer/MovementControls"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="TutorialOverlay/VBoxContainer/MovementControls/EnterAim"]
+custom_minimum_size = Vector2(72, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/MovementControls/EnterAim/Control"]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_5tygi")
+autoplay = "default"
+centered = false
+
+[node name="Label" type="Label" parent="TutorialOverlay/VBoxContainer/MovementControls/EnterAim"]
+layout_mode = 2
+text = "Aim"
+horizontal_alignment = 2
+
+[node name="SwingControls" type="VBoxContainer" parent="TutorialOverlay/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="TutorialOverlay/VBoxContainer/SwingControls"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+
+[node name="Control2" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer6"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer6/Control2"]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_l73yb")
+autoplay = "default"
+centered = false
+
+[node name="Control3" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer6"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer6/Control3"]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_k076o")
+autoplay = "default"
+frame = 1
+centered = false
+
+[node name="Label" type="Label" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer6"]
+layout_mode = 2
+text = "Power"
+horizontal_alignment = 2
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="TutorialOverlay/VBoxContainer/SwingControls"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer7"]
+custom_minimum_size = Vector2(48, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer7/Control"]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_3ky3l")
+autoplay = "default"
+centered = false
+
+[node name="Label" type="Label" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer7"]
+layout_mode = 2
+text = "+"
+horizontal_alignment = 2
+
+[node name="Control2" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer7"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer7/Control2"]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_l73yb")
+autoplay = "default"
+centered = false
+
+[node name="Control3" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer7"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer7/Control3"]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_k076o")
+autoplay = "default"
+frame = 1
+centered = false
+
+[node name="Label2" type="Label" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer7"]
+layout_mode = 2
+text = "Power (fine)"
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="TutorialOverlay/VBoxContainer/SwingControls"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer5"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer5/Control"]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_1mj6g")
+autoplay = "default"
+centered = false
+
+[node name="Control4" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer5"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer5/Control4"]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_2b0m3")
+autoplay = "default"
+frame = 1
+centered = false
+
+[node name="Label" type="Label" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer5"]
+layout_mode = 2
+text = "Aim"
+horizontal_alignment = 2
+
+[node name="HBoxContainer8" type="HBoxContainer" parent="TutorialOverlay/VBoxContainer/SwingControls"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+
+[node name="Control2" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer8"]
+custom_minimum_size = Vector2(48, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer8/Control2"]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_3ky3l")
+autoplay = "default"
+centered = false
+
+[node name="Label2" type="Label" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer8"]
+layout_mode = 2
+text = "+"
+horizontal_alignment = 2
+
+[node name="Control" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer8"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer8/Control"]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_1mj6g")
+autoplay = "default"
+centered = false
+
+[node name="Control4" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer8"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer8/Control4"]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_2b0m3")
+autoplay = "default"
+frame = 1
+centered = false
+
+[node name="Label" type="Label" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer8"]
+layout_mode = 2
+text = "Aim (fine)"
+horizontal_alignment = 2
+
+[node name="Swing" type="HBoxContainer" parent="TutorialOverlay/VBoxContainer/SwingControls"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/Swing"]
+custom_minimum_size = Vector2(72, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/Swing/Control"]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_5tygi")
+autoplay = "default"
+centered = false
+
+[node name="Label" type="Label" parent="TutorialOverlay/VBoxContainer/SwingControls/Swing"]
+layout_mode = 2
+text = "Swing"
+horizontal_alignment = 2

@@ -9,6 +9,7 @@ func OnEnter():
 	player.player_input.direction = player.player_input.direction.normalized()
 	player.club.show()
 	player.sync_is_swinging = true
+	Events.local_player_swinging.emit()
 	pass
 
 func OnExit():

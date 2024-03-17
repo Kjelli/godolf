@@ -6,19 +6,19 @@ class_name ScoreTable
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	setup_table(CourseContext.current_course_descriptor, CourseContext.current_hole_descriptor)
+	setup_table()
 
 	Events.game_proceeding.connect(on_game_proceeding)
 	Events.player_spawned.connect(on_player_spawn)
 	Events.player_score_updated.connect(on_player_score_updated)
 	Events.someone_disconnected.connect(on_player_disconnected)
 
-func setup_table(current_course_descriptor : CourseDescriptor, current_hole_descriptor : HoleDescriptor):
-	if not current_course_descriptor:
+func setup_table():
+	if not CourseContext.current_course_descriptor:
 		print("Missing course descriptor, cannot build score table!")
 		return
 
-	var hole_count = current_course_descriptor.holes.size()
+	var hole_count = CourseContext.current_course_descriptor.holes.size()
 
 	# leave space for name and total
 	var column_count = hole_count + 2

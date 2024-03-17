@@ -2,6 +2,7 @@ extends PlayerState
 
 func OnEnter():
 	player.animation_tree["parameters/conditions/idle"] = true
+	Events.local_player_idle.emit()
 	pass
 
 func OnExit():
