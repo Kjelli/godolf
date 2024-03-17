@@ -1,5 +1,10 @@
 Devlog:
 
+Added how to play
+
+![image](https://github.com/Kjelli/godolf/assets/6494395/b6f08779-8135-41b9-9365-fd883a441028)
+
+
 Working on scoreboard
 
 ![image](https://github.com/Kjelli/godolf/assets/6494395/e3dbce3c-a930-4bad-8a42-185bf03097e9)
