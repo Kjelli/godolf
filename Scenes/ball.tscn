@@ -1,11 +1,18 @@
-[gd_scene load_steps=19 format=3 uid="uid://v1ku1o5ma46j"]
+[gd_scene load_steps=26 format=3 uid="uid://v1ku1o5ma46j"]
 
 [ext_resource type="Script" path="res://Scripts/Ball.gd" id="1_8v3iu"]
 [ext_resource type="Texture2D" uid="uid://cmuwdke5npuqy" path="res://resources/golf.png" id="2_cr1wt"]
 [ext_resource type="Script" path="res://Scripts/Components/Pulser.gd" id="3_t7ikm"]
+[ext_resource type="Script" path="res://Scripts/Components/StateMachine.gd" id="8_3gyrt"]
+[ext_resource type="Script" path="res://Scripts/States/BallIdle.gd" id="9_miedu"]
 [ext_resource type="Texture2D" uid="uid://dj1lrkal6yh80" path="res://resources/water-drop.png" id="9_r0dik"]
+[ext_resource type="Script" path="res://Scripts/States/BallInWater.gd" id="10_0ohu3"]
+[ext_resource type="Script" path="res://Scripts/States/BallRolling.gd" id="10_7pb01"]
 [ext_resource type="Texture2D" uid="uid://dg8vuckm2chsv" path="res://resources/particles.png" id="10_14x4h"]
+[ext_resource type="Script" path="res://Scripts/States/BallFake.gd" id="10_cvoas"]
 [ext_resource type="Texture2D" uid="uid://de376upft1uvw" path="res://resources/bounce.png" id="11_ra2h2"]
+[ext_resource type="Script" path="res://Scripts/States/BallInitial.gd" id="11_ub58b"]
+[ext_resource type="Script" path="res://Scripts/States/BallSinking.gd" id="12_ufxvt"]
 [ext_resource type="Texture2D" uid="uid://b3cs1ex3xhu6r" path="res://resources/aimline.png" id="12_wli68"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_db07g"]
@@ -38,6 +45,9 @@ properties/5/replication_mode = 2
 properties/6/path = NodePath(".:sync_scale")
 properties/6/spawn = true
 properties/6/replication_mode = 2
+properties/7/path = NodePath(".:sync_is_moving")
+properties/7/spawn = true
+properties/7/replication_mode = 2
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jqxxf"]
 radius = 2.0
@@ -164,6 +174,28 @@ process_material = SubResource("ParticleProcessMaterial_ndypt")
 texture = ExtResource("9_r0dik")
 one_shot = true
 explosiveness = 1.0
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("8_3gyrt")
+initial_state = NodePath("Initial")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("9_miedu")
+
+[node name="InWater" type="Node" parent="StateMachine"]
+script = ExtResource("10_0ohu3")
+
+[node name="Rolling" type="Node" parent="StateMachine"]
+script = ExtResource("10_7pb01")
+
+[node name="Sinking" type="Node" parent="StateMachine"]
+script = ExtResource("12_ufxvt")
+
+[node name="Fake" type="Node" parent="StateMachine"]
+script = ExtResource("10_cvoas")
+
+[node name="Initial" type="Node" parent="StateMachine"]
+script = ExtResource("11_ub58b")
 
 [connection signal="entered_goal_proximity" from="." to="." method="_on_entered_goal_proximity"]
 [connection signal="left_goal_proximity" from="." to="." method="_on_left_goal_proximity"]

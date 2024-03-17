@@ -5,11 +5,11 @@
 [ext_resource type="Script" path="res://Scripts/PlayerInput.gd" id="2_dbhay"]
 [ext_resource type="PackedScene" uid="uid://bxtrc3nxvsvgk" path="res://Scenes/club.tscn" id="3_q4ucv"]
 [ext_resource type="Script" path="res://Scripts/Components/StateMachine.gd" id="6_4wd0j"]
-[ext_resource type="Script" path="res://Scripts/States/Initial.gd" id="7_lsy05"]
-[ext_resource type="Script" path="res://Scripts/States/Idle.gd" id="7_wl73b"]
-[ext_resource type="Script" path="res://Scripts/States/Walking.gd" id="9_hd5cm"]
-[ext_resource type="Script" path="res://Scripts/States/Fake.gd" id="10_n034l"]
-[ext_resource type="Script" path="res://Scripts/States/Aiming.gd" id="11_dtkm2"]
+[ext_resource type="Script" path="res://Scripts/States/PlayerInitial.gd" id="6_egrte"]
+[ext_resource type="Script" path="res://Scripts/States/PlayerFake.gd" id="7_fu4bx"]
+[ext_resource type="Script" path="res://Scripts/States/PlayerIdle.gd" id="8_n2wqx"]
+[ext_resource type="Script" path="res://Scripts/States/PlayerWalking.gd" id="9_mbbpc"]
+[ext_resource type="Script" path="res://Scripts/States/PlayerAiming.gd" id="10_rigkp"]
 
 [sub_resource type="Shader" id="Shader_wdekn"]
 code = "shader_type canvas_item;
@@ -597,19 +597,19 @@ script = ExtResource("6_4wd0j")
 initial_state = NodePath("Initial")
 
 [node name="Initial" type="Node" parent="StateMachine"]
-script = ExtResource("7_lsy05")
+script = ExtResource("6_egrte")
 
 [node name="Fake" type="Node" parent="StateMachine"]
-script = ExtResource("10_n034l")
+script = ExtResource("7_fu4bx")
 
 [node name="Idle" type="Node" parent="StateMachine"]
-script = ExtResource("7_wl73b")
+script = ExtResource("8_n2wqx")
 
 [node name="Walking" type="Node" parent="StateMachine"]
-script = ExtResource("9_hd5cm")
+script = ExtResource("9_mbbpc")
 
 [node name="Aiming" type="Node" parent="StateMachine"]
-script = ExtResource("11_dtkm2")
+script = ExtResource("10_rigkp")
 
 [connection signal="body_entered" from="BallRange" to="." method="_on_ball_range_body_entered"]
 [connection signal="body_shape_exited" from="BallRange" to="." method="_on_ball_range_body_shape_exited"]

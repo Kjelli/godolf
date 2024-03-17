@@ -1,17 +1,29 @@
-extends State
+extends BallState
 
-@export var ball : Ball
-@export var pulser : Pulser
-
-func Update(_delta : float):
-	if ball.velocity != Vector2.ZERO:
-		Transitioned.emit(self, "BallMoving")
+var current_trail : Trail
 
 func OnEnter():
-	pulser.enable()
-	pass
+	ball.pulser.enable()
+	Events.ball_stopped.emit(ball)
+	ball.velocity = Vector2.ZERO
+	ball.acceleration = Vector2.ZERO
+	ball.is_moving = false
+	if current_trail:
+		current_trail.stop()
+		current_trail = null
 
 func OnExit():
-	Local.print(" - The ball " + ball.name + " is no longer idle")
-	pulser.disable()
+	ball.pulser.disable()
+	current_trail = Trail.create()
+	ball.add_child(current_trail)
+	ball.is_moving = true
+
+func Process(_delta : float):
+	sync_properties()
+
+	if ball.velocity != Vector2.ZERO:
+		state_machine.transitioned.emit(self, "rolling")
+		return
+
+func Physics_Process(_delta : float):
 	pass
