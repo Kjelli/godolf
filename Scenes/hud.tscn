@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://cw2shrgidjs3s"]
+[gd_scene load_steps=37 format=3 uid="uid://cw2shrgidjs3s"]
 
 [ext_resource type="Script" path="res://Scripts/ChargeBar.gd" id="1_7t76o"]
 [ext_resource type="Texture2D" uid="uid://vkkihgyvgvlp" path="res://resources/chargebar.png" id="2_752ma"]
@@ -9,8 +9,55 @@
 [ext_resource type="Script" path="res://Scripts/TutorialOverlay.gd" id="8_h3i4o"]
 [ext_resource type="Texture2D" uid="uid://di8lfeayvx0gf" path="res://resources/keys_used.png" id="8_k1wee"]
 [ext_resource type="Script" path="res://Scripts/ScoreTable.gd" id="9_q77wk"]
+[ext_resource type="Script" path="res://Scripts/GameMenu.gd" id="10_35x4f"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_5bir5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k645b"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eknob"]
+atlas = ExtResource("8_k1wee")
+region = Rect2(84, 0, 24, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8lstp"]
+atlas = ExtResource("8_k1wee")
+region = Rect2(84, 12, 24, 12)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5u4gc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eknob")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8lstp")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8sett"]
+atlas = ExtResource("8_k1wee")
+region = Rect2(0, 36, 24, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wrr6t"]
+atlas = ExtResource("8_k1wee")
+region = Rect2(0, 48, 24, 12)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ktssd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8sett")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wrr6t")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d3jgx"]
 atlas = ExtResource("8_k1wee")
@@ -338,308 +385,425 @@ theme_override_constants/h_separation = 16
 theme_override_constants/v_separation = 8
 columns = 20
 
-[node name="TutorialOverlay" type="MarginContainer" parent="."]
+[node name="TutorialOverlay" type="PanelContainer" parent="."]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -215.0
-offset_top = -192.0
+offset_left = -163.0
+offset_top = -20.0
 grow_horizontal = 0
 grow_vertical = 0
-size_flags_horizontal = 8
-size_flags_vertical = 8
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 20
+theme_override_styles/panel = SubResource("StyleBoxEmpty_k645b")
 script = ExtResource("8_h3i4o")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TutorialOverlay"]
+[node name="MarginContainer" type="MarginContainer" parent="TutorialOverlay"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TutorialOverlay/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 
-[node name="MovementControls" type="VBoxContainer" parent="TutorialOverlay/VBoxContainer"]
+[node name="MovementControls" type="VBoxContainer" parent="TutorialOverlay/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 
-[node name="Move" type="HBoxContainer" parent="TutorialOverlay/VBoxContainer/MovementControls"]
+[node name="Menu" type="HBoxContainer" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
 
-[node name="Control" type="Control" parent="TutorialOverlay/VBoxContainer/MovementControls/Move"]
+[node name="Control" type="Control" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls/Menu"]
+custom_minimum_size = Vector2(48, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls/Menu/Control"]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_5u4gc")
+autoplay = "default"
+centered = false
+
+[node name="Label" type="Label" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls/Menu"]
+layout_mode = 2
+text = "Menu"
+horizontal_alignment = 2
+
+[node name="Scoreboard" type="HBoxContainer" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls/Scoreboard"]
+custom_minimum_size = Vector2(48, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls/Scoreboard/Control"]
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_ktssd")
+autoplay = "default"
+frame = 1
+centered = false
+
+[node name="Label" type="Label" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls/Scoreboard"]
+layout_mode = 2
+text = "Scoreboard"
+horizontal_alignment = 2
+
+[node name="Spacer" type="MarginContainer" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls"]
+layout_mode = 2
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Move" type="HBoxContainer" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls/Move"]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/MovementControls/Move/Control"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls/Move/Control"]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_1mj6g")
 autoplay = "default"
 centered = false
 
-[node name="Control2" type="Control" parent="TutorialOverlay/VBoxContainer/MovementControls/Move"]
+[node name="Control2" type="Control" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls/Move"]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/MovementControls/Move/Control2"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls/Move/Control2"]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_l73yb")
 autoplay = "default"
 frame = 1
 centered = false
 
-[node name="Control3" type="Control" parent="TutorialOverlay/VBoxContainer/MovementControls/Move"]
+[node name="Control3" type="Control" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls/Move"]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/MovementControls/Move/Control3"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls/Move/Control3"]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_k076o")
 autoplay = "default"
 centered = false
 
-[node name="Control4" type="Control" parent="TutorialOverlay/VBoxContainer/MovementControls/Move"]
+[node name="Control4" type="Control" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls/Move"]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/MovementControls/Move/Control4"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls/Move/Control4"]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_2b0m3")
 autoplay = "default"
 frame = 1
 centered = false
 
-[node name="Label" type="Label" parent="TutorialOverlay/VBoxContainer/MovementControls/Move"]
+[node name="Label" type="Label" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls/Move"]
 layout_mode = 2
 text = "Move"
 horizontal_alignment = 2
 
-[node name="EnterAim" type="HBoxContainer" parent="TutorialOverlay/VBoxContainer/MovementControls"]
+[node name="EnterAim" type="HBoxContainer" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
 
-[node name="Control" type="Control" parent="TutorialOverlay/VBoxContainer/MovementControls/EnterAim"]
+[node name="Control" type="Control" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls/EnterAim"]
 custom_minimum_size = Vector2(72, 24)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/MovementControls/EnterAim/Control"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls/EnterAim/Control"]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_5tygi")
 autoplay = "default"
 centered = false
 
-[node name="Label" type="Label" parent="TutorialOverlay/VBoxContainer/MovementControls/EnterAim"]
+[node name="Label" type="Label" parent="TutorialOverlay/MarginContainer/VBoxContainer/MovementControls/EnterAim"]
 layout_mode = 2
 text = "Aim"
 horizontal_alignment = 2
 
-[node name="SwingControls" type="VBoxContainer" parent="TutorialOverlay/VBoxContainer"]
+[node name="SwingControls" type="VBoxContainer" parent="TutorialOverlay/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="TutorialOverlay/VBoxContainer/SwingControls"]
+[node name="HBoxContainer6" type="HBoxContainer" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
 
-[node name="Control2" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer6"]
+[node name="Control2" type="Control" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer6"]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer6/Control2"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer6/Control2"]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_l73yb")
 autoplay = "default"
 centered = false
 
-[node name="Control3" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer6"]
+[node name="Control3" type="Control" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer6"]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer6/Control3"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer6/Control3"]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_k076o")
 autoplay = "default"
 frame = 1
 centered = false
 
-[node name="Label" type="Label" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer6"]
+[node name="Label" type="Label" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer6"]
 layout_mode = 2
 text = "Power"
 horizontal_alignment = 2
 
-[node name="HBoxContainer7" type="HBoxContainer" parent="TutorialOverlay/VBoxContainer/SwingControls"]
+[node name="HBoxContainer7" type="HBoxContainer" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
 
-[node name="Control" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer7"]
+[node name="Control" type="Control" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer7"]
 custom_minimum_size = Vector2(48, 24)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer7/Control"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer7/Control"]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_3ky3l")
 autoplay = "default"
 centered = false
 
-[node name="Label" type="Label" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer7"]
+[node name="Label" type="Label" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer7"]
 layout_mode = 2
 text = "+"
 horizontal_alignment = 2
 
-[node name="Control2" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer7"]
+[node name="Control2" type="Control" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer7"]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer7/Control2"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer7/Control2"]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_l73yb")
 autoplay = "default"
 centered = false
 
-[node name="Control3" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer7"]
+[node name="Control3" type="Control" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer7"]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer7/Control3"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer7/Control3"]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_k076o")
 autoplay = "default"
 frame = 1
 centered = false
 
-[node name="Label2" type="Label" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer7"]
+[node name="Label2" type="Label" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer7"]
 layout_mode = 2
 text = "Power (fine)"
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="TutorialOverlay/VBoxContainer/SwingControls"]
+[node name="HBoxContainer5" type="HBoxContainer" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
 
-[node name="Control" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer5"]
+[node name="Control" type="Control" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer5"]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer5/Control"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer5/Control"]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_1mj6g")
 autoplay = "default"
 centered = false
 
-[node name="Control4" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer5"]
+[node name="Control4" type="Control" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer5"]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer5/Control4"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer5/Control4"]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_2b0m3")
 autoplay = "default"
 frame = 1
 centered = false
 
-[node name="Label" type="Label" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer5"]
+[node name="Label" type="Label" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer5"]
 layout_mode = 2
 text = "Aim"
 horizontal_alignment = 2
 
-[node name="HBoxContainer8" type="HBoxContainer" parent="TutorialOverlay/VBoxContainer/SwingControls"]
+[node name="HBoxContainer8" type="HBoxContainer" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
 
-[node name="Control2" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer8"]
+[node name="Control2" type="Control" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer8"]
 custom_minimum_size = Vector2(48, 24)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer8/Control2"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer8/Control2"]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_3ky3l")
 autoplay = "default"
 centered = false
 
-[node name="Label2" type="Label" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer8"]
+[node name="Label2" type="Label" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer8"]
 layout_mode = 2
 text = "+"
 horizontal_alignment = 2
 
-[node name="Control" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer8"]
+[node name="Control" type="Control" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer8"]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer8/Control"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer8/Control"]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_1mj6g")
 autoplay = "default"
 centered = false
 
-[node name="Control4" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer8"]
+[node name="Control4" type="Control" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer8"]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer8/Control4"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer8/Control4"]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_2b0m3")
 autoplay = "default"
 frame = 1
 centered = false
 
-[node name="Label" type="Label" parent="TutorialOverlay/VBoxContainer/SwingControls/HBoxContainer8"]
+[node name="Label" type="Label" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/HBoxContainer8"]
 layout_mode = 2
 text = "Aim (fine)"
 horizontal_alignment = 2
 
-[node name="Swing" type="HBoxContainer" parent="TutorialOverlay/VBoxContainer/SwingControls"]
+[node name="Swing" type="HBoxContainer" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
 
-[node name="Control" type="Control" parent="TutorialOverlay/VBoxContainer/SwingControls/Swing"]
+[node name="Control" type="Control" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/Swing"]
 custom_minimum_size = Vector2(72, 24)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/VBoxContainer/SwingControls/Swing/Control"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/Swing/Control"]
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_5tygi")
 autoplay = "default"
+frame = 1
 centered = false
 
-[node name="Label" type="Label" parent="TutorialOverlay/VBoxContainer/SwingControls/Swing"]
+[node name="Label" type="Label" parent="TutorialOverlay/MarginContainer/VBoxContainer/SwingControls/Swing"]
 layout_mode = 2
 text = "Swing"
 horizontal_alignment = 2
+
+[node name="Wobbler" type="Node" parent="TutorialOverlay"]
+script = ExtResource("6_2rsj0")
+
+[node name="GameMenu" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = -133.5
+offset_right = 90.0
+offset_bottom = 133.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("10_35x4f")
+
+[node name="MarginContainer" type="MarginContainer" parent="GameMenu"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameMenu/MarginContainer"]
+layout_mode = 2
+
+[node name="Resume" type="Button" parent="GameMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 2
+text = "Resume"
+
+[node name="Wobbler" type="Node" parent="GameMenu/MarginContainer/VBoxContainer/Resume"]
+script = ExtResource("6_2rsj0")
+
+[node name="QuitToMenu" type="Button" parent="GameMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Quit to menu"
+
+[node name="Wobbler" type="Node" parent="GameMenu/MarginContainer/VBoxContainer/QuitToMenu"]
+script = ExtResource("6_2rsj0")
+
+[node name="QuitToDesktop" type="Button" parent="GameMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Quit to desktop"
+
+[node name="Wobbler" type="Node" parent="GameMenu/MarginContainer/VBoxContainer/QuitToDesktop"]
+script = ExtResource("6_2rsj0")
+
+[connection signal="pressed" from="GameMenu/MarginContainer/VBoxContainer/Resume" to="GameMenu" method="_on_resume_pressed"]
+[connection signal="pressed" from="GameMenu/MarginContainer/VBoxContainer/QuitToMenu" to="GameMenu" method="_on_quit_to_menu_pressed"]
+[connection signal="pressed" from="GameMenu/MarginContainer/VBoxContainer/QuitToDesktop" to="GameMenu" method="_on_quit_to_desktop_pressed"]

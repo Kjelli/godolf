@@ -28,21 +28,10 @@ func _ready():
 	hole_list.select(0)
 	_on_course_list_item_selected(0)
 
-func _process(_delta) -> void:
-	if Input.is_action_just_pressed("cancel"):
-		for child in scene_wrapper.get_children():
-			scene_wrapper.remove_child(child)
-			child.queue_free()
+	Events.quit_to_menu.connect(on_quit_to_menu_requested)
 
-			if multiplayer.multiplayer_peer:
-				multiplayer.multiplayer_peer.close()
-				Networking.connected_players.clear()
-				multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
-			Networking.connected_players.clear()
-		CourseContext.reset()
-		singleplayer_menu.hide()
-		multiplayer_menu.hide()
-		main_menu.show()
+func _process(_delta) -> void:
+	pass
 
 func populate_single_player_holes():
 	var courses = CourseLoader.list_courses()
@@ -106,3 +95,18 @@ func _on_connect_button_pressed() -> void:
 	singleplayer_menu.hide()
 	multiplayer_menu.hide()
 	networking.connect_to_server(ip_edit.text, port_edit.text.to_int())
+
+func on_quit_to_menu_requested():
+	for child in scene_wrapper.get_children():
+		scene_wrapper.remove_child(child)
+		child.queue_free()
+
+		if multiplayer.multiplayer_peer:
+			multiplayer.multiplayer_peer.close()
+			Networking.connected_players.clear()
+			multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
+		Networking.connected_players.clear()
+	CourseContext.reset()
+	singleplayer_menu.hide()
+	multiplayer_menu.hide()
+	main_menu.show()

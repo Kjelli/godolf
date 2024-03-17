@@ -18,9 +18,10 @@ signal charge_interrupted(player_id : int)
 # In game
 signal player_spawned(player : Player)
 signal player_authority_changed(player : Player, player_id : int)
+signal player_score_updated(player_score : PlayerScore)
 
 signal ball_shot(ball : Ball)
 signal ball_stopped(ball : Ball)
 signal ball_sunk(player_id : int, player_name : String, times_hit : int)
 
-signal player_score_updated(player_score : PlayerScore)
+signal quit_to_menu

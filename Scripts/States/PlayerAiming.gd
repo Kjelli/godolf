@@ -39,7 +39,7 @@ func Process(_delta : float):
 	var axis_input = Input.get_axis("down", "up")
 	var fine = Input.is_action_pressed("fine")
 
-	var charge_delta = 0.1 * axis_input if fine else axis_input
+	var charge_delta = 0.05 * axis_input if fine else axis_input
 	player.club.update_charge(player.player_id, charge_delta, - player.player_input.direction.x)
 	player.ball_in_range.aim(player.club.charge, player.club.max_charge, player.player_input.direction)
 
