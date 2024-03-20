@@ -6,6 +6,8 @@ signal left_goal_proximity
 
 @export var weight := 0.75
 
+@onready var bounce_audio : AudioStreamPlayer2D = %BounceAudio
+@onready var splash_audio : AudioStreamPlayer2D = %SplashAudio
 @onready var hit_particles : GPUParticles2D = %HitParticles
 @onready var splash_particles : GPUParticles2D = %SplashParticles
 @onready var bounce_particles : GPUParticles2D = %BounceParticles
@@ -18,13 +20,10 @@ var acceleration : Vector2
 var owning_player : Player
 var is_in_goal : Goal
 var nearby_goal : Goal
-var current_trail : Trail
 
 var is_moving : bool
-var is_in_water : bool
 var last_shot_from : Vector2
 var times_hit : int = 0
-var is_tweening_into_goal : bool
 
 @export var aim_color : Color
 @export var sync_pos : Vector2
@@ -45,7 +44,8 @@ var is_tweening_into_goal : bool
 func on_player_id_set():
 	set_multiplayer_authority(player_id, false)
 	$DataSynchronizer.set_multiplayer_authority(player_id)
-	modulate = Color(aim_color)
+	sprite.modulate = Color(aim_color)
+	pulser.modulate = Color(aim_color)
 	aim_line.modulate = Color(aim_color)
 
 	if !is_multiplayer_authority():
@@ -103,6 +103,17 @@ static func good_bounce(b1: Ball, b2: Ball):
 func bounced(ball_path : NodePath, target_velocity : Vector2):
 	if get_path() == ball_path:
 		velocity = target_velocity
+		play_bounce_audio(clamp(velocity.length() / 80, 1, 2))
+
+@rpc("any_peer", "call_local", "reliable")
+func play_bounce_audio(pitch : float):
+	bounce_audio.pitch_scale = pitch
+	bounce_audio.play()
+
+@rpc("any_peer", "call_local", "reliable")
+func play_splash_audio(pitch : float):
+	splash_audio.pitch_scale = pitch
+	splash_audio.play()
 
 func _on_entered_goal_proximity(goal : Goal):
 	nearby_goal = goal

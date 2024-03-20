@@ -105,6 +105,7 @@ func on_collision(collision : KinematicCollision2D):
 			state_machine.transitioned.emit(self, "inwater")
 			return
 		else:
+			ball.play_bounce_audio.rpc(clamp(ball.velocity.length() / 80, 1, 2))
 			ball.bounce_particles.emit_particle(ball.transform, ball.velocity, ball.modulate, ball.modulate, 0)
 			ball.velocity = ball.velocity.bounce(collision.get_normal())
 

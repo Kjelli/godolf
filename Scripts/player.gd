@@ -4,6 +4,7 @@ class_name Player
 var ball_in_range : Ball
 
 # locals
+@onready var charge_sound = %ChargeSound
 @onready var animation_tree : AnimationTree = %AnimationTree
 @onready var animation_player : AnimationPlayer = %AnimationPlayer
 @onready var player_input : Node = %PlayerInput
@@ -18,6 +19,7 @@ var ball_in_range : Ball
 		on_player_id_set.call_deferred()
 @export var player_name : String
 @export var player_color : Color
+@export var is_bot : bool
 
 # syncables
 @export var sync_pos : Vector2
@@ -55,10 +57,13 @@ func _ready():
 	Events.player_spawned.emit(self)
 	position = sync_pos
 
+@rpc("any_peer", "call_local", "unreliable_ordered")
+func play_charge_sound(pitch : float):
+	charge_sound.pitch_scale = clampf((pitch + 1) * 2, 0.5, 4)
+	charge_sound.play()
+
 func can_swing():
 	if !ball_in_range:
-		return false
-	if ball_in_range.is_in_water:
 		return false
 	if ball_in_range.velocity != Vector2.ZERO:
 		return false

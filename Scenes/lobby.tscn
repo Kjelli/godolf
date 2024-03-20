@@ -3,15 +3,15 @@
 [ext_resource type="Script" path="res://Scripts/Lobby.gd" id="1_j3jp6"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_pvkah"]
-properties/0/path = NodePath("LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/ScrollContainer/VBoxContainer/CourseSelect:selected")
+properties/0/path = NodePath("LobbyRoot/HBoxContainer/SettingsContainer/VBoxContainer/ScrollContainer/VBoxContainer/CourseSelect:selected")
 properties/0/spawn = true
 properties/0/replication_mode = 2
-properties/1/path = NodePath("LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/ScrollContainer/VBoxContainer/CollisionToggle:button_pressed")
+properties/1/path = NodePath("LobbyRoot/HBoxContainer/SettingsContainer/VBoxContainer/ScrollContainer/VBoxContainer/HoleCountLabel:text")
 properties/1/spawn = true
 properties/1/replication_mode = 2
-properties/2/path = NodePath("LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/ScrollContainer/VBoxContainer/HoleCountLabel:text")
+properties/2/path = NodePath("LobbyRoot/HBoxContainer/SettingsContainer/VBoxContainer/ScrollContainer/VBoxContainer/CollisionToggle:button_pressed")
 properties/2/spawn = true
-properties/2/replication_mode = 2
+properties/2/replication_mode = 1
 
 [node name="Lobby" type="Node"]
 script = ExtResource("1_j3jp6")
@@ -21,108 +21,114 @@ replication_config = SubResource("SceneReplicationConfig_pvkah")
 
 [node name="PlayerPanelSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://Scenes/Gui/LobbyPlayerPanel.tscn")
-spawn_path = NodePath("../LobbyRoot/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/ScrollContainer/Players")
+spawn_path = NodePath("../LobbyRoot/HBoxContainer/MarginContainer/PlayersContainer/VBoxContainer/ScrollContainer/Players")
 
 [node name="LobbyRoot" type="CanvasLayer" parent="."]
 unique_name_in_owner = true
 
-[node name="MarginContainer" type="MarginContainer" parent="LobbyRoot"]
-custom_minimum_size = Vector2(640, 480)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+[node name="HBoxContainer" type="HBoxContainer" parent="LobbyRoot"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="SettingsContainer" type="PanelContainer" parent="LobbyRoot/HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LobbyRoot/HBoxContainer/SettingsContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LobbyRoot/HBoxContainer/SettingsContainer/VBoxContainer"]
+layout_mode = 2
+text = "Settings"
+
+[node name="Spacer" type="MarginContainer" parent="LobbyRoot/HBoxContainer/SettingsContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="LobbyRoot/HBoxContainer/SettingsContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+vertical_scroll_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LobbyRoot/HBoxContainer/SettingsContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="HoleCountLabel2" type="Label" parent="LobbyRoot/HBoxContainer/SettingsContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Course"
+
+[node name="CourseSelect" type="OptionButton" parent="LobbyRoot/HBoxContainer/SettingsContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+allow_reselect = true
+
+[node name="HoleCountLabel" type="Label" parent="LobbyRoot/HBoxContainer/SettingsContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "-1 holes"
+
+[node name="CollisionToggle" type="CheckBox" parent="LobbyRoot/HBoxContainer/SettingsContainer/VBoxContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Balls collide"
+
+[node name="MarginContainer" type="MarginContainer" parent="LobbyRoot/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
 theme_override_constants/margin_left = 40
 theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 40
 
-[node name="HBoxContainer" type="HBoxContainer" parent="LobbyRoot/MarginContainer"]
+[node name="PlayersContainer" type="PanelContainer" parent="LobbyRoot/HBoxContainer/MarginContainer"]
 layout_mode = 2
-
-[node name="PanelContainer" type="PanelContainer" parent="LobbyRoot/MarginContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="LobbyRoot/HBoxContainer/MarginContainer/PlayersContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="LobbyRoot/HBoxContainer/MarginContainer/PlayersContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="LobbyRoot/HBoxContainer/MarginContainer/PlayersContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Lobby"
 
-[node name="Spacer" type="MarginContainer" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+[node name="Spacer" type="MarginContainer" parent="LobbyRoot/HBoxContainer/MarginContainer/PlayersContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_top = 20
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="LobbyRoot/HBoxContainer/MarginContainer/PlayersContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="LobbyRoot/HBoxContainer/MarginContainer/PlayersContainer/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 text = "Connected players"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="LobbyRoot/HBoxContainer/MarginContainer/PlayersContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="Players" type="VBoxContainer" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/ScrollContainer"]
+[node name="Players" type="VBoxContainer" parent="LobbyRoot/HBoxContainer/MarginContainer/PlayersContainer/VBoxContainer/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="StartGameButton" type="Button" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer"]
+[node name="StartGameButton" type="Button" parent="LobbyRoot/HBoxContainer/MarginContainer/PlayersContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 text = "Start Game"
 
-[node name="PanelContainer2" type="PanelContainer" parent="LobbyRoot/MarginContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer"]
-layout_mode = 2
-text = "Settings"
-
-[node name="ScrollContainer" type="ScrollContainer" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-vertical_scroll_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="CourseSelect" type="OptionButton" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/ScrollContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-allow_reselect = true
-
-[node name="HoleCountLabel" type="Label" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/ScrollContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "-1 holes"
-
-[node name="CollisionToggle" type="CheckBox" parent="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/ScrollContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Balls collide"
-
-[connection signal="pressed" from="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer/VBoxContainer/StartGameButton" to="." method="_on_start_game_button_pressed"]
-[connection signal="item_selected" from="LobbyRoot/MarginContainer/HBoxContainer/PanelContainer2/VBoxContainer/ScrollContainer/VBoxContainer/CourseSelect" to="." method="_on_course_select_item_selected"]
+[connection signal="item_selected" from="LobbyRoot/HBoxContainer/SettingsContainer/VBoxContainer/ScrollContainer/VBoxContainer/CourseSelect" to="." method="_on_course_select_item_selected"]
+[connection signal="pressed" from="LobbyRoot/HBoxContainer/MarginContainer/PlayersContainer/VBoxContainer/StartGameButton" to="." method="_on_start_game_button_pressed"]

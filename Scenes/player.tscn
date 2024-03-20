@@ -1,7 +1,8 @@
-[gd_scene load_steps=69 format=3 uid="uid://c2it6aijh30am"]
+[gd_scene load_steps=70 format=3 uid="uid://c2it6aijh30am"]
 
 [ext_resource type="Texture2D" uid="uid://cmuwdke5npuqy" path="res://resources/golf.png" id="1_h0ikx"]
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_vg6jp"]
+[ext_resource type="AudioStream" uid="uid://bmwhygjaful2c" path="res://resources/sfx/charge.wav" id="2_1r8bs"]
 [ext_resource type="Script" path="res://Scripts/PlayerInput.gd" id="2_dbhay"]
 [ext_resource type="PackedScene" uid="uid://bxtrc3nxvsvgk" path="res://Scenes/club.tscn" id="3_q4ucv"]
 [ext_resource type="Script" path="res://Scripts/Components/StateMachine.gd" id="6_4wd0j"]
@@ -513,6 +514,11 @@ collision_layer = 0
 collision_mask = 2
 motion_mode = 1
 script = ExtResource("1_vg6jp")
+player_color = Color(1, 1, 1, 1)
+
+[node name="ChargeSound" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("2_1r8bs")
 
 [node name="PlayerIdSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_pd2ek")

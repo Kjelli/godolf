@@ -1,5 +1,7 @@
 extends Node
 
+@onready var music_player : AudioStreamPlayer = %MusicPlayer
+
 @onready var networking : Networking = %Networking
 @onready var scene_wrapper : Node = %SceneWrapper
 @onready var course_spawner : MultiplayerSpawner = %CourseSpawner
@@ -28,7 +30,12 @@ func _ready():
 	hole_list.select(0)
 	_on_course_list_item_selected(0)
 
+	music_player.finished.connect(on_music_finished)
+
 	Events.quit_to_menu.connect(on_quit_to_menu_requested)
+
+func on_music_finished():
+	music_player.play()
 
 func _process(_delta) -> void:
 	pass
@@ -87,14 +94,16 @@ func _on_multiplayer_back_button_pressed() -> void:
 	pass # Replace with function body.
 
 func _on_host_button_pressed() -> void:
+	if !networking.host_server(port_edit.text.to_int()):
+		return
 	singleplayer_menu.hide()
 	multiplayer_menu.hide()
-	networking.host_server(port_edit.text.to_int())
 
 func _on_connect_button_pressed() -> void:
+	if !networking.connect_to_server(ip_edit.text, port_edit.text.to_int()):
+		return
 	singleplayer_menu.hide()
 	multiplayer_menu.hide()
-	networking.connect_to_server(ip_edit.text, port_edit.text.to_int())
 
 func on_quit_to_menu_requested():
 	for child in scene_wrapper.get_children():

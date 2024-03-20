@@ -1,6 +1,7 @@
 extends BallState
 
 func OnEnter():
+	ball.play_splash_audio.rpc(clamp(ball.velocity.length() / 40, 1, 1.5))
 	ball.splash_particles.emitting = true
 	ball.velocity = Vector2.ZERO
 	ball.acceleration = Vector2.ZERO

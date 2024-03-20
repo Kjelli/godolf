@@ -40,6 +40,8 @@ func Process(_delta : float):
 	var fine = Input.is_action_pressed("fine")
 
 	var charge_delta = 0.05 * axis_input if fine else axis_input
+	if charge_delta != 0:
+		player.play_charge_sound.rpc(player.club.get_charge_percent())
 	player.club.update_charge(player.player_id, charge_delta, - player.player_input.direction.x)
 	player.ball_in_range.aim(player.club.charge, player.club.max_charge, player.player_input.direction)
 

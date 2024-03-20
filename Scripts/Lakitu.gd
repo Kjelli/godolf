@@ -73,7 +73,7 @@ func _on_ball_stopped(ball : Ball):
 	lerp_weight = PLAYER_LERP
 
 func _on_ball_sunk(player_id : int, _player_name : String, _times_hit : int):
-	if player_id != multiplayer.get_unique_id():
+	if not multiplayer || multiplayer.multiplayer_peer is OfflineMultiplayerPeer || player_id != multiplayer.get_unique_id():
 		return
 	target_player_with_authority()
 	lerp_weight = PLAYER_LERP

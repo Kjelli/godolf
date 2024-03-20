@@ -5,7 +5,7 @@ class_name Networking
 @onready var main_menu : CanvasLayer = %MainMenu
 
 static var player_name : String
-static var player_color : Color
+static var player_color : Color = Color.WHITE
 
 static var connected_players : Array = []
 
@@ -22,38 +22,41 @@ func _ready() -> void:
 	Events.game_start_requested.connect(on_game_start_requested)
 	Events.game_over.connect(on_game_over)
 
-func host_server(port : int) -> void:
+func host_server(port : int) -> bool:
 	if player_name == "":
 		OS.alert("A golfer needs a name!")
-		return
+		return false
 	# Start as server.
 	var peer = ENetMultiplayerPeer.new()
 	peer.create_server(port)
 	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
 		OS.alert("Failed to start multiplayer server.")
-		return
+		return false
 	multiplayer.set_multiplayer_peer(peer)
 
 	# Add self as a known connection
 	connected_players.append(Handshake.create(1, player_name, player_color))
 	load_lobby()
+	return true
 
-func connect_to_server(url : String, port : int) -> void:
+func connect_to_server(url : String, port : int) -> bool:
 	# Start as client.
 	if player_name == "":
 		OS.alert("A golfer needs a name!")
-		return
+		return false
 
 	if url == "":
 		OS.alert("Need a remote to connect to.")
-		return
+		return false
 	var peer = ENetMultiplayerPeer.new()
 	peer.create_client(url, port)
 	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
 		OS.alert("Failed to start multiplayer client.")
-		return
+		return false
 	multiplayer.set_multiplayer_peer(peer)
 	load_lobby()
+
+	return true
 
 func on_connect_to_server() -> void:
 	send_info.rpc_id(1, multiplayer.get_unique_id(), player_name, player_color.to_html())

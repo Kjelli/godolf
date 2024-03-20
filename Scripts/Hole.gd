@@ -2,13 +2,15 @@ extends Node2D
 class_name Hole
 
 @onready var spawn_zone : SpawnZone = $SpawnZone
+@export var is_fake : bool
 @export var hole_par : int = 3
 
 var lakitu : Lakitu
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	add_child(load("res://Scenes/hud.tscn").instantiate())
+	if not is_fake:
+		add_child(load("res://Scenes/hud.tscn").instantiate())
 	spawn_camera()
 
 	Events.someone_disconnected.connect(del_player)
@@ -34,6 +36,8 @@ func spawn_player_from_handshake(handshake : Handshake):
 func spawn_player(player_id : int, player_name : String, player_color : Color) -> void:
 	var point = spawn_zone.draw_point()
 	var player : Player = Player.create(player_id, player_name, player_color, point)
+	if is_fake:
+		player.is_bot = true
 
 	var point2 = spawn_zone.draw_middle()
 	var ball : Ball = Ball.create(player, point2)

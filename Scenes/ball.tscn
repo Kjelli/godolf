@@ -1,8 +1,10 @@
-[gd_scene load_steps=26 format=3 uid="uid://v1ku1o5ma46j"]
+[gd_scene load_steps=28 format=3 uid="uid://v1ku1o5ma46j"]
 
 [ext_resource type="Script" path="res://Scripts/Ball.gd" id="1_8v3iu"]
 [ext_resource type="Texture2D" uid="uid://cmuwdke5npuqy" path="res://resources/golf.png" id="2_cr1wt"]
+[ext_resource type="AudioStream" uid="uid://bmxab0roeq3bp" path="res://resources/sfx/bounce.wav" id="2_nnkvw"]
 [ext_resource type="Script" path="res://Scripts/Components/Pulser.gd" id="3_t7ikm"]
+[ext_resource type="AudioStream" uid="uid://d3xcped44xw6l" path="res://resources/sfx/sink.wav" id="3_v74ta"]
 [ext_resource type="Script" path="res://Scripts/Components/StateMachine.gd" id="8_3gyrt"]
 [ext_resource type="Script" path="res://Scripts/States/BallIdle.gd" id="9_miedu"]
 [ext_resource type="Texture2D" uid="uid://dj1lrkal6yh80" path="res://resources/water-drop.png" id="9_r0dik"]
@@ -112,6 +114,16 @@ slide_on_ceiling = false
 wall_min_slide_angle = 0.0872665
 safe_margin = 1.0
 script = ExtResource("1_8v3iu")
+
+[node name="BounceAudio" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("2_nnkvw")
+max_distance = 300.0
+
+[node name="SplashAudio" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("3_v74ta")
+max_distance = 300.0
 
 [node name="PlayerIdSynchronizer" type="MultiplayerSynchronizer" parent="."]
 unique_name_in_owner = true
