@@ -1,19 +1,42 @@
-[gd_scene load_steps=6 format=3 uid="uid://0ccxx1gicv3q"]
+[gd_scene load_steps=10 format=3 uid="uid://0ccxx1gicv3q"]
 
 [ext_resource type="Script" path="res://Scripts/play_screen.gd" id="1_r80s8"]
 [ext_resource type="Script" path="res://Scripts/Networking.gd" id="2_ee2x6"]
+[ext_resource type="Texture2D" uid="uid://ca5vxr7xwcm7i" path="res://resources/bg.png" id="2_hrey3"]
 [ext_resource type="AudioStream" uid="uid://byyqoikk5cdj0" path="res://resources/title.mp3" id="2_up15r"]
+[ext_resource type="Shader" path="res://Scenes/dither.gdshader" id="2_vwvjb"]
 [ext_resource type="Script" path="res://Scripts/CourseWrapper.gd" id="3_g646a"]
 [ext_resource type="Script" path="res://Scripts/Components/Wobbler.gd" id="3_pxmhw"]
+[ext_resource type="Script" path="res://Scenes/Background.gd" id="4_j73pq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_335wk"]
+shader = ExtResource("2_vwvjb")
+shader_parameter/amount = 200
 
 [node name="PlayScreen" type="Node"]
 script = ExtResource("1_r80s8")
 
+[node name="Background" type="TextureRect" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_335wk")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -54.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("2_hrey3")
+expand_mode = 1
+stretch_mode = 6
+script = ExtResource("4_j73pq")
+
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true
 stream = ExtResource("2_up15r")
-volume_db = -10.782
 autoplay = true
+bus = &"Music"
 
 [node name="CourseSpawner" type="MultiplayerSpawner" parent="."]
 unique_name_in_owner = true
@@ -33,6 +56,7 @@ script = ExtResource("2_ee2x6")
 unique_name_in_owner = true
 
 [node name="PanelContainer" type="PanelContainer" parent="MainMenu"]
+self_modulate = Color(1, 1, 1, 0.831373)
 anchors_preset = 9
 anchor_bottom = 1.0
 offset_right = 200.0
@@ -78,6 +102,7 @@ unique_name_in_owner = true
 visible = false
 
 [node name="MultiplayerPanel" type="PanelContainer" parent="MultiplayerMenu"]
+self_modulate = Color(1, 1, 1, 0.831373)
 anchors_preset = 9
 anchor_bottom = 1.0
 offset_right = 200.0
@@ -226,6 +251,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 6
 
 [node name="PanelContainer" type="PanelContainer" parent="SingleplayerMenu/VBoxContainer"]
+self_modulate = Color(1, 1, 1, 0.831373)
 layout_mode = 2
 size_flags_vertical = 4
 
@@ -266,6 +292,7 @@ text = "Back"
 script = ExtResource("3_pxmhw")
 
 [node name="PanelContainer2" type="PanelContainer" parent="SingleplayerMenu/VBoxContainer"]
+self_modulate = Color(1, 1, 1, 0.831373)
 layout_mode = 2
 size_flags_vertical = 3
 

@@ -519,6 +519,8 @@ player_color = Color(1, 1, 1, 1)
 [node name="ChargeSound" type="AudioStreamPlayer2D" parent="."]
 unique_name_in_owner = true
 stream = ExtResource("2_1r8bs")
+volume_db = -20.0
+bus = &"SFX"
 
 [node name="PlayerIdSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_pd2ek")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://cw2shrgidjs3s"]
+[gd_scene load_steps=38 format=3 uid="uid://cw2shrgidjs3s"]
 
 [ext_resource type="Script" path="res://Scripts/ChargeBar.gd" id="1_7t76o"]
 [ext_resource type="Texture2D" uid="uid://vkkihgyvgvlp" path="res://resources/chargebar.png" id="2_752ma"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://di8lfeayvx0gf" path="res://resources/keys_used.png" id="8_k1wee"]
 [ext_resource type="Script" path="res://Scripts/ScoreTable.gd" id="9_q77wk"]
 [ext_resource type="Script" path="res://Scripts/GameMenu.gd" id="10_35x4f"]
+[ext_resource type="Script" path="res://Scripts/OptionsMenu.gd" id="11_jfttt"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_5bir5"]
 
@@ -210,6 +211,7 @@ theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 
 [node name="PanelContainer" type="PanelContainer" parent="HoleMeta/MarginContainer"]
+self_modulate = Color(1, 1, 1, 0.831373)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -245,6 +247,7 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 
 [node name="PanelContainer" type="PanelContainer" parent="HoleMeta/MarginContainer2"]
+self_modulate = Color(1, 1, 1, 0.831373)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
@@ -353,6 +356,7 @@ horizontal_alignment = 1
 script = ExtResource("6_2rsj0")
 
 [node name="Scoreboard" type="PanelContainer" parent="."]
+self_modulate = Color(1, 1, 1, 0.831373)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -386,21 +390,18 @@ theme_override_constants/v_separation = 8
 columns = 20
 
 [node name="TutorialOverlay" type="PanelContainer" parent="."]
-anchors_preset = 3
-anchor_left = 1.0
+anchors_preset = 2
 anchor_top = 1.0
-anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -163.0
-offset_top = -20.0
-grow_horizontal = 0
+offset_top = -282.0
+offset_right = 215.0
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_k645b")
 script = ExtResource("8_h3i4o")
 
 [node name="MarginContainer" type="MarginContainer" parent="TutorialOverlay"]
 layout_mode = 2
-size_flags_horizontal = 8
+size_flags_horizontal = 0
 size_flags_vertical = 8
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
@@ -755,15 +756,16 @@ script = ExtResource("6_2rsj0")
 
 [node name="GameMenu" type="PanelContainer" parent="."]
 unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0.831373)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -90.0
-offset_top = -133.5
+offset_top = -110.0
 offset_right = 90.0
-offset_bottom = 133.5
+offset_bottom = 110.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -788,6 +790,13 @@ text = "Resume"
 [node name="Wobbler" type="Node" parent="GameMenu/MarginContainer/VBoxContainer/Resume"]
 script = ExtResource("6_2rsj0")
 
+[node name="Options" type="Button" parent="GameMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Options"
+
+[node name="Wobbler" type="Node" parent="GameMenu/MarginContainer/VBoxContainer/Options"]
+script = ExtResource("6_2rsj0")
+
 [node name="QuitToMenu" type="Button" parent="GameMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 8
@@ -804,6 +813,74 @@ text = "Quit to desktop"
 [node name="Wobbler" type="Node" parent="GameMenu/MarginContainer/VBoxContainer/QuitToDesktop"]
 script = ExtResource("6_2rsj0")
 
+[node name="OptionsMenu" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0.831373)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -89.0
+offset_top = -110.0
+offset_right = 90.0
+offset_bottom = 110.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("11_jfttt")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="OptionsMenu"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="OptionsMenu/VBoxContainer"]
+layout_mode = 2
+text = "- Audio -"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="OptionsMenu/VBoxContainer"]
+layout_mode = 2
+text = "Master"
+
+[node name="MasterVolume" type="HSlider" parent="OptionsMenu/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 1.0
+step = 0.1
+value = 1.0
+
+[node name="Label3" type="Label" parent="OptionsMenu/VBoxContainer"]
+layout_mode = 2
+text = "Music"
+
+[node name="MusicVolume" type="HSlider" parent="OptionsMenu/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 1.0
+step = 0.1
+value = 1.0
+
+[node name="Label4" type="Label" parent="OptionsMenu/VBoxContainer"]
+layout_mode = 2
+text = "Sound effects"
+
+[node name="SFXVolume" type="HSlider" parent="OptionsMenu/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 1.0
+step = 0.1
+value = 1.0
+
+[node name="OptionsBackButton" type="Button" parent="OptionsMenu/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 10
+text = "Back"
+
 [connection signal="pressed" from="GameMenu/MarginContainer/VBoxContainer/Resume" to="GameMenu" method="_on_resume_pressed"]
+[connection signal="pressed" from="GameMenu/MarginContainer/VBoxContainer/Options" to="GameMenu" method="_on_options_pressed"]
 [connection signal="pressed" from="GameMenu/MarginContainer/VBoxContainer/QuitToMenu" to="GameMenu" method="_on_quit_to_menu_pressed"]
 [connection signal="pressed" from="GameMenu/MarginContainer/VBoxContainer/QuitToDesktop" to="GameMenu" method="_on_quit_to_desktop_pressed"]
+[connection signal="value_changed" from="OptionsMenu/VBoxContainer/MasterVolume" to="OptionsMenu" method="_on_master_volume_value_changed"]
+[connection signal="value_changed" from="OptionsMenu/VBoxContainer/MusicVolume" to="OptionsMenu" method="_on_music_volume_value_changed"]
+[connection signal="value_changed" from="OptionsMenu/VBoxContainer/SFXVolume" to="OptionsMenu" method="_on_sfx_volume_value_changed"]
+[connection signal="pressed" from="OptionsMenu/VBoxContainer/OptionsBackButton" to="OptionsMenu" method="_on_options_back_button_pressed"]

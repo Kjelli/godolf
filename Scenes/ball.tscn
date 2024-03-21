@@ -119,11 +119,13 @@ script = ExtResource("1_8v3iu")
 unique_name_in_owner = true
 stream = ExtResource("2_nnkvw")
 max_distance = 300.0
+bus = &"SFX"
 
 [node name="SplashAudio" type="AudioStreamPlayer2D" parent="."]
 unique_name_in_owner = true
 stream = ExtResource("3_v74ta")
 max_distance = 300.0
+bus = &"SFX"
 
 [node name="PlayerIdSynchronizer" type="MultiplayerSynchronizer" parent="."]
 unique_name_in_owner = true

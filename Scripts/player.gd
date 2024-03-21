@@ -59,7 +59,7 @@ func _ready():
 
 @rpc("any_peer", "call_local", "unreliable_ordered")
 func play_charge_sound(pitch : float):
-	charge_sound.pitch_scale = clampf((pitch + 1) * 2, 0.5, 4)
+	charge_sound.pitch_scale = clampf((pitch) * 2, 0.5, 4)
 	charge_sound.play()
 
 func can_swing():

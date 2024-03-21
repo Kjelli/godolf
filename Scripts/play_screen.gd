@@ -1,5 +1,6 @@
 extends Node
 
+@onready var background : TextureRect = %Background
 @onready var music_player : AudioStreamPlayer = %MusicPlayer
 
 @onready var networking : Networking = %Networking
@@ -54,6 +55,7 @@ func _on_play_pressed():
 	singleplayer_menu.hide()
 	multiplayer_menu.hide()
 	main_menu.hide()
+	background.hide()
 	scene_wrapper.add_child.call_deferred(hole_scene.instantiate())
 
 func _on_quit_pressed():
@@ -118,4 +120,5 @@ func on_quit_to_menu_requested():
 	CourseContext.reset()
 	singleplayer_menu.hide()
 	multiplayer_menu.hide()
+	background.show()
 	main_menu.show()

@@ -3,6 +3,7 @@ class_name Networking
 
 @onready var scene_wrapper : Node = %SceneWrapper
 @onready var main_menu : CanvasLayer = %MainMenu
+@onready var background : TextureRect = %Background
 
 static var player_name : String
 static var player_color : Color = Color.WHITE
@@ -130,12 +131,6 @@ func load_lobby() -> void:
 		var lobby = load("res://Scenes/lobby.tscn").instantiate()
 		scene_wrapper.add_child(lobby)
 
-func load_course() -> void:
-	# Hide the UI and unpause to start the game.
-	main_menu.hide()
-	if multiplayer.is_server():
-		change_level.call_deferred(load("res://Scenes/Courses/" + scene_wrapper.selected_course))
-
 func clear_scenes() -> void:
 	for c in scene_wrapper.get_children():
 		scene_wrapper.remove_child(c)
@@ -145,6 +140,7 @@ func on_game_over() -> void:
 	CourseContext.reset()
 	if multiplayer.multiplayer_peer is OfflineMultiplayerPeer:
 		clear_scenes()
+		background.show()
 		main_menu.show()
 	elif multiplayer.is_server():
 		load_lobby()
